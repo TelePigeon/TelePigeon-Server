@@ -1,11 +1,3 @@
----
-name: 텔레피존 PR 템플릿
-about: 해당 템플릿을 사용하여 PR을 작성해주세요
-title: ''
-labels: ''
-assignees: ''
----
-
 ## Related issue 🛠
 [//]: # (해당하는 이슈 번호 달아주기)
 - closed #<issue_number>
