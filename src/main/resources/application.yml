@@ -1,0 +1,4 @@
+spring:
+  web:
+    resources:
+      add-mappings: false # Disable static resource mapping (For NoHandlerFoundException)
