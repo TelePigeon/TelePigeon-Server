@@ -23,7 +23,7 @@ public class WorryTime {
     @Column(name="created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne(targetEntity = Profile.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Worry.class, fetch = FetchType.LAZY)
     @JoinColumn(name="worry_id", nullable = false)
     private Worry worry;
 }
