@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Sex {
-    Male("남성"),
-    FeMale("여성");
+public enum Gender {
+    MALE("남성"),
+    FEMALE("여성");
     private final String content;
 }
