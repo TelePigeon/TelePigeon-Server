@@ -10,16 +10,15 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name="room")
-@NoArgsConstructor( access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 public class Room {
     @Id
-    @Column(name="room_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="code", nullable = false, unique = true)
+    @Column(name="code", nullable=false, unique=true)
     private String code;
 
-    @Column(name="created_at", nullable = false)
+    @Column(name="created_at", nullable=false)
     private LocalDateTime createdAt;
 }
