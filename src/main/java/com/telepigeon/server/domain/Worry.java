@@ -23,6 +23,9 @@ public class Worry {
     @Column(name="content", nullable=false)
     private String content;
 
+    @Column(name="times", nullable=false)
+    private String times;
+
     @Column(name="created_at", nullable=false)
     private LocalDateTime createdAt;
 
@@ -32,7 +35,4 @@ public class Worry {
     @ManyToOne(targetEntity=Profile.class, fetch=FetchType.LAZY)
     @JoinColumn(name="profile_id", nullable=false)
     private Profile profile;
-
-    @OneToMany(mappedBy="worry", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<WorryTime> worryTimes;
 }
