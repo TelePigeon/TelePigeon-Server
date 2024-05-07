@@ -1,9 +1,7 @@
 package com.telepigeon.server.advice;
 
 import com.telepigeon.server.dto.common.ResponseDto;
-import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.DefaultErrorCode;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
