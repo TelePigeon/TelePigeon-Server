@@ -1,6 +1,5 @@
 package com.telepigeon.server.dto.common;
 
-import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.DefaultErrorCode;
 
 public record ResponseDto<T> (
