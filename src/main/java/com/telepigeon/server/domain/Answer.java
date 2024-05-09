@@ -20,6 +20,8 @@ public class Answer {
 
     private String image;
 
+    private boolean isViewed;
+
     private LocalDateTime createdAt;
 
     @OneToOne(targetEntity=Question.class, fetch=FetchType.LAZY)
