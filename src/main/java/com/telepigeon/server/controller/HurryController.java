@@ -1,6 +1,5 @@
 package com.telepigeon.server.controller;
 
-import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.hurry.HurryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
