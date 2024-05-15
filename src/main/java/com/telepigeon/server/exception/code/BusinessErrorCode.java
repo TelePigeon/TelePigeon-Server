@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum BusinessErrorCode implements DefaultErrorCode{
     BUSINESS_TEST(HttpStatus.OK,"conflict","선착순 마감됐어요"),
+    HURRY_ALREADY_EXISTS(HttpStatus.OK, "conflict", "재촉하기를 이미 보냈습니다.")
     ;
     @JsonIgnore
     private final HttpStatus httpStatus;
