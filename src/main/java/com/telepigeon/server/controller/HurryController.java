@@ -14,7 +14,6 @@ import java.net.URI;
 @RequestMapping("/api/{roomId}/hurries")
 public class HurryController {
     private final HurryService hurryService;
-    private final HurryRetriever hurryRetriever;
 
     @PostMapping
     public ResponseEntity<Void> create(
@@ -22,13 +21,5 @@ public class HurryController {
     ){
         hurryService.create(roomId);
         return ResponseEntity.created(URI.create("hurry")).build();
-    }
-    @GetMapping("/{userId}")
-    public ResponseEntity<Void> find(
-            @PathVariable Long roomId,
-            @PathVariable Long userId
-    ){
-        hurryRetriever.findByRoomIdAndSenderId(roomId, userId);
-        return ResponseEntity.ok().build();
     }
 }
