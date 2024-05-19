@@ -3,21 +3,17 @@ spring:
     resources:
       add-mappings: false # Disable static resource mapping (For NoHandlerFoundException)
   datasource:
-    url: jdbc:mysql://localhost:3306/TelePigeon
-    username: root
-    password:
+    url: ${mysql_url}
+    username: ${mysql_username}
+    password: ${mysql_password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        highlight_sql: true
-        use_sql_comments: true
         dialect: org.hibernate.dialect.MySQL8Dialect
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${redis_host}
+      port: ${redis_port}
