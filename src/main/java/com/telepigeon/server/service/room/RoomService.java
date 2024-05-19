@@ -41,14 +41,19 @@ public class RoomService {
 
     private String createCode() {
         String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder codeBuilder = new StringBuilder();
-
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
-            int index = random.nextInt(characters.length());
-            codeBuilder.append(characters.charAt(index));
-        }
+        String code;
 
-        return codeBuilder.toString();
+        do {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < 10; i++) {
+                int index = random.nextInt(characters.length());
+                codeBuilder.append(characters.charAt(index));
+            }
+            code = codeBuilder.toString();
+        } while (roomRepository.existsByCode(code));
+
+
+        return code;
     }
 }

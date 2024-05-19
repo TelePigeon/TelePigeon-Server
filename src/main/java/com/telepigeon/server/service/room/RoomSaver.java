@@ -11,7 +11,7 @@ public class RoomSaver {
 
     private final RoomRepository roomRepository;
 
-    public Room save(Room room) {
+    public Room save(final Room room) {
         return roomRepository.save(room);
     }
 }
