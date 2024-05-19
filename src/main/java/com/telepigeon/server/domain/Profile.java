@@ -5,6 +5,7 @@ import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.dto.type.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,4 +47,19 @@ public class Profile {
     @JoinColumn(name="room_id")
     private Room room;
 
+    @Builder
+    private Profile(Users user, Room room) {
+        this.user = user;
+        this.room = room;
+    }
+
+    public static Profile create(
+            Users user,
+            Room room
+    ) {
+        return Profile.builder()
+                .user(user)
+                .room(room)
+                .build();
+    }
 }
