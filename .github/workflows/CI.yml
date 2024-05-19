@@ -41,10 +41,8 @@ jobs:
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "firebase.json"
+          name: "src/main/resources/firebase.json"
           json: ${{ secrets.SECRET_JSON }}
-      - name: move-json
-        run: mv ${{steps.create-json.output.result}} src/main/resources
 
       - name: build with gradle
         run: |
