@@ -10,6 +10,10 @@ public record HurryDto(
         LocalDateTime createdAt
 ) {
     public static HurryDto of(Hurry hurry){
-        return new HurryDto(Long.valueOf(hurry.getRoomAndSender().split(":")[0]), Long.valueOf(hurry.getRoomAndSender().split(":")[1]), hurry.getCreatedAt());
+        return new HurryDto(Long.valueOf(
+                hurry.getRoomAndSender().split(":")[0]),
+                Long.valueOf(hurry.getRoomAndSender().split(":")[1]),
+                hurry.getCreatedAt()
+        );
     }
 }

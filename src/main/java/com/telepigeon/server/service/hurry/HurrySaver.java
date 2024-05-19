@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class HurrySaver {
     private final HurryRepository hurryRepository;
 
-    public Hurry save(Hurry hurry){
+    public Hurry save(final Hurry hurry){
         return hurryRepository.save(hurry);
     }
 }

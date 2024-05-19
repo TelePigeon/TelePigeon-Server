@@ -10,11 +10,11 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/{roomId}/hurries")
+@RequestMapping("/api/v1")
 public class HurryController {
     private final HurryService hurryService;
 
-    @PostMapping
+    @PostMapping("/{roomId}/hurries")
     public ResponseEntity<Void> create(
             @PathVariable Long roomId
     ){

@@ -13,7 +13,6 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1")
 public class TestController {
-
     @GetMapping("/test")
     public String test() {
         return "test";
