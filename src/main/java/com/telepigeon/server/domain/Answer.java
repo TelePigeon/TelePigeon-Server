@@ -39,7 +39,7 @@ public class Answer {
         return new Answer(answerCreateDto.content(), answerCreateDto.image(), question, profile);
     }
 
-    public Answer(String content, String image, Question question, Profile profile) {
+    private Answer(String content, String image, Question question, Profile profile) {
         this.content = content;
         this.image = image;
         this.question = question;

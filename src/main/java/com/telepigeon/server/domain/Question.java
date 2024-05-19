@@ -28,7 +28,7 @@ public class Question {
         return new Question(content, profile);
     }
 
-    public Question(String content, Profile profile) {
+    private Question(String content, Profile profile) {
         this.content = content;
         this.profile = profile;
         this.createdAt = LocalDateTime.now();
