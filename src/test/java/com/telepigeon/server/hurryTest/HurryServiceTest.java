@@ -12,25 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-public class HurryTest {
+public class HurryServiceTest {
 
     @Mock
     private HurryRepository hurryRepository = Mockito.mock(HurryRepository.class);
-
-    @Test
-    @DisplayName("hurry 생성")
-    public void createHurryTest(){
-        Hurry hurry = Hurry.create(1L, 2L);
-        Assertions.assertNotNull(hurry);
-    }
-
-    @Test
-    @DisplayName("hurry 생성 확인")
-    public void checkCreateHurryTest(){
-        Hurry hurry = Hurry.create(1L, 2L);
-        Assertions.assertEquals(hurry.getRoomAndSender(), "1:2");
-    }
 
     @Test
     @DisplayName("hurry DB에 저장 확인")
@@ -52,5 +37,4 @@ public class HurryTest {
         boolean isCheck = hurryRetriever.existsByRoomIdAndSenderId(hurryDto.roomId(), hurryDto.senderId());
         Assertions.assertTrue(isCheck);
     }
-
 }
