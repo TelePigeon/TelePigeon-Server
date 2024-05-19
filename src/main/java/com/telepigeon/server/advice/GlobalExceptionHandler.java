@@ -1,5 +1,6 @@
 package com.telepigeon.server.advice;
 
+import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.code.InternalServerErrorCode;
@@ -24,6 +25,14 @@ public class GlobalExceptionHandler {
                 .body(e.getErrorCode());
     }
 
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<NotFoundErrorCode> handleNotFoundException(NotFoundException e){
+        log.error("GlobalExceptionHandler catch NotFoundException : {}", e.getMessage());
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(e.getErrorCode());
+    }
+
     // 존재하지 않는 요청에 대한 예외
     @ExceptionHandler(value = {NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public ResponseEntity<NotFoundErrorCode> handleNoPageFoundException(Exception e) {
@@ -37,7 +46,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     public ResponseEntity<InternalServerErrorCode> handleException(Exception e) {
         log.error("handleException() in GlobalExceptionHandler throw Exception : {}", e.getMessage());
-        e.printStackTrace();
         return ResponseEntity
                 .status(InternalServerErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
                 .body(InternalServerErrorCode.INTERNAL_SERVER_ERROR);

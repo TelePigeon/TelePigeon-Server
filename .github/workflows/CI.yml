@@ -37,6 +37,15 @@ jobs:
           cd src/main/resources
           echo "${{ secrets.APPLICATION_TEST }}" > ./application.yml
 
+      - name: create-json
+        id: create-json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "firebase.json"
+          json: ${{ secrets.SECRET_JSON }}
+      - name: move-json
+        run: mv ${{steps.create-json.output.result}} src/main/resources
+
       - name: build with gradle
         run: |
           chmod +x gradlew
