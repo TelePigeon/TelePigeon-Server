@@ -42,7 +42,7 @@ jobs:
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "src/main/resources/firebase.json"
-          json: ${{ secrets.SECRET_JSON }}
+          json: ${{ secrets.FIREBASE_JSON }}
 
       - name: build with gradle
         run: |
