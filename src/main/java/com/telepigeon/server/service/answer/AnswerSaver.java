@@ -13,7 +13,11 @@ import org.springframework.stereotype.Component;
 public class AnswerSaver {
     private final AnswerRepository answerRepository;
 
-    public Answer create(AnswerCreateDto answerCreateDto, Question question, Profile profile){
+    public Answer create(
+            final AnswerCreateDto answerCreateDto,
+            final Question question,
+            final Profile profile
+    ){
         Answer answer = Answer.create(answerCreateDto, question, profile);
         return answerRepository.save(answer);
     }

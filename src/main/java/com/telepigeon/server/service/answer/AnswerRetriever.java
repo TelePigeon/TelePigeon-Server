@@ -16,17 +16,26 @@ import java.util.List;
 public class AnswerRetriever {
     private final AnswerRepository answerRepository;
 
-    public List<Answer> findAllByRoomAndDate(List<Profile> profiles, LocalDate date){
-        return answerRepository.findAllByProfileInAndCreatedAtBetweenOrderByCreatedAt(profiles, date.atStartOfDay(), date.atTime(LocalTime.MAX));
+    public List<Answer> findAllByRoomAndDate(
+            final List<Profile> profiles,
+            final LocalDate date
+    ){
+        return answerRepository
+                .findAllByProfileInAndCreatedAtBetweenOrderByCreatedAt(
+                        profiles, date.atStartOfDay(),
+                        date.atTime(LocalTime.MAX)
+                );
     }
 
-    public Answer findFirstByProfile(Profile profile){
-        return answerRepository.findFirstByProfileOrderByCreatedAtDesc(profile).orElseThrow(
+    public Answer findFirstByProfile(final Profile profile){
+        return answerRepository
+                .findFirstByProfileOrderByCreatedAtDesc(profile)
+                .orElseThrow(
                 RuntimeException::new // Hurry merge 후 NotFoundException으로 바꿀 예정(충돌 때문)
         );
     }
 
-    public boolean existsByQuestion(Question question){
+    public boolean existsByQuestion(final Question question){
         return answerRepository.existsByQuestion(question);
     }
 }

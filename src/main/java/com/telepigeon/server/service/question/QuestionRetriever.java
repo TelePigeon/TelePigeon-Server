@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 public class QuestionRetriever {
     private final QuestionRepository questionRepository;
 
-    public Question findFirstByProfile(Profile profile){
-        return questionRepository.findFirstByProfileOrderByCreatedAtDesc(profile).orElseThrow(
+    public Question findFirstByProfile(final Profile profile){
+        return questionRepository.findFirstByProfileOrderByCreatedAtDesc(profile)
+                .orElseThrow(
                 RuntimeException::new // Hurry merge 후 NotFoundException으로 바꿀 예정(충돌 때문)
         );
     }
