@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 public class QuestionSaver {
     private final QuestionRepository questionRepository;
 
-    public String create(String content, Profile profile){
+    public Question create(String content, Profile profile){
         Question question = Question.create(content, profile);
-        questionRepository.save(question);
-        return question.getId().toString();
+        return questionRepository.save(question);
     }
 }
