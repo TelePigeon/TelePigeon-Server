@@ -21,7 +21,10 @@ public class FcmService {
             return "fail";
         }
     }
-    public Message createMessage(String fcmToken, FcmMessageDto fcmMessageDto){
+    public Message createMessage(
+            String fcmToken,
+            FcmMessageDto fcmMessageDto
+    ){
         return Message.builder()
                 .setToken(fcmToken)
                 .setNotification(
