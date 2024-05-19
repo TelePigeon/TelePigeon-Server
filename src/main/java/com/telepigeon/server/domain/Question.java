@@ -23,4 +23,14 @@ public class Question {
     @ManyToOne(targetEntity=Profile.class, fetch=FetchType.LAZY)
     @JoinColumn(name="profile_id")
     private Profile profile;
+
+    public static Question create(String content, Profile profile){
+        return new Question(content, profile);
+    }
+
+    public Question(String content, Profile profile) {
+        this.content = content;
+        this.profile = profile;
+        this.createdAt = LocalDateTime.now();
+    }
 }
