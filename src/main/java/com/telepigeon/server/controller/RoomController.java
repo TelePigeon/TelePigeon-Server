@@ -1,8 +1,10 @@
 package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
+import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
 import com.telepigeon.server.service.room.RoomService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,16 +16,17 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/v1")
 public class RoomController {
     private final RoomService roomService;
 
-    @PostMapping
+    @PostMapping("/rooms")
     public ResponseEntity<Void> createRoom(
             @UserId Long userId,
-            @RequestBody RoomCreateDto roomCreateDto
+            @Valid @RequestBody RoomCreateDto roomCreateDto
             ) {
-        roomService.createRoom(roomCreateDto);
-        return ResponseEntity.created(URI.create("room")).build();
+        Room createdRoom = roomService.createRoom(roomCreateDto);
+        URI location = URI.create("/rooms/" + createdRoom.getId());
+        return ResponseEntity.created(location).build();
     }
 }
