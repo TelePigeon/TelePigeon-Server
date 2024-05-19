@@ -35,11 +35,24 @@ public class Answer {
     @JoinColumn(name="profile_id")
     private Profile profile;
 
-    public static Answer create(AnswerCreateDto answerCreateDto, Question question, Profile profile){
-        return new Answer(answerCreateDto.content(), answerCreateDto.image(), question, profile);
+    public static Answer create(
+            AnswerCreateDto answerCreateDto,
+            Question question,
+            Profile profile
+    ){
+        return new Answer(
+                answerCreateDto.content(),
+                answerCreateDto.image(),
+                question,
+                profile);
     }
 
-    private Answer(String content, String image, Question question, Profile profile) {
+    private Answer(
+            String content,
+            String image,
+            Question question,
+            Profile profile
+    ) {
         this.content = content;
         this.image = image;
         this.question = question;

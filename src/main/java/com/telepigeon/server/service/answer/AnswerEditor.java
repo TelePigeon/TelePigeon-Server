@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AnswerEditor {
-    public void updateIsViewed(final Answer answer, final boolean isViewed){
+    public void updateIsViewed(
+            final Answer answer,
+            final boolean isViewed
+    ){
         answer.updateIsViewed(isViewed);
     }
 }

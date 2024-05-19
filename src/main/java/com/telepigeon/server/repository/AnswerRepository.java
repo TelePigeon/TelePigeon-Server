@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    List<Answer> findAllByProfileInAndCreatedAtBetweenOrderByCreatedAt(List<Profile> profiles, LocalDateTime startTime, LocalDateTime endTime);
+    List<Answer> findAllByProfileInAndCreatedAtBetweenOrderByCreatedAt(
+            List<Profile> profiles,
+            LocalDateTime startTime,
+            LocalDateTime endTime
+    );
     Optional<Answer> findFirstByProfileOrderByCreatedAtDesc(Profile profile);
 
     Boolean existsByQuestion(Question question);
