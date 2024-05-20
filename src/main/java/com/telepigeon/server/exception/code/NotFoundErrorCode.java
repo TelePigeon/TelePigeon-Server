@@ -13,6 +13,7 @@ public enum NotFoundErrorCode implements DefaultErrorCode{
     NOT_FOUND_FILE(HttpStatus.NOT_FOUND, "error", "존재하지 않는 파일 입니다."),
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 방입니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 사용자입니다."),
+    QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 질문 입니다."),
     ;
 
     @JsonIgnore
