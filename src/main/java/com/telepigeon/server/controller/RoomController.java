@@ -25,7 +25,7 @@ public class RoomController {
             @UserId Long userId,
             @Valid @RequestBody RoomCreateDto roomCreateDto
             ) {
-        Room createdRoom = roomService.createRoom(roomCreateDto);
+        Room createdRoom = roomService.createRoom(roomCreateDto, userId);
         URI location = URI.create("/rooms/" + createdRoom.getId());
         return ResponseEntity.created(location).build();
     }
