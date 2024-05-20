@@ -25,16 +25,16 @@ public class RoomService {
     private final ProfileSaver profileSaver;
 
     @Transactional
-    public Room createRoom(final RoomCreateDto roomCreateDto){
-//        Users user = userRepository.findByIdOrThrow(userId);
+    public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
+        Users user = userRepository.findByIdOrThrow(userId);
 
         String code = createCode();
 
         Room room = Room.create(roomCreateDto, code);
         Room savedRoom = roomSaver.save(room);
 
-//        Profile profile = Profile.create(user, savedRoom);
-//        Profile savedProfile = profileSaver.save(profile);
+        Profile profile = Profile.create(user, savedRoom);
+        Profile savedProfile = profileSaver.save(profile);
 
         return savedRoom;
     }
