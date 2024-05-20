@@ -20,4 +20,9 @@ public class ProfileRetriever {
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
+    public Profile findByUserNotAndRoom(Users user, Room room) {
+        return profileRepository.findByUserNotAndRoom(user, room)
+                .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
+    }
+
 }

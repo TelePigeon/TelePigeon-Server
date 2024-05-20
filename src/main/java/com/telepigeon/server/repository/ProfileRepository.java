@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     Optional<Profile> findByUserAndRoom(Users user, Room room);
+    Optional<Profile> findByUserNotAndRoom(Users user, Room room);
 }
