@@ -1,5 +1,6 @@
 package com.telepigeon.server.advice;
 
+import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.code.InternalServerErrorCode;
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<BusinessErrorCode> handleBusinessException(BusinessException e) {
         log.error("GlobalExceptionHandler catch BusinessException : {}", e.getMessage());
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(e.getErrorCode());
+    }
+
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<NotFoundErrorCode> handleNotFoundException(NotFoundException e){
+        log.error("GlobalExceptionHandler catch NotFoundException : {}", e.getMessage());
         return ResponseEntity
                 .status(e.getErrorCode().getHttpStatus())
                 .body(e.getErrorCode());
