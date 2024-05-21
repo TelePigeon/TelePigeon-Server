@@ -1,6 +1,7 @@
 package com.telepigeon.server.auth;
 
 import com.telepigeon.server.domain.User;
+import com.telepigeon.server.dto.auth.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.exception.UnAuthorizedException;
 import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
@@ -8,13 +9,14 @@ import com.telepigeon.server.oauth.service.KakaoService;
 import com.telepigeon.server.service.auth.AuthService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
+import com.telepigeon.server.utils.JwtUtil;
+import io.jsonwebtoken.Claims;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.lang.reflect.Field;
 
@@ -22,19 +24,22 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.lenient;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class AuthServiceTest {
 
-    @InjectMocks
+    @Autowired
     private AuthService authService;
 
-    @Mock
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @MockBean
     private KakaoService kakaoService;
 
-    @Mock
+    @MockBean
     private UserRetriever userRetriever;
 
-    @Mock
+    @MockBean
     private UserSaver userSaver;
 
     private String token;
@@ -64,10 +69,12 @@ public class AuthServiceTest {
             );
 
             // when
-            String userId = authService.login(token);
+            JwtTokensDto jwts = authService.login(token);
+            Claims claims = jwtUtil.getTokenBody(jwts.accessToken());
 
             // then
-            Assertions.assertThat(userId).isEqualTo("1");
+            Assertions.assertThat(claims.get("uid", Long.class))
+                    .isEqualTo(1L);
         }
 
         @Test
@@ -79,10 +86,12 @@ public class AuthServiceTest {
             given(userRetriever.findBySerialIdAndProvider("123456", "kakao")).willReturn(user);
 
             // when
-            String userId = authService.login(token);
+            JwtTokensDto jwts = authService.login(token);
+            Claims claims = jwtUtil.getTokenBody(jwts.accessToken());
 
             // then
-            Assertions.assertThat(userId).isEqualTo("1");
+            Assertions.assertThat(claims.get("uid", Long.class))
+                    .isEqualTo(1L);
         }
 
         @Test
