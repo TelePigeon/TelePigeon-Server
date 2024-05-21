@@ -2,7 +2,7 @@ package com.telepigeon.server.roomTest;
 
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.repository.UserRepository;
@@ -10,6 +10,7 @@ import com.telepigeon.server.service.profile.ProfileSaver;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.room.RoomSaver;
 import com.telepigeon.server.service.room.RoomService;
+import com.telepigeon.server.service.user.UserRetriever;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ public class RoomServiceTest {
     @Mock
     private ProfileSaver profileSaver;
 
+    @Mock
+    private UserRetriever userRetriever;
+
     @Test
     @DisplayName("Room DB에 저장 확인")
     public void checkRoomInDB() {
@@ -48,8 +52,8 @@ public class RoomServiceTest {
         Long userId = 1L;
         Room room = Room.create(roomCreateDto, "code");
 
-        Users user = Mockito.mock(Users.class);
-        when(userRepository.findByIdOrThrow(userId)).thenReturn(user);
+        User user = Mockito.mock(User.class);
+        when(userRetriever.findByIdOrThrow(userId)).thenReturn(user);
         when(roomRepository.existsByCode(any(String.class))).thenReturn(false);
         when(roomSaver.save(any(Room.class))).thenReturn(room);
 

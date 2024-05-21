@@ -2,11 +2,12 @@ package com.telepigeon.server.service.room;
 
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.repository.UserRepository;
 import com.telepigeon.server.service.profile.ProfileSaver;
+import com.telepigeon.server.service.user.UserRetriever;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,12 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final RoomSaver roomSaver;
-    private final RoomRetriever roomRetriever;
-    private final RoomRemover roomRemover;
-    private final UserRepository userRepository;
     private final ProfileSaver profileSaver;
+    private final UserRetriever userRetriever;
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
-        Users user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findByIdOrThrow(userId);
 
         String code = createCode();
 
