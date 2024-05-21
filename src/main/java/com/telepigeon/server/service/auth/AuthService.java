@@ -1,10 +1,12 @@
 package com.telepigeon.server.service.auth;
 
 import com.telepigeon.server.domain.User;
+import com.telepigeon.server.dto.auth.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.oauth.service.KakaoService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
+import com.telepigeon.server.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +18,14 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UserRetriever userRetreiver;
     private final UserSaver userSaver;
+    private final JwtUtil jwtUtil;
 
     @Transactional
-    public String login(final String token){
+    public JwtTokensDto login(final String token){
         SocialUserInfoDto socialUserInfo = kakaoService.getUserInfo(token);
         User user = loadOrCreateKakaoUser(socialUserInfo);
-        // TODO: generate jwt token
-        return user.getId().toString();
+        // Todo: save refreshToken in redis
+        return jwtUtil.generateTokens(user.getId());
     }
 
     private User loadOrCreateKakaoUser(SocialUserInfoDto socialUserInfo) {
