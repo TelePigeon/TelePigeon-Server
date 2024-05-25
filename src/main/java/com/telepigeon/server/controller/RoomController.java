@@ -1,8 +1,10 @@
 package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
+import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.service.room.RoomService;
@@ -39,5 +41,15 @@ public class RoomController {
     @GetMapping("/rooms/{roomId}/info")
     public ResponseEntity<RoomInfoDto> getRoomInfo(@PathVariable Long roomId) {
         return ResponseEntity.ok(roomService.getRoomInfo(roomId));
+    }
+
+    @PatchMapping("/rooms/entrance")
+    public ResponseEntity<Void> enterRoom(
+            @UserId Long userId,
+            @Valid @RequestBody RoomEnterDto roomEnterDto
+    ) {
+        Profile createProfile = roomService.enterRoom(roomEnterDto, userId);
+        URI location = URI.create("/profiles/" + createProfile.getId());
+        return ResponseEntity.created(location).build();
     }
 }

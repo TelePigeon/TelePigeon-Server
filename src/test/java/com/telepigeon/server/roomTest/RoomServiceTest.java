@@ -3,6 +3,7 @@ package com.telepigeon.server.roomTest;
 import com.telepigeon.server.domain.*;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.dto.type.Relation;
@@ -181,6 +182,33 @@ public class RoomServiceTest {
 
         System.out.println("Room name : " + roomInfoDto.name());
         System.out.println("Room code : " + roomInfoDto.code());
+    }
+
+    @Test
+    @DisplayName("Room 입장하기")
+    public void enterRoomTest() {
+        Long roomId = 1L;
+        String code = "123456abc";
+        Room room = Mockito.mock(Room.class);
+        when(roomSaver.save(any(Room.class))).thenReturn(room);
+        when(room.getId()).thenReturn(roomId);
+        when(room.getCode()).thenReturn(code);
+
+        Long userId = 1L;
+        Users user = Mockito.mock(Users.class);
+        when(userRetriever.findById(userId)).thenReturn(user);
+
+        RoomEnterDto roomEnterDto = new RoomEnterDto(code);
+        when(roomRetriever.findByCode(code)).thenReturn(room);
+
+        Profile savedProfile = Profile.create(user, room);
+        Mockito.when(profileSaver.save(any(Profile.class))).thenReturn(savedProfile);
+
+        Profile profile = roomService.enterRoom(roomEnterDto, userId);
+
+        Assertions.assertEquals(profile.getUser(), user);
+        Assertions.assertEquals(profile.getRoom().getId(), roomId);
+        Assertions.assertEquals(profile.getRoom().getCode(), code);
     }
 
 }

@@ -5,6 +5,7 @@ import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.repository.RoomRepository;
@@ -85,5 +86,14 @@ public class RoomService {
         Room room = roomRetriever.findById(roomId);
 
         return RoomInfoDto.of(room);
+    }
+
+    @Transactional
+    public Profile enterRoom(final RoomEnterDto roomEnterDto, Long userId) {
+        Users user = userRetriever.findById(userId);
+        Room room = roomRetriever.findByCode(roomEnterDto.code());
+
+        Profile profile = Profile.create(user, room);
+        return profileSaver.save(profile);
     }
 }

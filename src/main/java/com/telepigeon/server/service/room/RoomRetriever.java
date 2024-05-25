@@ -24,4 +24,9 @@ public class RoomRetriever {
         return roomRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.ROOM_NOT_FOUND));
     }
+
+    public Room findByCode(final String code) {
+        return roomRepository.findByCode(code)
+                .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.ROOM_NOT_FOUND));
+    }
 }
