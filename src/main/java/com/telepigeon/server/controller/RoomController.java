@@ -43,7 +43,7 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getRoomInfo(roomId));
     }
 
-    @PatchMapping("/rooms/entrance")
+    @PostMapping("/rooms/entrance")
     public ResponseEntity<Void> enterRoom(
             @UserId Long userId,
             @Valid @RequestBody RoomEnterDto roomEnterDto
@@ -51,5 +51,13 @@ public class RoomController {
         Profile createProfile = roomService.enterRoom(roomEnterDto, userId);
         URI location = URI.create("/profiles/" + createProfile.getId());
         return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/rooms/{roomId}")
+    public ResponseEntity<Room> deleteRoom(
+            @UserId Long userId,
+            @PathVariable Long roomId
+    ) {
+        return ResponseEntity.ok(roomService.deleteRoom(roomId, userId));
     }
 }

@@ -7,15 +7,22 @@ import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.dto.type.Relation;
-import com.telepigeon.server.repository.RoomRepository;
-import com.telepigeon.server.repository.UserRepository;
+import com.telepigeon.server.repository.*;
+import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.answer.AnswerSaver;
+import com.telepigeon.server.service.profile.ProfileRemover;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
+import com.telepigeon.server.service.question.QuestionRemover;
+import com.telepigeon.server.service.question.QuestionRetriever;
+import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.room.RoomSaver;
 import com.telepigeon.server.service.room.RoomService;
 import com.telepigeon.server.service.user.UserRetriever;
+import com.telepigeon.server.service.worry.WorryRemover;
+import com.telepigeon.server.service.worry.WorryRetriever;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,6 +73,36 @@ public class RoomServiceTest {
 
     @MockBean
     private RoomRetriever roomRetriever;
+
+    @MockBean
+    private WorryRemover worryRemover;
+
+    @MockBean
+    private ProfileRemover profileRemover;
+
+    @MockBean
+    private AnswerRemover answerRemover;
+
+    @MockBean
+    private QuestionRemover questionRemover;
+
+    @MockBean
+    private QuestionRetriever questionRetriever;
+
+    @MockBean
+    private AnswerRepository answerRepository;
+
+    @MockBean
+    private QuestionRepository questionRepository;
+
+    @MockBean
+    private ProfileRepository profileRepository;
+
+    @MockBean
+    private WorryRetriever worryRetriever;
+
+    @MockBean
+    private WorryRepository worryRepository;
 
     @Test
     @DisplayName("Room DB에 저장 확인")
@@ -210,5 +247,44 @@ public class RoomServiceTest {
         Assertions.assertEquals(profile.getRoom().getId(), roomId);
         Assertions.assertEquals(profile.getRoom().getCode(), code);
     }
+
+    @Test
+    @DisplayName("Room 삭제하기")
+    public void deleteRoom() {
+        Long roomId = 1L;
+        Long userId = 1L;
+
+        Room room = Mockito.mock(Room.class);
+        Users user = Mockito.mock(Users.class);
+        Profile profile = Mockito.mock(Profile.class);
+        Answer answer = Mockito.mock(Answer.class);
+        Question question = Mockito.mock(Question.class);
+        Worry worry = Mockito.mock(Worry.class);
+
+        when(roomRetriever.findById(roomId)).thenReturn(room);
+        when(userRetriever.findById(userId)).thenReturn(user);
+        when(profileRetriever.findByUserAndRoom(user, room)).thenReturn(profile);
+        when(answerRetriever.findAllByProfile(profile)).thenReturn(List.of(answer));
+        when(questionRetriever.findAllByProfile(profile)).thenReturn(List.of(question));
+        when(worryRetriever.findAllByProfile(profile)).thenReturn(List.of(worry));
+
+        when(answerRepository.findAll()).thenReturn(Collections.emptyList());
+        when(questionRepository.findAll()).thenReturn(Collections.emptyList());
+        when(profileRepository.findAll()).thenReturn(Collections.emptyList());
+        when(worryRepository.findAll()).thenReturn(Collections.emptyList());
+
+        Room deletedRoom = roomService.deleteRoom(roomId, userId);
+
+        verify(profileRemover).remove(profile);
+        verify(answerRemover).remove(answer);
+        verify(questionRemover).remove(question);
+        verify(worryRemover).remove(worry);
+
+        Assertions.assertTrue(answerRepository.findAll().isEmpty(), "Answer repository should be empty");
+        Assertions.assertTrue(questionRepository.findAll().isEmpty(), "Question repository should be empty");
+        Assertions.assertTrue(worryRepository.findAll().isEmpty(), "Worry repository should be empty");
+        Assertions.assertTrue(profileRepository.findAll().isEmpty(), "Profile repository should be empty");
+    }
+
 
 }

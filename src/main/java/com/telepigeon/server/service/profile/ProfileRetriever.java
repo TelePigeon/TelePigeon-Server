@@ -17,12 +17,12 @@ public class ProfileRetriever {
 
     private final ProfileRepository profileRepository;
 
-    public Profile findByUserAndRoom(Users user, Room room) {
+    public Profile findByUserAndRoom(final Users user, final Room room) {
         return profileRepository.findByUserAndRoom(user, room)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
-    public Profile findByUserNotAndRoom(Users user, Room room) {
+    public Profile findByUserNotAndRoom(final Users user, final Room room) {
         return profileRepository.findByUserNotAndRoom(user, room)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
