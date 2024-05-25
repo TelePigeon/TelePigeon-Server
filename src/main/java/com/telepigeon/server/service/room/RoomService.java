@@ -5,8 +5,8 @@ import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
-import com.telepigeon.server.repository.AnswerRepository;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -14,7 +14,6 @@ import com.telepigeon.server.service.profile.ProfileSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +30,7 @@ public class RoomService {
     private final UserRetriever userRetriever;
     private final ProfileRetriever profileRetriever;
     private final AnswerRetriever answerRetriever;
+    private final RoomRetriever roomRetriever;
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
@@ -79,5 +79,11 @@ public class RoomService {
             return RoomListDto.of(room, myProfile, opponentProfile, myAnswer, opponentAnswer);
         }).collect(Collectors.toList());
 
+    }
+
+    public RoomInfoDto getRoomInfo(final Long roomId) {
+        Room room = roomRetriever.findById(roomId);
+
+        return RoomInfoDto.of(room);
     }
 }

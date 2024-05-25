@@ -3,6 +3,7 @@ package com.telepigeon.server.roomTest;
 import com.telepigeon.server.domain.*;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.repository.RoomRepository;
@@ -61,6 +62,9 @@ public class RoomServiceTest {
 
     @MockBean
     private AnswerRetriever answerRetriever;
+
+    @MockBean
+    private RoomRetriever roomRetriever;
 
     @Test
     @DisplayName("Room DB에 저장 확인")
@@ -156,6 +160,27 @@ public class RoomServiceTest {
             System.out.println("sentence : " + dto.sentence());
             System.out.println("emotion : " + dto.emotion());
         });
+    }
+
+    @Test
+    @DisplayName("Room Info 가져오기")
+    public void getRoomInfoTest() {
+        Long roomId = 1L;
+        Room room = Mockito.mock(Room.class);
+        when(roomSaver.save(any(Room.class))).thenReturn(room);
+        when(room.getId()).thenReturn(roomId);
+        when(room.getName()).thenReturn("roomName");
+        when(room.getCode()).thenReturn("roomCode");
+
+        when(roomRetriever.findById(roomId)).thenReturn(room);
+
+        RoomInfoDto roomInfoDto = roomService.getRoomInfo(room.getId());
+
+        Assertions.assertEquals(room.getName(), "roomName");
+        Assertions.assertEquals(room.getCode(), "roomCode");
+
+        System.out.println("Room name : " + roomInfoDto.name());
+        System.out.println("Room code : " + roomInfoDto.code());
     }
 
 }

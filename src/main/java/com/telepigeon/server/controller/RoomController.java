@@ -3,6 +3,7 @@ package com.telepigeon.server.controller;
 import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
+import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.service.room.RoomService;
 import jakarta.validation.Valid;
@@ -33,5 +34,10 @@ public class RoomController {
     @GetMapping("/rooms")
     public ResponseEntity<List<RoomListDto>> getAllRooms(@UserId Long userId) {
         return ResponseEntity.ok(roomService.getAllRooms(userId));
+    }
+
+    @GetMapping("/rooms/{roomId}/info")
+    public ResponseEntity<RoomInfoDto> getRoomInfo(@PathVariable Long roomId) {
+        return ResponseEntity.ok(roomService.getRoomInfo(roomId));
     }
 }
