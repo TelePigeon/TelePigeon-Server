@@ -33,10 +33,10 @@ public class QuestionService {
     private final ProfileRetriever profileRetriever;
 
     @Scheduled(cron="0 0 12 * * *")
-    public void createSchedule(){
-        profileRetriever.findAll().forEach(
-                this::create
-        );
+    public void createSchedule(){       // profileRetriever.findAll 아직 없어서 주석처리
+//        profileRetriever.findAll().forEach(
+//                this::create
+//        );
     }
 
     public Question create(final Profile profile){
