@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.lenient;
 
-@SpringBootTest
+@SpringBootTest // JwtUtil을 사용하려하다보니 통합테스트로 변경됨
 public class AuthServiceTest {
 
     @Autowired
@@ -112,7 +112,7 @@ public class AuthServiceTest {
 
     }
 
-    void kakaoLoginSetup() throws Exception {
+    void kakaoLoginSetup() throws Exception { // 후에 다른 테스트에서도 쓰이면 @BeforeEach로 변경 예정
         token = "validAccessToken";
         socialUserInfo = SocialUserInfoDto.of("123456", "테스트", "test@gmail.com");
         user = User.create("123456", "테스트", "kakao", "test@gamil.com");
