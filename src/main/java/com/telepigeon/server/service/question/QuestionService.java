@@ -9,7 +9,6 @@ import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
-import com.telepigeon.server.repository.ProfileRepository;
 import com.telepigeon.server.repository.UserRepository;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -32,11 +31,10 @@ public class QuestionService {
     private final RoomRetriever roomRetriever;
     private final AnswerRetriever answerRetriever;
     private final ProfileRetriever profileRetriever;
-    private final ProfileRepository profileRepository;
 
     @Scheduled(cron="0 0 12 * * *")
     public void createSchedule(){
-        profileRepository.findAll().forEach( //profileRetriever로 수정 예
+        profileRetriever.findAll().forEach(
                 this::create
         );
     }
