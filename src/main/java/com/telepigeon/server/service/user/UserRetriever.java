@@ -18,7 +18,8 @@ public class UserRetriever {
     }
 
     public User findBySerialIdAndProvider(String serialId, String provider) {
-        return userRepository.findBySerialIdAndProvider(serialId, provider);
+        return userRepository.findBySerialIdAndProvider(serialId, provider)
+                .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
     }
 
     public User findByIdOrThrow(Long userId) {
