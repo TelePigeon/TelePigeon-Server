@@ -21,4 +21,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(kakaoToken));
     }
 
+    @DeleteMapping("auth/logout")
+    public ResponseEntity<Void> logout(Long userId) { // Todo: @UserId로 바꿔치기 필요
+        authService.logout(userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

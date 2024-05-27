@@ -18,6 +18,7 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UserRetriever userRetreiver;
     private final UserSaver userSaver;
+    private final TokenRemover tokenRemover;
     private final JwtUtil jwtUtil;
 
     @Transactional
@@ -26,6 +27,11 @@ public class AuthService {
         User user = loadOrCreateKakaoUser(socialUserInfo);
         // Todo: save refreshToken in redis
         return jwtUtil.generateTokens(user.getId());
+    }
+
+    @Transactional
+    public void logout(Long userId) {
+        tokenRemover.removeById(userId);
     }
 
     private User loadOrCreateKakaoUser(SocialUserInfoDto socialUserInfo) {
@@ -49,4 +55,5 @@ public class AuthService {
                 "kakao"
         );
     }
+
 }
