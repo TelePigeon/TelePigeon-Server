@@ -1,8 +1,6 @@
 package com.telepigeon.server.repository;
 
 import com.telepigeon.server.domain.User;
-import com.telepigeon.server.exception.NotFoundException;
-import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
