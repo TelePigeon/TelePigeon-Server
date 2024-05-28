@@ -6,6 +6,8 @@ import com.telepigeon.server.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 @Component
 @RequiredArgsConstructor
@@ -17,5 +19,9 @@ public class QuestionRetriever {
                 .orElseThrow(
                 RuntimeException::new // Hurry merge 후 NotFoundException으로 바꿀 예정(충돌 때문)
         );
+    }
+
+    public List<Question> findAllByProfile(final Profile profile) {
+        return questionRepository.findAllByProfile(profile);
     }
 }

@@ -1,8 +1,6 @@
 package com.telepigeon.server.dto.room.request;
 
 import com.telepigeon.server.domain.Room;
-import jakarta.annotation.Nullable;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
