@@ -49,7 +49,7 @@ public class AuthService {
     }
 
     @Transactional
-    public JwtTokensDto reissue(String Authorization) {
+    public JwtTokensDto reissue(final String Authorization) {
         Long userId = tokenRetreiver.findIdByRefreshToken(Authorization.substring("Bearer ".length()));
         JwtTokensDto tokens = jwtUtil.generateTokens(userId);
         tokenSaver.save(Token.create(userId, tokens.refreshToken()));

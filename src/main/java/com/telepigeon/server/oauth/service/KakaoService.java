@@ -35,7 +35,7 @@ public class KakaoService {
         );
     }
 
-    public void unlink(User user) {
+    public void unlink(final User user) {
         RestClient restClient = RestClient.create();
 
         KakaoUnlinkDto unlinkRequest = KakaoUnlinkDto.of(Long.getLong(user.getSerialId()));
