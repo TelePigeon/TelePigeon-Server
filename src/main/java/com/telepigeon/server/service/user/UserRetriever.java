@@ -22,7 +22,7 @@ public class UserRetriever {
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
     }
 
-    public User findByIdOrThrow(Long userId) {
+    public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
     }

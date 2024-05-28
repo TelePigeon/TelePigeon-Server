@@ -25,7 +25,7 @@ public class RoomService {
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
-        User user = userRetriever.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
 
         String code = createCode();
 

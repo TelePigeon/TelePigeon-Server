@@ -18,6 +18,8 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UserRetriever userRetreiver;
     private final UserSaver userSaver;
+    private final UserRemover userRemover;
+    private final TokenSaver tokenSaver;
     private final TokenRemover tokenRemover;
     private final JwtUtil jwtUtil;
 
@@ -25,16 +27,17 @@ public class AuthService {
     public JwtTokensDto login(final String token){
         SocialUserInfoDto socialUserInfo = kakaoService.getUserInfo(token);
         User user = loadOrCreateKakaoUser(socialUserInfo);
-        // Todo: save refreshToken in redis
-        return jwtUtil.generateTokens(user.getId());
+        JwtTokensDto tokens = jwtUtil.generateTokens(user.getId());
+        tokenSaver.save(Token.create(user.getId(), tokens.refreshToken()));
+        return tokens;
     }
 
     @Transactional
-    public void logout(Long userId) {
+    public void logout(final Long userId) {
         tokenRemover.removeById(userId);
     }
 
-    private User loadOrCreateKakaoUser(SocialUserInfoDto socialUserInfo) {
+    private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo) {
         boolean isRegistered = userRetreiver.existBySerialIdAndProvider(
                 socialUserInfo.serialId(),
                 "kakao"

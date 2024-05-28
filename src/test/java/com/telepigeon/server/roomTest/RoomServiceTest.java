@@ -53,7 +53,7 @@ public class RoomServiceTest {
         Room room = Room.create(roomCreateDto, "code");
 
         User user = Mockito.mock(User.class);
-        when(userRetriever.findByIdOrThrow(userId)).thenReturn(user);
+        when(userRetriever.findById(userId)).thenReturn(user);
         when(roomRepository.existsByCode(any(String.class))).thenReturn(false);
         when(roomSaver.save(any(Room.class))).thenReturn(room);
 
