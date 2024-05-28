@@ -3,7 +3,11 @@ package com.telepigeon.server.profileTest;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
+import com.telepigeon.server.dto.type.AgeRange;
+import com.telepigeon.server.dto.type.Gender;
+import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileService;
 import com.telepigeon.server.service.room.RoomRetriever;
@@ -62,5 +66,35 @@ public class ProfileServiceTest {
 
         // Then
         Assertions.assertThat(profileKeyword.keywords()).isEqualTo(keywordList);
+    }
+
+    @Test
+    @DisplayName("방 키워드 추가 정보 가져오는 테스트")
+    public void getProfileExtraInfoTest() {
+        // Given
+        Long userId = 1L;
+        Long roomId = 1L;
+
+        Users user = Mockito.mock(Users.class);
+        Room room = Mockito.mock(Room.class);
+        Profile profile = Mockito.mock(Profile.class);
+        Gender gender = Gender.MALE;
+        AgeRange ageRange = AgeRange.TWENTY;
+        Relation relation = Relation.CHILD;
+
+        when(profile.getGender()).thenReturn(gender);
+        when(profile.getAgeRange()).thenReturn(ageRange);
+        when(profile.getRelation()).thenReturn(relation);
+        when(roomRetriever.findById(roomId)).thenReturn(room);
+        when(userRetriever.findById(userId)).thenReturn(user);
+        when(profileRetriever.findByUserAndRoom(user, room)).thenReturn(profile);
+
+        // When
+        ProfileInfoDto profileInfoDto = profileService.getProfileExtraInfo(roomId, userId);
+
+        // Then
+        Assertions.assertThat(profileInfoDto.gender()).isEqualTo(gender.getContent());
+        Assertions.assertThat(profileInfoDto.ageRange()).isEqualTo(ageRange.getContent());
+        Assertions.assertThat(profileInfoDto.relation()).isEqualTo(relation.getContent());
     }
 }

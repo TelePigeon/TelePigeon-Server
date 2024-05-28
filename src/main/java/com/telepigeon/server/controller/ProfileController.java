@@ -1,6 +1,7 @@
 package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
+import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
 import com.telepigeon.server.service.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,13 @@ public class ProfileController {
             @UserId Long userId
     ) {
         return ResponseEntity.ok(profileService.getProfileKeyword(roomId, userId));
+    }
+
+    @GetMapping("/rooms/{roomId}/extra")
+    public ResponseEntity<ProfileInfoDto> getProfileExtraInfo(
+            @PathVariable Long roomId,
+            @UserId Long userId
+    ) {
+        return ResponseEntity.ok(profileService.getProfileExtraInfo(roomId, userId));
     }
 }

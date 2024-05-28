@@ -3,6 +3,7 @@ package com.telepigeon.server.service.profile;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
@@ -29,5 +30,18 @@ public class ProfileService {
 
         List<String> keywords = Arrays.asList(profile.getKeywords().split(","));
         return new ProfileKeywordDto(keywords);
+    }
+
+    @Transactional(readOnly = true)
+    public ProfileInfoDto getProfileExtraInfo(final Long roomId, final Long userId) {
+        Room room = roomRetriever.findById(roomId);
+        Users user = userRetriever.findById(userId);
+        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+
+        return new ProfileInfoDto(
+                profile.getGender().getContent(),
+                profile.getAgeRange().getContent(),
+                profile.getRelation().getContent()
+        );
     }
 }
