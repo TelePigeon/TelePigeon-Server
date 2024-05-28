@@ -33,4 +33,11 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("auth/reissue")
+    public ResponseEntity<JwtTokensDto> reissue(
+            @NotNull @RequestHeader("Authorization") String refreshToken
+    ) {
+        return ResponseEntity.ok(authService.reissue(refreshToken));
+    }
+
 }

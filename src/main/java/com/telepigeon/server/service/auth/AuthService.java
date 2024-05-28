@@ -21,6 +21,7 @@ public class AuthService {
     private final UserRetriever userRetreiver;
     private final UserSaver userSaver;
     private final UserRemover userRemover;
+    private final TokenRetriever tokenRetreiver;
     private final TokenSaver tokenSaver;
     private final TokenRemover tokenRemover;
     private final JwtUtil jwtUtil;
@@ -45,6 +46,14 @@ public class AuthService {
         User user =  userRetreiver.findById(userId);
         userRemover.remove(user);
         kakaoService.unlink(user);
+    }
+
+    @Transactional
+    public JwtTokensDto reissue(String refreshToken) {
+        Long userId = tokenRetreiver.findIdByRefreshToken(refreshToken);
+        JwtTokensDto tokens = jwtUtil.generateTokens(userId);
+        tokenSaver.save(Token.create(userId, tokens.refreshToken()));
+        return tokens;
     }
 
     private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo) {

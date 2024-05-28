@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TokenRetreiver {
+public class TokenRetriever {
 
     private final TokenRepository tokenRepository;
 
