@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface WorryRepository extends JpaRepository<Worry, Long> {
-    List<Worry> findByProfile(Profile profile);
+    List<Worry> findAllByProfile(Profile profile);
 }

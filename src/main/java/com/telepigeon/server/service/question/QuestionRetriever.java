@@ -22,6 +22,6 @@ public class QuestionRetriever {
     }
 
     public List<Question> findAllByProfile(final Profile profile) {
-        return questionRepository.findByProfile(profile);
+        return questionRepository.findAllByProfile(profile);
     }
 }

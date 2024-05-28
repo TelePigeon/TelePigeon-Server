@@ -5,8 +5,6 @@ import com.telepigeon.server.dto.room.request.RoomCreateDto;
 import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
-import com.telepigeon.server.repository.AnswerRepository;
-import com.telepigeon.server.repository.QuestionRepository;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
@@ -18,7 +16,7 @@ import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
 import com.telepigeon.server.service.worry.WorryRetriever;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -77,22 +75,53 @@ public class RoomService {
         return code;
     }
 
-    public List<RoomListDto> getAllRooms(final Long userId) {
+    @Transactional(readOnly = true)
+    public RoomListDto getAllRooms(final Long userId) {
         Users user = userRetriever.findById(userId);
         List<Profile> profileList = profileRetriever.findByUserId(userId);
         List<Room> roomList = profileList.stream().map(Profile::getRoom).toList();
 
-        return roomList.stream().map(room -> {
-            Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
-            Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
-            Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
-            Answer opponentAnswer = answerRetriever.findFirstByProfile(opponentProfile);
+        List<RoomListDto.RoomDto> roomDtos = roomList.stream()
+                .map(room -> createRoomDto(user, room))
+                .toList();
 
-            return RoomListDto.of(room, myProfile, opponentProfile, myAnswer, opponentAnswer);
-        }).collect(Collectors.toList());
-
+        return RoomListDto.of(roomDtos);
     }
 
+    @Transactional(readOnly = true)
+    public RoomListDto.RoomDto createRoomDto(Users user, Room room) {
+        Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
+        Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
+        Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
+        Answer opponentAnswer = answerRetriever.findFirstByProfile(opponentProfile);
+
+        boolean myState = myAnswer.getContent() != null;
+        boolean opponentState = opponentAnswer.getContent() != null;
+
+        // 감정 측정 시 업데이트
+        int emotion = 0;
+
+        int sentence;
+        if (myState && opponentState) {
+            sentence = 0;
+        } else if (myState) {
+            sentence = 1;
+        } else {
+            sentence = 2;
+        }
+
+        return RoomListDto.RoomDto.of(
+                room.getId(),
+                room.getName(),
+                opponentProfile.getUser().getName(),
+                myProfile.getRelation().getContent(),
+                opponentProfile.getRelation().getContent(),
+                emotion,
+                sentence
+        );
+    }
+
+    @Transactional(readOnly = true)
     public RoomInfoDto getRoomInfo(final Long roomId) {
         Room room = roomRetriever.findById(roomId);
 

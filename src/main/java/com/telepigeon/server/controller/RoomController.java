@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class RoomController {
 
     @GetMapping("/rooms")
     public ResponseEntity<List<RoomListDto>> getAllRooms(@UserId Long userId) {
-        return ResponseEntity.ok(roomService.getAllRooms(userId));
+        return ResponseEntity.ok(Collections.singletonList(roomService.getAllRooms(userId)));
     }
 
     @GetMapping("/rooms/{roomId}/info")
@@ -49,8 +50,7 @@ public class RoomController {
             @Valid @RequestBody RoomEnterDto roomEnterDto
     ) {
         Profile createProfile = roomService.enterRoom(roomEnterDto, userId);
-        URI location = URI.create("/profiles/" + createProfile.getId());
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(URI.create("/profiles/" + createProfile.getId())).build();
     }
 
     @DeleteMapping("/rooms/{roomId}")

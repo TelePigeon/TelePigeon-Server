@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findFirstByProfileOrderByCreatedAtDesc(Profile profile);
 
-    List<Question> findByProfile(Profile profile);
+    List<Question> findAllByProfile(Profile profile);
 }

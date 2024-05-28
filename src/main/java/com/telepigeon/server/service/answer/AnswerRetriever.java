@@ -3,8 +3,6 @@ package com.telepigeon.server.service.answer;
 import com.telepigeon.server.domain.Answer;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Question;
-import com.telepigeon.server.exception.NotFoundException;
-import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -38,7 +36,7 @@ public class AnswerRetriever {
     }
 
     public List<Answer> findAllByProfile(final Profile profile) {
-        return answerRepository.findByProfile(profile);
+        return answerRepository.findAllByProfile(profile);
     }
 
     public boolean existsByQuestion(final Question question){

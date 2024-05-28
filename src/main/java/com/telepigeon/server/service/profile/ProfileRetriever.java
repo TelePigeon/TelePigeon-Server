@@ -18,21 +18,21 @@ public class ProfileRetriever {
     private final ProfileRepository profileRepository;
 
     public Profile findByUserAndRoom(final Users user, final Room room) {
-        return profileRepository.findByUserAndRoom(user, room)
+        return profileRepository.findAllByUserAndRoom(user, room)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
     public Profile findByUserNotAndRoom(final Users user, final Room room) {
-        return profileRepository.findByUserNotAndRoom(user, room)
+        return profileRepository.findAllByUserNotAndRoom(user, room)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
     public List<Profile> findByUserId(final long userId) {
-        List<Profile> profileList = profileRepository.findByUserId(userId);
-        if (profileList.isEmpty()) {
-            throw new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND);
-        }
-        return profileList;
+        return profileRepository.findAllByUserId(userId);
+    }
+
+    public List<Profile> findAll() {
+        return profileRepository.findAll();
     }
 
 }

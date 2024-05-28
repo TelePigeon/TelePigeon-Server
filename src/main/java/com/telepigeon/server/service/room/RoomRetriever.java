@@ -5,10 +5,7 @@ import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +23,7 @@ public class RoomRetriever {
     }
 
     public Room findByCode(final String code) {
-        return roomRepository.findByCode(code)
+        return roomRepository.findAllByCode(code)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.ROOM_NOT_FOUND));
     }
 }

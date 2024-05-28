@@ -10,22 +10,18 @@ import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.repository.*;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
-import com.telepigeon.server.service.answer.AnswerSaver;
 import com.telepigeon.server.service.profile.ProfileRemover;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
 import com.telepigeon.server.service.question.QuestionRemover;
 import com.telepigeon.server.service.question.QuestionRetriever;
-import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.room.RoomSaver;
 import com.telepigeon.server.service.room.RoomService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
 import com.telepigeon.server.service.worry.WorryRetriever;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,9 +30,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,9 +43,6 @@ public class RoomServiceTest {
 
     @MockBean
     private RoomRepository roomRepository;
-
-    @MockBean
-    private UserRepository userRepository;
 
     @Autowired
     private RoomService roomService;
@@ -105,54 +96,51 @@ public class RoomServiceTest {
     private WorryRepository worryRepository;
 
     @Test
-    @DisplayName("Room DB에 저장 확인")
+    @DisplayName("DB에 Room이 저장되는지 확인")
     public void checkRoomInDB() {
+        // Given
         RoomCreateDto roomCreateDto = new RoomCreateDto("test");
         Long userId = 1L;
 
         Room room = Room.create(roomCreateDto, "code");
         Users user = Mockito.mock(Users.class);
+        Profile profile = Profile.create(user, room);
 
         when(userRetriever.findById(userId)).thenReturn(user);
         when(roomRepository.existsByCode(any(String.class))).thenReturn(false);
         when(roomSaver.save(any(Room.class))).thenReturn(room);
+        when(profileRetriever.findByUserAndRoom(any(Users.class), any(Room.class))).thenReturn(profile);
 
+        // When
         Room createdRoom = roomService.createRoom(roomCreateDto, userId);
+        Profile createdProfile = profileRetriever.findByUserAndRoom(user, createdRoom);
 
-        Profile savedProfile = Profile.create(user, createdRoom);
-        Mockito.when(profileSaver.save(any(Profile.class))).thenReturn(savedProfile);
-
+        // Then
         // 방이 올바르게 생성되었는지 확인
-        Assertions.assertEquals(room.getName(), createdRoom.getName());
-
-        // 프로필이 올바르게 생성되었는지 확인
-        Assertions.assertEquals(user, savedProfile.getUser());
-        Assertions.assertEquals(room, savedProfile.getRoom());
-
-        // 정보 출력해 확인
-        System.out.println("Room name : " + createdRoom.getName());
-        System.out.println("Room code : " + createdRoom.getCode());
-        System.out.println("Room created time : " + createdRoom.getCreatedAt());
-        System.out.println("Profile room : " + savedProfile.getRoom());
-        System.out.println("Profile user : " + savedProfile.getUser());
+        Assertions.assertThat(room.getName()).isEqualTo(createdRoom.getName());
+        Assertions.assertThat(createdRoom.getCode()).isEqualTo(room.getCode());
+        Assertions.assertThat(createdProfile.getUser()).isEqualTo(user);
+        Assertions.assertThat(createdProfile.getRoom()).isEqualTo(createdRoom);
     }
 
     @Test
-    @DisplayName("Room DB에서 꺼내오기 확인")
+    @DisplayName("DB에 저장된 Room을 꺼내와서 확인하기")
     public void checkRoomToDB() {
         RoomRetriever roomRetriever = new RoomRetriever(roomRepository);
         Room room = Room.create(new RoomCreateDto("name"), "code");
         Mockito.doAnswer(invocation -> true).when(roomRepository).existsByName(room.getName());
         RoomCreateDto roomCreateDto = RoomCreateDto.of(room);
         boolean isCheck = roomRetriever.existsByName(roomCreateDto.name());
-        Assertions.assertTrue(isCheck);
+        Assertions.assertThat(isCheck).isTrue();
     }
 
     @Test
-    @DisplayName("DB 저장 후 목록 확인")
+    @DisplayName("Room을 저장한 후에 List로 불러오기")
     public void checkRoomList() {
+        // Given
         Long userId1 = 1L;
         Long userId2 = 2L;
+        Long roomId = 1L;
 
         // User 생성
         Users user1 = Users.create(userId1, "user1");
@@ -187,22 +175,27 @@ public class RoomServiceTest {
         when(answerRetriever.findFirstByProfile(profile1)).thenReturn(ans1);
         when(answerRetriever.findFirstByProfile(profile2)).thenReturn(ans2);
 
-        List<RoomListDto> roomList = roomService.getAllRooms(userId1);
+        // When
+        RoomListDto roomListDto = roomService.getAllRooms(userId1);
+        List<RoomListDto.RoomDto> roomList = roomListDto.rooms();
 
-        roomList.forEach(dto -> {
-            System.out.println("Room Id : " + dto.roomId());
-            System.out.println("Room Name : " + dto.name());
-            System.out.println("opponentNickname : " + dto.opponentNickname());
-            System.out.println("myRelation : " + dto.myRelation());
-            System.out.println("opponentRelation : " + dto.opponentRelation());
-            System.out.println("sentence : " + dto.sentence());
-            System.out.println("emotion : " + dto.emotion());
-        });
+        // Then
+        Assertions.assertThat(roomList).isNotEmpty();
+
+        for (RoomListDto.RoomDto room : roomList) {
+            Assertions.assertThat(room.name()).isNotBlank();
+            Assertions.assertThat(room.opponentNickname()).isNotBlank();
+            Assertions.assertThat(room.myRelation()).isNotBlank();
+            Assertions.assertThat(room.opponentRelation()).isNotBlank();
+            Assertions.assertThat(room.emotion()).isNotNull();
+            Assertions.assertThat(room.sentence()).isNotNull();
+        }
     }
 
     @Test
     @DisplayName("Room Info 가져오기")
     public void getRoomInfoTest() {
+        // Given
         Long roomId = 1L;
         Room room = Mockito.mock(Room.class);
         when(roomSaver.save(any(Room.class))).thenReturn(room);
@@ -212,18 +205,18 @@ public class RoomServiceTest {
 
         when(roomRetriever.findById(roomId)).thenReturn(room);
 
+        // When
         RoomInfoDto roomInfoDto = roomService.getRoomInfo(room.getId());
 
-        Assertions.assertEquals(room.getName(), "roomName");
-        Assertions.assertEquals(room.getCode(), "roomCode");
-
-        System.out.println("Room name : " + roomInfoDto.name());
-        System.out.println("Room code : " + roomInfoDto.code());
+        // Then
+        Assertions.assertThat(room.getName()).isEqualTo(roomInfoDto.name());
+        Assertions.assertThat(room.getCode()).isEqualTo(roomInfoDto.code());
     }
 
     @Test
     @DisplayName("Room 입장하기")
     public void enterRoomTest() {
+        // Given
         Long roomId = 1L;
         String code = "123456abc";
         Room room = Mockito.mock(Room.class);
@@ -241,16 +234,19 @@ public class RoomServiceTest {
         Profile savedProfile = Profile.create(user, room);
         Mockito.when(profileSaver.save(any(Profile.class))).thenReturn(savedProfile);
 
+        // When
         Profile profile = roomService.enterRoom(roomEnterDto, userId);
 
-        Assertions.assertEquals(profile.getUser(), user);
-        Assertions.assertEquals(profile.getRoom().getId(), roomId);
-        Assertions.assertEquals(profile.getRoom().getCode(), code);
+        // Then
+        Assertions.assertThat(profile.getUser()).isEqualTo(user);
+        Assertions.assertThat(profile.getRoom().getId()).isEqualTo(roomId);
+        Assertions.assertThat(profile.getRoom().getCode()).isEqualTo(code);
     }
 
     @Test
     @DisplayName("Room 삭제하기")
     public void deleteRoom() {
+        // Given
         Long roomId = 1L;
         Long userId = 1L;
 
@@ -273,17 +269,20 @@ public class RoomServiceTest {
         when(profileRepository.findAll()).thenReturn(Collections.emptyList());
         when(worryRepository.findAll()).thenReturn(Collections.emptyList());
 
+        // When
         Room deletedRoom = roomService.deleteRoom(roomId, userId);
 
+        // Then
+        // Remover가 작동했는지 확인
         verify(profileRemover).remove(profile);
         verify(answerRemover).remove(answer);
         verify(questionRemover).remove(question);
         verify(worryRemover).remove(worry);
 
-        Assertions.assertTrue(answerRepository.findAll().isEmpty(), "Answer repository should be empty");
-        Assertions.assertTrue(questionRepository.findAll().isEmpty(), "Question repository should be empty");
-        Assertions.assertTrue(worryRepository.findAll().isEmpty(), "Worry repository should be empty");
-        Assertions.assertTrue(profileRepository.findAll().isEmpty(), "Profile repository should be empty");
+        Assertions.assertThat(answerRepository.findAll()).isEmpty();
+        Assertions.assertThat(questionRepository.findAll()).isEmpty();
+        Assertions.assertThat(worryRepository.findAll()).isEmpty();
+        Assertions.assertThat(profileRepository.findAll()).isEmpty();
     }
 
 

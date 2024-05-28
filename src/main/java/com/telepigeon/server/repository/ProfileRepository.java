@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Optional<Profile> findByUserAndRoom(Users user, Room room);
-    Optional<Profile> findByUserNotAndRoom(Users user, Room room);
-    List<Profile> findByUserId(Long userId);
+    Optional<Profile> findAllByUserAndRoom(Users user, Room room);
+    Optional<Profile> findAllByUserNotAndRoom(Users user, Room room);
+    List<Profile> findAllByUserId(Long userId);
 }
