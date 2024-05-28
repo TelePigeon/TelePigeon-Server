@@ -35,9 +35,9 @@ public class AuthController {
 
     @PostMapping("auth/reissue")
     public ResponseEntity<JwtTokensDto> reissue(
-            @NotNull @RequestHeader("Authorization") String refreshToken
+            @NotNull @RequestHeader("Authorization") String Authorization
     ) {
-        return ResponseEntity.ok(authService.reissue(refreshToken));
+        return ResponseEntity.ok(authService.reissue(Authorization));
     }
 
 }
