@@ -1,0 +1,15 @@
+spring:
+  web:
+    resources:
+      add-mappings: false
+  datasource:
+    url: ${mysql_url}
+    username: ${mysql_username}
+    password: ${mysql_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect

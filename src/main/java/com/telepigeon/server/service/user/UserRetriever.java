@@ -13,17 +13,17 @@ public class UserRetriever {
 
     private final UserRepository userRepository;
 
-    public boolean existBySerialIdAndProvider(String serialId, String provider) {
+    public boolean existBySerialIdAndProvider(final String serialId, final String provider) {
         return userRepository.existsBySerialIdAndProvider(serialId, provider);
     }
 
-    public User findBySerialIdAndProvider(String serialId, String provider) {
+    public User findBySerialIdAndProvider(final String serialId, final String provider) {
         return userRepository.findBySerialIdAndProvider(serialId, provider)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
     }
 
-    public User findById(Long userId) {
-        return userRepository.findById(userId)
+    public User findById(final Long id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
     }
 }

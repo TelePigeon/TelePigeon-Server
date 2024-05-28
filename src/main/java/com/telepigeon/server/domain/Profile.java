@@ -48,9 +48,10 @@ public class Profile {
     private Room room;
 
     @Builder
-    private Profile(User user, Room room) {
+    private Profile(User user, Room room, Relation relation) {
         this.user = user;
         this.room = room;
+        this.relation = relation;
     }
 
     public static Profile create(
@@ -60,6 +61,18 @@ public class Profile {
         return Profile.builder()
                 .user(user)
                 .room(room)
+                .build();
+    }
+
+    public static Profile createTest(
+            User user,
+            Room room,
+            Relation relation
+    ) {
+        return Profile.builder()
+                .user(user)
+                .room(room)
+                .relation(relation)
                 .build();
     }
 }
