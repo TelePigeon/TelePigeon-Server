@@ -35,8 +35,8 @@ public class RoomController {
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<List<RoomListDto>> getAllRooms(@UserId Long userId) {
-        return ResponseEntity.ok(Collections.singletonList(roomService.getAllRooms(userId)));
+    public ResponseEntity<RoomListDto> getAllRooms(@UserId Long userId) {
+        return ResponseEntity.ok(roomService.getAllRooms(userId));
     }
 
     @GetMapping("/rooms/{roomId}/info")
