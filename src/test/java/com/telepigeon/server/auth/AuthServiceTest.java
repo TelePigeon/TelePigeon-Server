@@ -8,6 +8,8 @@ import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
 import com.telepigeon.server.oauth.service.KakaoService;
 import com.telepigeon.server.service.auth.AuthService;
 import com.telepigeon.server.service.auth.TokenRemover;
+import com.telepigeon.server.service.auth.TokenRetriever;
+import com.telepigeon.server.service.auth.TokenSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
 import com.telepigeon.server.utils.JwtUtil;
@@ -46,6 +48,12 @@ public class AuthServiceTest {
 
     @MockBean
     private TokenRemover tokenRemover;
+
+    @MockBean
+    private TokenSaver tokenSaver;
+
+    @MockBean
+    private TokenRetriever tokenRetriever;
 
     private String token;
     private SocialUserInfoDto socialUserInfo;
