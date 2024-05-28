@@ -1,9 +1,5 @@
 package com.telepigeon.server.dto.room.response;
 
-import com.telepigeon.server.domain.Answer;
-import com.telepigeon.server.domain.Profile;
-import com.telepigeon.server.domain.Room;
-
 import java.util.List;
 
 public record RoomListDto(
