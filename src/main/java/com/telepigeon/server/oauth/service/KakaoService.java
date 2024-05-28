@@ -1,9 +1,15 @@
 package com.telepigeon.server.oauth.service;
 
 import com.telepigeon.server.domain.User;
+import com.telepigeon.server.dto.auth.KakaoUnlinkDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
+import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.UnAuthorizedException;
+import com.telepigeon.server.exception.code.BusinessErrorCode;
+import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
 import com.telepigeon.server.oauth.dto.KakaoUserDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -32,11 +38,18 @@ public class KakaoService {
     public void unlink(User user) {
         RestClient restClient = RestClient.create();
 
+        KakaoUnlinkDto unlinkRequest = KakaoUnlinkDto.of(Long.getLong(user.getSerialId()));
         restClient.post()
                 .uri(kakaoUnlinkUrl)
                 .header("Authorization", "KakaoAK " + kakaoAdminKey)
-                .body("{\"target_id_type\":\"user_id\",\"target_id\":\"" + user.getSerialId() + "\"}")
+                .body(unlinkRequest)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    throw new BusinessException(BusinessErrorCode.INVALID_KAKAO_ADMIN_KEY);
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+                    throw new BusinessException(BusinessErrorCode.KAKAO_SERVER_ERROR);
+                })
                 .body(Void.class);
     }
 
@@ -47,6 +60,12 @@ public class KakaoService {
                 .uri(kakaoUserInfoUrl)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
+                    throw new UnAuthorizedException(UnAuthorizedErrorCode.INVALID_KAKAO_TOKEN);
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, (request, response) -> {
+                    throw new BusinessException(BusinessErrorCode.KAKAO_SERVER_ERROR);
+                })
                 .body(KakaoUserDto.class);
     }
 
