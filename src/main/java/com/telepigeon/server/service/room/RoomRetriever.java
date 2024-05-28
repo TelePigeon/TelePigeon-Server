@@ -23,7 +23,7 @@ public class RoomRetriever {
     }
 
     public Room findByCode(final String code) {
-        return roomRepository.findAllByCode(code)
+        return roomRepository.findByCode(code)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.ROOM_NOT_FOUND));
     }
 }
