@@ -1,9 +1,11 @@
 package com.telepigeon.server.service.auth;
 
+import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.oauth.service.KakaoService;
+import com.telepigeon.server.service.user.UserRemover;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
 import com.telepigeon.server.utils.JwtUtil;
@@ -35,6 +37,14 @@ public class AuthService {
     @Transactional
     public void logout(final Long userId) {
         tokenRemover.removeById(userId);
+    }
+
+    @Transactional
+    public void withdrawal(final Long userId) {
+        tokenRemover.removeById(userId);
+        User user =  userRetreiver.findById(userId);
+        userRemover.remove(user);
+        kakaoService.unlink(user);
     }
 
     private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo) {

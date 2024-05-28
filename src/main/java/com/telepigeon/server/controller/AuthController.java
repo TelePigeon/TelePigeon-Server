@@ -27,4 +27,10 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("auth/withdrawal")
+    public ResponseEntity<Void> withdrawal(Long userId) { // Todo: @UserId로 바꿔치기 필요
+        authService.withdrawal(userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
