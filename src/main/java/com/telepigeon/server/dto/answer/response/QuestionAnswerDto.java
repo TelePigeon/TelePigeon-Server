@@ -11,7 +11,8 @@ public record QuestionAnswerDto(
         String answerImage
 ) {
     public static QuestionAnswerDto of(
-            Question question, Answer answer
+            Question question,
+            Answer answer
     ) {
         return new QuestionAnswerDto(
                 question.getProfile().getUser().getName(),
