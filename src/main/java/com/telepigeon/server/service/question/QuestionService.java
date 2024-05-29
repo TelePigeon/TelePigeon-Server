@@ -19,7 +19,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @RequiredArgsConstructor
@@ -33,17 +34,17 @@ public class QuestionService {
     private final ProfileRetriever profileRetriever;
 
     @Scheduled(cron="0 0 12 * * *")
-    public void createSchedule(){       // profileRetriever.findAll 아직 없어서 주석처리
-//        profileRetriever.findAll().forEach(
-//                this::create
-//        );
+    public void createSchedule(){
+        profileRetriever.findAll().forEach(
+                this::create
+        );
     }
 
     public Question create(final Profile profile){
-//        상대방 토큰 가져오기 위해 사용
-//        Profile receiver = profileRetriever.findByUserNotAndRoom(
-//                profile.getUser(), profile.getRoom()
-//        );
+//        상대방 토큰 가져오기 위해 사용(나중에 사용)
+        Profile receiver = profileRetriever.findByUserNotAndRoom(
+                profile.getUser(), profile.getRoom()
+        );
         Question prevQuestion = questionRetriever.findFirstByProfile(profile);  //최근 질문 가져오기
         if (
                 prevQuestion != null &&
@@ -77,13 +78,10 @@ public class QuestionService {
     }
 
     private boolean checkPenalty(final Question question) {
+        LocalDate now = LocalDate.now();
         LocalDate date = question.getCreatedAt().toLocalDate();
-        Period period =Period.between(date, LocalDate.now());
-        if (period.getDays() > 3){
-            return true;
-        } else {
-            return period.getYears() > 0 || period.getMonths() > 0;
-        }
+        long days = DAYS.between(date, now);
+        return days > 3;
     }
 
     private String createContent() {  // ai 추후에 추가 예정
