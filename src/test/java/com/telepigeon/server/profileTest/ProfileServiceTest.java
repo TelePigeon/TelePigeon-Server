@@ -9,7 +9,6 @@ import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
 import com.telepigeon.server.dto.type.AgeRange;
 import com.telepigeon.server.dto.type.Gender;
 import com.telepigeon.server.dto.type.Relation;
-import com.telepigeon.server.repository.ProfileRepository;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
 import com.telepigeon.server.service.profile.ProfileService;
@@ -29,8 +28,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
