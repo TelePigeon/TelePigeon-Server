@@ -44,6 +44,10 @@ public class AnswerRetriever {
         );
     }
 
+    public List<Answer> findAllByProfile(final Profile profile) {
+        return answerRepository.findAllByProfile(profile);
+    }
+
     public boolean existsByQuestion(final Question question){
         return answerRepository.existsByQuestion(question);
     }

@@ -18,6 +18,8 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     Optional<Answer> findFirstByProfileOrderByCreatedAtDesc(Profile profile);
 
     Optional<Answer> findByQuestion(Question question);
+  
+    List<Answer> findAllByProfile(Profile profile);
 
     Boolean existsByQuestion(Question question);
 }
