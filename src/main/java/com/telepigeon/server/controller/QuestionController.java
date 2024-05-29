@@ -13,15 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class QuestionController {
     private final QuestionService questionService;
 
-//    @PostMapping("/rooms/{roomId}/questions")
-//    public ResponseEntity<Void> createQuestion(
-//            @UserId Long userId,
-//            @PathVariable Long roomId
-//    ) {
-//        URI uri = URI.create("/question/" + questionService.create(userId, roomId).toString());
-//        return ResponseEntity.created(uri).build();
-//    }
-
     @GetMapping("/rooms/{roomId}/questions")
     public ResponseEntity<GetLastQuestionDto> getLastQuestion(
             @UserId Long userId,

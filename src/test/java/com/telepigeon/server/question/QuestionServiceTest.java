@@ -27,16 +27,22 @@ import org.mockito.MockitoAnnotations;
 public class QuestionServiceTest {
     @InjectMocks
     private QuestionService questionService;
+
     @Mock
     private QuestionSaver questionSaver;
+
     @Mock
     private QuestionRetriever questionRetriever;
+
     @Mock
     private RoomRetriever roomRetriever;
+
     @Mock
     private AnswerRetriever answerRetriever;
+
     @Mock
     private ProfileRetriever profileRetriever;
+
     @Mock
     private UserRepository userRepository;
 
@@ -58,6 +64,7 @@ public class QuestionServiceTest {
         Assertions.assertEquals(question.getProfile(), question1.getProfile());
         Assertions.assertEquals("밥은 먹었나요?", question1.getContent());
     }
+
     @Test
     @DisplayName("Question 생성 로직 확인 - 질문이 있지만 답장이 아직 안 온 질문이 있을 경우")
     void checkCreateQuestion2(){
