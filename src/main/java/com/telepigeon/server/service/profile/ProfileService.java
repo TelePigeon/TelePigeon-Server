@@ -49,7 +49,11 @@ public class ProfileService {
     }
 
     @Transactional
-    public Profile updateProfileInfo(final Long roomId, final Long userId, final ProfileDto profileDto) {
+    public Profile updateProfileInfo(
+            final Long roomId,
+            final Long userId,
+            final ProfileDto profileDto
+    ) {
         Room room = roomRetriever.findById(roomId);
         Users user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
