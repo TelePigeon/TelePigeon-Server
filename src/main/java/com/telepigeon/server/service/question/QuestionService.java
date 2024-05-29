@@ -9,10 +9,10 @@ import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
-import com.telepigeon.server.repository.UserRepository;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
+import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,10 +28,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class QuestionService {
     private final QuestionSaver questionSaver;
     private final QuestionRetriever questionRetriever;
-    private final UserRepository userRepository;
     private final RoomRetriever roomRetriever;
     private final AnswerRetriever answerRetriever;
     private final ProfileRetriever profileRetriever;
+    private final UserRetriever userRetriever;
 
     @Scheduled(cron="0 0 12 * * *")
     public void createSchedule(){
@@ -63,7 +63,7 @@ public class QuestionService {
             final Long userId,
             final Long roomId
     ) {
-        User user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserNotAndRoom(user, room);
         Question question = questionRetriever.findFirstByProfile(profile);
