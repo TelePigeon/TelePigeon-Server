@@ -15,10 +15,9 @@ public class QuestionRetriever {
     private final QuestionRepository questionRepository;
 
     public Question findFirstByProfile(final Profile profile){
-        return questionRepository.findFirstByProfileOrderByCreatedAtDesc(profile)
-                .orElseThrow(
-                RuntimeException::new // Hurry merge 후 NotFoundException으로 바꿀 예정(충돌 때문)
-        );
+        return questionRepository
+                .findFirstByProfileOrderByCreatedAtDesc(profile)
+                .orElse(null); //예외 처리를 해주지 말아야 할 때도 있어서 null 반환
     }
 
     public List<Question> findAllByProfile(final Profile profile) {
