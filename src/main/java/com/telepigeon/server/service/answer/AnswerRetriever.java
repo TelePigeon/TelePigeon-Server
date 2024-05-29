@@ -37,6 +37,13 @@ public class AnswerRetriever {
         );
     }
 
+    public Answer findByQuestion(final Question question){
+        return answerRepository.findByQuestion(question)
+                .orElseThrow(
+                () -> new NotFoundException(NotFoundErrorCode.ANSWER_NOT_FOUND)
+        );
+    }
+
     public boolean existsByQuestion(final Question question){
         return answerRepository.existsByQuestion(question);
     }

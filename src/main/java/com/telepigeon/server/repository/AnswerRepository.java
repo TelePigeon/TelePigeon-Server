@@ -17,5 +17,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     );
     Optional<Answer> findFirstByProfileOrderByCreatedAtDesc(Profile profile);
 
+    Optional<Answer> findByQuestion(Question question);
+
     Boolean existsByQuestion(Question question);
 }

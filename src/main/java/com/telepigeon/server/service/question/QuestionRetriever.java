@@ -27,4 +27,8 @@ public class QuestionRetriever {
                         () -> new NotFoundException(NotFoundErrorCode.QUESTION_NOT_FOUND)
                 );
     }
+
+    public boolean existsByProfile(final Profile profile){
+        return questionRepository.existsByProfile(profile);
+    }
 }
