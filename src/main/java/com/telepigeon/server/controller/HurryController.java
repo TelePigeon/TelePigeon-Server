@@ -17,7 +17,7 @@ import java.net.URI;
 public class HurryController {
     private final HurryService hurryService;
 
-    @PostMapping("/{roomId}/hurries")
+    @PostMapping("/rooms/{roomId}/hurries")
     public ResponseEntity<Void> create(
             @PathVariable Long roomId
     ){

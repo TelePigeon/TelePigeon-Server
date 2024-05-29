@@ -7,6 +7,7 @@ import com.telepigeon.server.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @RequiredArgsConstructor
 public class RoomRetriever {
