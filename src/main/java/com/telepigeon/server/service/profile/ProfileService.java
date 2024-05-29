@@ -6,7 +6,6 @@ import com.telepigeon.server.domain.Users;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
-import com.telepigeon.server.repository.ProfileRepository;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
