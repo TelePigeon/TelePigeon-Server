@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Table(name="answer")
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 public class Answer {
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
