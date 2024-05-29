@@ -39,23 +39,23 @@ public class Profile {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne(targetEntity=Users.class, fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private Users user;
+    private User user;
 
     @ManyToOne(targetEntity=Room.class, fetch=FetchType.LAZY)
     @JoinColumn(name="room_id")
     private Room room;
 
     @Builder
-    private Profile(Users user, Room room, Relation relation) {
+    private Profile(User user, Room room, Relation relation) {
         this.user = user;
         this.room = room;
         this.relation = relation;
     }
 
     public static Profile create(
-            Users user,
+            User user,
             Room room
     ) {
         return Profile.builder()
@@ -65,7 +65,7 @@ public class Profile {
     }
 
     public static Profile createTest(
-            Users user,
+            User user,
             Room room,
             Relation relation
     ) {

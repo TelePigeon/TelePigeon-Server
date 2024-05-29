@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class RoomService {
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
 
         String code = createCode();
 
@@ -57,27 +56,9 @@ public class RoomService {
         return savedRoom;
     }
 
-    private String createCode() {
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        String code;
-
-        do {
-            StringBuilder codeBuilder = new StringBuilder();
-            for (int i = 0; i < 10; i++) {
-                int index = random.nextInt(characters.length());
-                codeBuilder.append(characters.charAt(index));
-            }
-            code = codeBuilder.toString();
-        } while (roomRepository.existsByCode(code));
-
-
-        return code;
-    }
-
     @Transactional(readOnly = true)
     public RoomListDto getAllRooms(final Long userId) {
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
         List<Profile> profileList = profileRetriever.findByUserId(userId);
         List<Room> roomList = profileList.stream().map(Profile::getRoom).toList();
 
@@ -89,7 +70,7 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public RoomListDto.RoomDto createRoomDto(Users user, Room room) {
+    public RoomListDto.RoomDto createRoomDto(User user, Room room) {
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
         Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
@@ -130,7 +111,7 @@ public class RoomService {
 
     @Transactional
     public Profile enterRoom(final RoomEnterDto roomEnterDto, final Long userId) {
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findByCode(roomEnterDto.code());
 
         Profile profile = Profile.create(user, room);
@@ -140,7 +121,7 @@ public class RoomService {
     @Transactional
     public Room deleteRoom(final Long roomId, final Long userId) {
         Room room = roomRetriever.findById(roomId);
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
 
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
         List<Answer> answerList = answerRetriever.findAllByProfile(profile);
@@ -154,4 +135,23 @@ public class RoomService {
 
         return room;
     }
+
+    private String createCode() {
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        String code;
+
+        do {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < 10; i++) {
+                int index = random.nextInt(characters.length());
+                codeBuilder.append(characters.charAt(index));
+            }
+            code = codeBuilder.toString();
+        } while (roomRepository.existsByCode(code));
+
+
+        return code;
+    }
+
 }
