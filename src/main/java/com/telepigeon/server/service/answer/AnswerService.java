@@ -93,5 +93,6 @@ public class AnswerService {
             )
         )
             return 2;
+        return 0;
     }
 }
