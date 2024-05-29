@@ -40,11 +40,14 @@ public class ProfileService {
         Room room = roomRetriever.findById(roomId);
         Users user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        String gender = profile.getGender()!=null?profile.getGender().getContent():"-";
+        String ageRange = profile.getAgeRange()!=null?profile.getAgeRange().getContent():"-";
+        String relation = profile.getRelation()!=null?profile.getRelation().getContent():"-";
 
         return new ProfileInfoDto(
-                profile.getGender().getContent(),
-                profile.getAgeRange().getContent(),
-                profile.getRelation().getContent()
+                gender,
+                ageRange,
+                relation
         );
     }
 

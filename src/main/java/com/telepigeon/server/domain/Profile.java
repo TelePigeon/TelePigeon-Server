@@ -53,7 +53,7 @@ public class Profile {
         this.user = user;
         this.room = room;
         this.relation = relation;
-        this.keywords = "";
+        this.keywords = "-";
     }
 
     public static Profile create(
