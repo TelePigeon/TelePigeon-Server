@@ -57,24 +57,6 @@ public class RoomService {
         return savedRoom;
     }
 
-    private String createCode() {
-        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        String code;
-
-        do {
-            StringBuilder codeBuilder = new StringBuilder();
-            for (int i = 0; i < 10; i++) {
-                int index = random.nextInt(characters.length());
-                codeBuilder.append(characters.charAt(index));
-            }
-            code = codeBuilder.toString();
-        } while (roomRepository.existsByCode(code));
-
-
-        return code;
-    }
-
     @Transactional(readOnly = true)
     public RoomListDto getAllRooms(final Long userId) {
         Users user = userRetriever.findById(userId);
@@ -153,5 +135,23 @@ public class RoomService {
         worryList.forEach(worryRemover::remove);
 
         return room;
+    }
+
+    private String createCode() {
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        String code;
+
+        do {
+            StringBuilder codeBuilder = new StringBuilder();
+            for (int i = 0; i < 10; i++) {
+                int index = random.nextInt(characters.length());
+                codeBuilder.append(characters.charAt(index));
+            }
+            code = codeBuilder.toString();
+        } while (roomRepository.existsByCode(code));
+
+
+        return code;
     }
 }

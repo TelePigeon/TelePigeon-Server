@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -64,7 +65,7 @@ public class Profile {
                 .build();
     }
 
-    public static Profile createTest(
+    public static Profile create(
             Users user,
             Room room,
             Relation relation
@@ -74,5 +75,17 @@ public class Profile {
                 .room(room)
                 .relation(relation)
                 .build();
+    }
+
+    public void updateProfileInfo(
+            String keywords,
+            String gender,
+            String ageRange,
+            String relation
+    ) {
+        this.keywords = keywords;
+        this.gender = Gender.valueOf(gender);
+        this.ageRange = AgeRange.valueOf(ageRange);
+        this.relation = Relation.valueOf(relation);
     }
 }

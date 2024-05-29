@@ -152,11 +152,11 @@ public class RoomServiceTest {
         when(roomSaver.save(any(Room.class))).thenReturn(createdRoom);
 
         // User1 Profile 생성
-        Profile profile1 = Profile.createTest(user1, createdRoom, Relation.valueOf("CHILD"));
+        Profile profile1 = Profile.create(user1, createdRoom, Relation.valueOf("CHILD"));
         when(profileSaver.save(profile1)).thenReturn(profile1);
 
         // User2 Profile 생성
-        Profile profile2 = Profile.createTest(user2, createdRoom, Relation.valueOf("MOTHER"));
+        Profile profile2 = Profile.create(user2, createdRoom, Relation.valueOf("MOTHER"));
         when(profileSaver.save(profile2)).thenReturn(profile2);
 
         Question question1 = Question.create("question1", profile1);

@@ -1,15 +1,16 @@
 package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
+import com.telepigeon.server.domain.Profile;
+import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
 import com.telepigeon.server.service.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.objenesis.SpringObjenesis;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,5 +33,14 @@ public class ProfileController {
             @UserId Long userId
     ) {
         return ResponseEntity.ok(profileService.getProfileExtraInfo(roomId, userId));
+    }
+
+    @PutMapping("/rooms/{roomId}")
+    public ResponseEntity<Profile> updateProfileInfo(
+            @PathVariable Long roomId,
+            @UserId Long userId,
+            @Valid @RequestBody ProfileDto profileDto
+    ) {
+        return ResponseEntity.ok(profileService.updateProfileInfo(roomId, userId, profileDto));
     }
 }
