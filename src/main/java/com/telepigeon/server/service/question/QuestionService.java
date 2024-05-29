@@ -80,8 +80,8 @@ public class QuestionService {
     private boolean checkPenalty(final Question question) {
         LocalDate now = LocalDate.now();
         LocalDate date = question.getCreatedAt().toLocalDate();
-        Long days = DAYS.between(date, now);
-        return days > 3L;
+        long days = DAYS.between(date, now);
+        return days > 3;
     }
 
     private String createContent() {  // ai 추후에 추가 예정
