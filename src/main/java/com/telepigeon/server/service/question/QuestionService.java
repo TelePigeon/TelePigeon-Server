@@ -81,10 +81,7 @@ public class QuestionService {
         LocalDate now = LocalDate.now();
         LocalDate date = question.getCreatedAt().toLocalDate();
         Long days = DAYS.between(date, now);
-        if (days > 3){
-            return true;
-        }
-        return false;
+        return days > 3L;
     }
 
     private String createContent() {  // ai 추후에 추가 예정
