@@ -3,17 +3,17 @@ package com.telepigeon.server.question;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
-import com.telepigeon.server.repository.UserRepository;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.question.QuestionService;
 import com.telepigeon.server.service.room.RoomRetriever;
+import com.telepigeon.server.service.user.UserRetriever;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ public class QuestionServiceTest {
     private ProfileRetriever profileRetriever;
 
     @Mock
-    private UserRepository userRepository;
+    private UserRetriever userRetriever;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +55,7 @@ public class QuestionServiceTest {
     @DisplayName("Question 생성 로직 확인 - 아직 질문이 없을 경우")
     void checkCreateQuestion1(){
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(null);
@@ -69,7 +69,7 @@ public class QuestionServiceTest {
     @DisplayName("Question 생성 로직 확인 - 질문이 있지만 답장이 아직 안 온 질문이 있을 경우")
     void checkCreateQuestion2(){
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
@@ -82,7 +82,7 @@ public class QuestionServiceTest {
     @DisplayName("Question 생성 로직 확인 - 모든 질문에 답장이 왔을 경우")
     void checkCreateQuestion3(){
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
@@ -99,9 +99,9 @@ public class QuestionServiceTest {
         Long userId = 1L;
         long roomId = 1L;
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
-        Mockito.when(userRepository.findByIdOrThrow(userId)).thenReturn(user);
+        Mockito.when(userRetriever.findById(userId)).thenReturn(user);
         Mockito.when(roomRetriever.findById(roomId)).thenReturn(room);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(null);
@@ -115,10 +115,10 @@ public class QuestionServiceTest {
         Long userId = 1L;
         long roomId = 1L;
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
         Question question = Question.create("hi", profile);
-        Mockito.when(userRepository.findByIdOrThrow(userId)).thenReturn(user);
+        Mockito.when(userRetriever.findById(userId)).thenReturn(user);
         Mockito.when(roomRetriever.findById(roomId)).thenReturn(room);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
@@ -133,10 +133,10 @@ public class QuestionServiceTest {
         Long userId = 1L;
         long roomId = 1L;
         Room room = Mockito.mock(Room.class);
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
         Question question = Question.create("hi", profile);
-        Mockito.when(userRepository.findByIdOrThrow(userId)).thenReturn(user);
+        Mockito.when(userRetriever.findById(userId)).thenReturn(user);
         Mockito.when(roomRetriever.findById(roomId)).thenReturn(room);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);

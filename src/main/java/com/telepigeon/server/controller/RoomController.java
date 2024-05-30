@@ -12,11 +12,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.net.URI;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
