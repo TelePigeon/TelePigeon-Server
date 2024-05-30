@@ -17,6 +17,7 @@ public enum NotFoundErrorCode implements DefaultErrorCode{
     PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 프로필입니다."),
     ANSWER_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 답장입니다."),
     WORRY_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 걱정입니다"),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 리프레시 토큰입니다."),
     ;
 
     @JsonIgnore

@@ -3,23 +3,24 @@ package com.telepigeon.server.service.question;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
-import com.telepigeon.server.repository.UserRepository;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
+import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @RequiredArgsConstructor
@@ -27,23 +28,23 @@ import java.time.Period;
 public class QuestionService {
     private final QuestionSaver questionSaver;
     private final QuestionRetriever questionRetriever;
-    private final UserRepository userRepository;
     private final RoomRetriever roomRetriever;
     private final AnswerRetriever answerRetriever;
     private final ProfileRetriever profileRetriever;
+    private final UserRetriever userRetriever;
 
     @Scheduled(cron="0 0 12 * * *")
-    public void createSchedule(){       // profileRetriever.findAll 아직 없어서 주석처리
-//        profileRetriever.findAll().forEach(
-//                this::create
-//        );
+    public void createSchedule(){
+        profileRetriever.findAll().forEach(
+                this::create
+        );
     }
 
     public Question create(final Profile profile){
-//        상대방 토큰 가져오기 위해 사용
-//        Profile receiver = profileRetriever.findByUserNotAndRoom(
-//                profile.getUser(), profile.getRoom()
-//        );
+//        상대방 토큰 가져오기 위해 사용(나중에 사용)
+        Profile receiver = profileRetriever.findByUserNotAndRoom(
+                profile.getUser(), profile.getRoom()
+        );
         Question prevQuestion = questionRetriever.findFirstByProfile(profile);  //최근 질문 가져오기
         if (
                 prevQuestion != null &&
@@ -62,7 +63,7 @@ public class QuestionService {
             final Long userId,
             final Long roomId
     ) {
-        Users user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserNotAndRoom(user, room);
         Question question = questionRetriever.findFirstByProfile(profile);
@@ -77,13 +78,10 @@ public class QuestionService {
     }
 
     private boolean checkPenalty(final Question question) {
+        LocalDate now = LocalDate.now();
         LocalDate date = question.getCreatedAt().toLocalDate();
-        Period period =Period.between(date, LocalDate.now());
-        if (period.getDays() > 3){
-            return true;
-        } else {
-            return period.getYears() > 0 || period.getMonths() > 0;
-        }
+        long days = DAYS.between(date, now);
+        return days > 3;
     }
 
     private String createContent() {  // ai 추후에 추가 예정

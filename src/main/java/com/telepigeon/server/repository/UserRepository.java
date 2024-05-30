@@ -1,12 +1,13 @@
 package com.telepigeon.server.repository;
 
-import com.telepigeon.server.domain.Users;
-import com.telepigeon.server.exception.NotFoundException;
-import com.telepigeon.server.exception.code.NotFoundErrorCode;
+import com.telepigeon.server.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<Users, Long> {
-    default Users findByIdOrThrow(Long id) {
-        return findById(id).orElseThrow(() -> new NotFoundException(NotFoundErrorCode.USER_NOT_FOUND));
-    }
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    boolean existsBySerialIdAndProvider(String serialId, String provider);
+
+    Optional<User> findBySerialIdAndProvider(String serialId, String provider);
 }
