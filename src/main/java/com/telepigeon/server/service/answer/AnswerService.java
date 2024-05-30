@@ -5,7 +5,7 @@ import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
-import com.telepigeon.server.repository.UserRepository;
+import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.question.QuestionRetriever;
@@ -27,7 +27,7 @@ public class AnswerService {
     private final AnswerRetriever answerRetriever;
     private final AnswerSaver answerSaver;
     private final ProfileRetriever profileRetriever;
-    private final UserRepository userRepository;
+    private final UserRetriever userRetriever;
     private final RoomRetriever roomRetriever;
     private final QuestionRetriever questionRetriever;
     private final HurryRetriever hurryRetriever;
@@ -39,7 +39,7 @@ public class AnswerService {
             final Long questionId,
             final AnswerCreateDto answerCreateDto
     ){
-        User user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
         Question question = questionRetriever.findById(questionId);
@@ -56,7 +56,7 @@ public class AnswerService {
             final LocalDate date,
             final boolean respondent
     ) {
-        User user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         if (respondent) {
             Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
@@ -88,7 +88,7 @@ public class AnswerService {
             final Long userId,
             final Long roomId
     ) {
-        User user = userRepository.findByIdOrThrow(userId);
+        User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Pair<Integer, Long> numbers = getRoomStateNumber(user, room);
         return RoomStateDto.of(room.getName(), numbers.getFirst(), numbers.getSecond());
