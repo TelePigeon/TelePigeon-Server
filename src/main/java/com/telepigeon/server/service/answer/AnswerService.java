@@ -39,7 +39,7 @@ public class AnswerService {
             final Long questionId,
             final AnswerCreateDto answerCreateDto
     ){
-        Users user = userRepository.findByIdOrThrow(userId);
+        User user = userRepository.findByIdOrThrow(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
         Question question = questionRetriever.findById(questionId);
@@ -56,7 +56,7 @@ public class AnswerService {
             final LocalDate date,
             final boolean respondent
     ) {
-        Users user = userRepository.findByIdOrThrow(userId);
+        User user = userRepository.findByIdOrThrow(userId);
         Room room = roomRetriever.findById(roomId);
         if (respondent) {
             Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
@@ -88,7 +88,7 @@ public class AnswerService {
             final Long userId,
             final Long roomId
     ) {
-        Users user = userRepository.findByIdOrThrow(userId);
+        User user = userRepository.findByIdOrThrow(userId);
         Room room = roomRetriever.findById(roomId);
         Pair<Integer, Long> numbers = getRoomStateNumber(user, room);
         return RoomStateDto.of(room.getName(), numbers.getFirst(), numbers.getSecond());
@@ -96,7 +96,7 @@ public class AnswerService {
 
     @Transactional(readOnly=true)
     public Pair<Integer, Long> getRoomStateNumber(
-            final Users user,
+            final User user,
             final Room room
     ) {
         if (!profileRetriever.existsByUserNotAndRoom(user, room)) //상대방이 아직 없을 경우
