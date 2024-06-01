@@ -27,6 +27,10 @@ public class ProfileRetriever {
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
+    public boolean existsByUserNotAndRoom(final User user, final Room room) {
+        return profileRepository.existsByUserNotAndRoom(user, room);
+    }
+  
     public List<Profile> findByUserId(final long userId) {
         return profileRepository.findAllByUserId(userId);
     }
