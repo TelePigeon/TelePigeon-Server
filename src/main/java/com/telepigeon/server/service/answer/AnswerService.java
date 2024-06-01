@@ -4,7 +4,10 @@ import com.telepigeon.server.domain.*;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
+import com.telepigeon.server.dto.naverCloud.ConfidenceCreateDto;
+import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
+import com.telepigeon.server.service.naverCloud.NaverCloudService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -31,6 +34,7 @@ public class AnswerService {
     private final RoomRetriever roomRetriever;
     private final QuestionRetriever questionRetriever;
     private final HurryRetriever hurryRetriever;
+    private final NaverCloudService naverCloudService;
 
     @Transactional
     public String create(
@@ -45,6 +49,14 @@ public class AnswerService {
         Question question = questionRetriever.findById(questionId);
         Answer answer = answerSaver.create(
                 Answer.create(answerCreateDto, question, profile)
+        );
+        profile.updateEmotion(
+                CalculateEmotion(
+                        profile.getEmotion(),
+                        naverCloudService.getConfidence(
+                                ConfidenceCreateDto.of(answer.getContent())
+                        )
+                )
         );
         return answer.getId().toString();
     }
@@ -139,5 +151,11 @@ public class AnswerService {
         Long days = DAYS.between(date, now);
         return Pair.of(6, days);
     }
-
+    private double CalculateEmotion(
+            final Double emotion,
+            final ConfidenceDto confidenceDto
+    ) {
+        double confidence = (confidenceDto.positive() - confidenceDto.negative()) * 0.001;
+        return emotion * 0.9 + confidence;
+    }
 }

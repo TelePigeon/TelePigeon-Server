@@ -75,4 +75,8 @@ public class Profile {
                 .relation(relation)
                 .build();
     }
+
+    public void updateEmotion(Double emotion) {
+        this.emotion = emotion;
+    }
 }
