@@ -76,6 +76,20 @@ public class Profile {
                 .build();
     }
 
+    @Builder
+    public Profile(
+            User user,
+            Room room,
+            Relation relation,
+            String keywords
+    ) {
+        this.user = user;
+        this.room = room;
+        this.relation = relation;
+        this.keywords = keywords;
+    }
+
+
     public void updateEmotion(Double emotion) {
         this.emotion = emotion;
     }
