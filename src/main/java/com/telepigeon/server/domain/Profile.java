@@ -48,10 +48,13 @@ public class Profile {
     private Room room;
 
     @Builder
-    private Profile(User user, Room room, Relation relation) {
+    private Profile(User user, Room room, Relation relation, String keywords) {
         this.user = user;
         this.room = room;
         this.relation = relation;
+        this.keywords = keywords;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public static Profile create(
@@ -76,21 +79,23 @@ public class Profile {
                 .build();
     }
 
-    @Builder
-    public Profile(
+    public static Profile create(
             User user,
             Room room,
             Relation relation,
             String keywords
     ) {
-        this.user = user;
-        this.room = room;
-        this.relation = relation;
-        this.keywords = keywords;
+        return Profile.builder()
+                .user(user)
+                .room(room)
+                .relation(relation)
+                .keywords(keywords)
+                .build();
     }
 
 
     public void updateEmotion(Double emotion) {
         this.emotion = emotion;
+        this.updatedAt = LocalDateTime.now();
     }
 }

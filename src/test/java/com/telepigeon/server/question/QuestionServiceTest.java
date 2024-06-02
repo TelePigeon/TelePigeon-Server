@@ -68,8 +68,8 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Relation relation = Relation.FRIEND;
-        Profile profile = new Profile(user, room, relation, "work");
-        Profile receiver = new Profile(user, room, relation, "work");
+        Profile profile = Profile.create(user, room, relation, "work");
+        Profile receiver = Profile.create(user, room, relation, "work");
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(null);
         Mockito.when(questionSaver.create(question)).thenReturn(question);
@@ -106,8 +106,8 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Relation relation = Relation.FRIEND;
-        Profile profile = new Profile(user, room, relation, "work");
-        Profile receiver = new Profile(user, room, relation, "work");
+        Profile profile = Profile.create(user, room, relation, "work");
+        Profile receiver = Profile.create(user, room, relation, "work");
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
         Mockito.when(answerRetriever.existsByQuestion(question)).thenReturn(true);
