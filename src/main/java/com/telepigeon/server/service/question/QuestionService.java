@@ -14,7 +14,6 @@ import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class QuestionService {
     private final QuestionSaver questionSaver;
     private final QuestionRetriever questionRetriever;
