@@ -2,7 +2,7 @@ package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.constant.AuthConstant;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.service.auth.AuthService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

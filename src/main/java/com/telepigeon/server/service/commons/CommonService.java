@@ -1,9 +1,9 @@
 package com.telepigeon.server.service.commons;
 
-import com.telepigeon.server.dto.enums.AgeRangesDto;
-import com.telepigeon.server.dto.enums.GenderDto;
-import com.telepigeon.server.dto.enums.KeywordsDto;
-import com.telepigeon.server.dto.enums.RelationsDto;
+import com.telepigeon.server.dto.enums.response.AgeRangesDto;
+import com.telepigeon.server.dto.enums.response.GenderDto;
+import com.telepigeon.server.dto.enums.response.KeywordsDto;
+import com.telepigeon.server.dto.enums.response.RelationsDto;
 import com.telepigeon.server.dto.type.AgeRange;
 import com.telepigeon.server.dto.type.Gender;
 import com.telepigeon.server.dto.type.Keyword;

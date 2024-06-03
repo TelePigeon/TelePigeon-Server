@@ -1,7 +1,7 @@
 package com.telepigeon.server.utils;
 
 import com.telepigeon.server.constant.AuthConstant;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

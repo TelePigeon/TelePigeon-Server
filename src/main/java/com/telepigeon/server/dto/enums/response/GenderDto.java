@@ -1,4 +1,4 @@
-package com.telepigeon.server.dto.enums;
+package com.telepigeon.server.dto.enums.response;
 
 import java.util.List;
 

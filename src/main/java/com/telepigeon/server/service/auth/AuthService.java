@@ -3,7 +3,7 @@ package com.telepigeon.server.service.auth;
 import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.oauth.service.KakaoService;
 import com.telepigeon.server.service.user.UserRemover;

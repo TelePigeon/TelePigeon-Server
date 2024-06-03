@@ -2,7 +2,7 @@ package com.telepigeon.server.controller;
 
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.dto.TestDto;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.service.auth.TokenSaver;
