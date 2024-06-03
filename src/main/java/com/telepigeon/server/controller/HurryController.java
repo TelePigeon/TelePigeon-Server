@@ -1,5 +1,6 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.service.hurry.HurryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,10 @@ public class HurryController {
 
     @PostMapping("/rooms/{roomId}/hurries")
     public ResponseEntity<Void> create(
+            @UserId Long userId,
             @PathVariable Long roomId
     ){
-        hurryService.create(roomId);
+        hurryService.create(userId, roomId);
         return ResponseEntity.created(URI.create("/hurry/")).build();
     }
 }

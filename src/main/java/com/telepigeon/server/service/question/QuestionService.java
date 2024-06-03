@@ -1,23 +1,25 @@
 package com.telepigeon.server.service.question;
 
-import com.telepigeon.server.domain.Profile;
-import com.telepigeon.server.domain.Question;
-import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.User;
+import com.telepigeon.server.domain.*;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.hurry.HurryRemover;
+import com.telepigeon.server.service.hurry.HurryRetriever;
+import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -30,6 +32,9 @@ public class QuestionService {
     private final AnswerRetriever answerRetriever;
     private final ProfileRetriever profileRetriever;
     private final UserRetriever userRetriever;
+    private final HurryRetriever hurryRetriever;
+    private final HurryRemover hurryRemover;
+    private final OpenAiService openAiService;
 
     @Scheduled(cron="0 0 12 * * *")
     public void createSchedule(){
@@ -38,8 +43,8 @@ public class QuestionService {
         );
     }
 
+    @Transactional
     public Question create(final Profile profile){
-//        상대방 토큰 가져오기 위해 사용(나중에 사용)
         Profile receiver = profileRetriever.findByUserNotAndRoom(
                 profile.getUser(), profile.getRoom()
         );
@@ -50,9 +55,22 @@ public class QuestionService {
         ) { //최근 질문이 있지만 답장이 없는 경우
             throw new BusinessException(BusinessErrorCode.QUESTION_ALREADY_EXISTS);
         }
-        String content = createContent();
+        String content = openAiService.createQuestion(
+                receiver.getRelation().getContent(),
+                Arrays.stream(profile.getKeywords().split(",")).toList()
+        );
         Question question = Question.create(content, profile);
         questionSaver.create(question);
+        if (hurryRetriever.existsByRoomIdAndSenderId(
+                profile.getRoom().getId(),
+                receiver.getUser().getId()
+        )) {
+            Hurry hurry = hurryRetriever.findByRoomIdAndSenderId(
+                    profile.getRoom().getId(),
+                    receiver.getUser().getId()
+            );
+            hurryRemover.remove(hurry);
+        }
         //fcm 나중에 연결 예정
         return question;
     }
@@ -80,10 +98,6 @@ public class QuestionService {
         LocalDate date = question.getCreatedAt().toLocalDate();
         long days = DAYS.between(date, now);
         return days > 3;
-    }
-
-    private String createContent() {  // ai 추후에 추가 예정
-        return "밥은 먹었나요?";
     }
 
 }

@@ -5,9 +5,12 @@ import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
+import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.hurry.HurryRetriever;
+import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.question.QuestionSaver;
@@ -22,6 +25,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
 
 
 public class QuestionServiceTest {
@@ -46,6 +51,12 @@ public class QuestionServiceTest {
     @Mock
     private UserRetriever userRetriever;
 
+    @Mock
+    private OpenAiService openAiService;
+
+    @Mock
+    private HurryRetriever hurryRetriever;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -56,10 +67,21 @@ public class QuestionServiceTest {
     void checkCreateQuestion1(){
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
-        Profile profile = Profile.create(user, room);
+        Relation relation = Relation.FRIEND;
+        Profile profile = Profile.create(user, room, relation, "work");
+        Profile receiver = Profile.create(user, room, relation, "work");
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(null);
         Mockito.when(questionSaver.create(question)).thenReturn(question);
+        Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(receiver);
+        Mockito.when(openAiService.createQuestion(
+                relation.getContent(),
+                Arrays.stream("work".split(",")).toList())
+        ).thenReturn("밥은 먹었나요?");
+        Mockito.when(hurryRetriever.existsByRoomIdAndSenderId(
+                room.getId(),
+                receiver.getUser().getId()
+        )).thenReturn(false);
         Question question1 = questionService.create(profile);
         Assertions.assertEquals(question.getProfile(), question1.getProfile());
         Assertions.assertEquals("밥은 먹었나요?", question1.getContent());
@@ -83,11 +105,22 @@ public class QuestionServiceTest {
     void checkCreateQuestion3(){
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
-        Profile profile = Profile.create(user, room);
+        Relation relation = Relation.FRIEND;
+        Profile profile = Profile.create(user, room, relation, "work");
+        Profile receiver = Profile.create(user, room, relation, "work");
         Question question = Question.create("hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
         Mockito.when(answerRetriever.existsByQuestion(question)).thenReturn(true);
         Mockito.when(questionSaver.create(question)).thenReturn(question);
+        Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(receiver);
+        Mockito.when(openAiService.createQuestion(
+                relation.getContent(),
+                Arrays.stream("work".split(",")).toList())
+        ).thenReturn("밥은 먹었나요?");
+        Mockito.when(hurryRetriever.existsByRoomIdAndSenderId(
+                room.getId(),
+                receiver.getUser().getId()
+        )).thenReturn(false);
         Question question1 = questionService.create(profile);
         Assertions.assertEquals(question.getProfile(), question1.getProfile());
         Assertions.assertEquals("밥은 먹었나요?", question1.getContent());

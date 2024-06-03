@@ -54,6 +54,15 @@ public class Profile {
         this.room = room;
         this.relation = relation;
         this.keywords = "-";
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    private Profile(User user, Room room, Relation relation, String keywords) {
+        this.user = user;
+        this.room = room;
+        this.relation = relation;
+        this.keywords = keywords;
     }
 
     public static Profile create(
@@ -78,6 +87,20 @@ public class Profile {
                 .build();
     }
 
+    public static Profile create(
+            User user,
+            Room room,
+            Relation relation,
+            String keywords
+    ) {
+        return new Profile(user, room, relation, keywords);
+    }
+
+    public void updateEmotion(Double emotion) {
+        this.emotion = emotion;
+        this.updatedAt = LocalDateTime.now();
+    }
+  
     public void updateProfileInfo(
             String keywords,
             String gender,
@@ -88,5 +111,6 @@ public class Profile {
         this.gender = Gender.valueOf(gender);
         this.ageRange = AgeRange.valueOf(ageRange);
         this.relation = Relation.valueOf(relation);
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -30,3 +30,8 @@ jwt:
   secret-key: ${jwt_secret_key}
   access-token-expire-period: 86400000 # 1일 (밀리초)
   refresh-token-expire-period: 1209600000 # 2주 (밀리초)
+openai:
+  model: gpt-3.5-turbo
+  api:
+    key: ${openai_api_key}
+    url: ${openai_api_url}
