@@ -1,7 +1,8 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.constant.AuthConstant;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.service.auth.AuthService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,13 @@ public class AuthController {
     }
 
     @DeleteMapping("/auth/logout")
-    public ResponseEntity<Void> logout(final Long userId) { // Todo: @UserId로 바꿔치기 필요
+    public ResponseEntity<Void> logout(@UserId final Long userId) {
         authService.logout(userId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/auth/withdrawal")
-    public ResponseEntity<Void> withdrawal(final Long userId) { // Todo: @UserId로 바꿔치기 필요
+    public ResponseEntity<Void> withdrawal(@UserId final Long userId) {
         authService.withdrawal(userId);
         return ResponseEntity.noContent().build();
     }

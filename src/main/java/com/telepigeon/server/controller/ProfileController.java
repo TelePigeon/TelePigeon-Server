@@ -20,25 +20,25 @@ public class ProfileController {
 
     @GetMapping("/rooms/{roomId}/keywords")
     public ResponseEntity<ProfileKeywordsDto> getProfileKeyword(
-            @PathVariable Long roomId,
-            @UserId Long userId
+            @PathVariable final Long roomId,
+            @UserId final Long userId
     ) {
         return ResponseEntity.ok(profileService.getProfileKeywords(roomId, userId));
     }
 
     @GetMapping("/rooms/{roomId}/extra")
     public ResponseEntity<ProfileInfoDto> getProfileExtraInfo(
-            @PathVariable Long roomId,
-            @UserId Long userId
+            @PathVariable final Long roomId,
+            @UserId final Long userId
     ) {
         return ResponseEntity.ok(profileService.getProfileExtraInfo(roomId, userId));
     }
 
     @PutMapping("/rooms/{roomId}")
     public ResponseEntity<Profile> updateProfileInfo(
-            @PathVariable Long roomId,
-            @UserId Long userId,
-            @Valid @RequestBody ProfileDto profileDto
+            @PathVariable final Long roomId,
+            @UserId final Long userId,
+            @Valid @RequestBody final ProfileDto profileDto
     ) {
         return ResponseEntity.ok(profileService.updateProfileInfo(roomId, userId, profileDto));
     }
