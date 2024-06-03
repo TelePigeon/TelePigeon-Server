@@ -2,9 +2,12 @@ package com.telepigeon.server.service.fcm;
 
 import com.google.firebase.messaging.*;
 import com.telepigeon.server.dto.fcm.FcmMessageDto;
+import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.code.BusinessErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 
 @Slf4j
 @Service
@@ -12,14 +15,16 @@ import org.springframework.stereotype.Service;
 public class FcmService {
     private final FirebaseMessaging firebaseMessaging;
 
-    public String sendByToken(final Message message){
+
+    public void send(
+            final String fcmToken,
+            final FcmMessageDto fcmMessageDto
+    ){
+        Message message = createMessage(fcmToken, fcmMessageDto);
         try{
-            String response = firebaseMessaging.send(message);
-            log.info("FcmResponse : " + response);
-            return response;
+            firebaseMessaging.send(message);
         } catch (FirebaseMessagingException e){
-            log.info("FcmExcept : " + e.getMessage());
-            return "fail";
+            throw new BusinessException(BusinessErrorCode.FCM_SERVER_ERROR);
         }
     }
 
