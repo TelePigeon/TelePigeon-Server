@@ -3,7 +3,7 @@ package com.telepigeon.server.dto.profile.response;
 
 import java.util.List;
 
-public record ProfileKeywordDto(
+public record ProfileKeywordsDto(
         List<String> keywords
 ) {
 }

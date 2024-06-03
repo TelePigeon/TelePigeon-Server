@@ -5,7 +5,7 @@ import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
-import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
+import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
 import com.telepigeon.server.dto.type.AgeRange;
 import com.telepigeon.server.dto.type.Gender;
 import com.telepigeon.server.dto.type.Relation;
@@ -71,7 +71,7 @@ public class ProfileServiceTest {
         when(profileRetriever.findByUserAndRoom(user, room)).thenReturn(profile);
 
         // When
-        ProfileKeywordDto profileKeyword = profileService.getProfileKeyword(roomId, userId);
+        ProfileKeywordsDto profileKeyword = profileService.getProfileKeywords(roomId, userId);
 
         // Then
         Assertions.assertThat(profileKeyword.keywords()).isEqualTo(keywordList);

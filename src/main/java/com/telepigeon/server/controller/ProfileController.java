@@ -4,7 +4,7 @@ import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
-import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
+import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
 import com.telepigeon.server.service.profile.ProfileService;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
@@ -19,11 +19,11 @@ public class ProfileController {
     private final ProfileService profileService;
 
     @GetMapping("/rooms/{roomId}/keywords")
-    public ResponseEntity<ProfileKeywordDto> getProfileKeyword(
+    public ResponseEntity<ProfileKeywordsDto> getProfileKeyword(
             @PathVariable Long roomId,
             @UserId Long userId
     ) {
-        return ResponseEntity.ok(profileService.getProfileKeyword(roomId, userId));
+        return ResponseEntity.ok(profileService.getProfileKeywords(roomId, userId));
     }
 
     @GetMapping("/rooms/{roomId}/extra")

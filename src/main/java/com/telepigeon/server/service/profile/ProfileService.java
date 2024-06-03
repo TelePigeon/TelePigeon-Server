@@ -5,7 +5,7 @@ import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.Users;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
-import com.telepigeon.server.dto.profile.response.ProfileKeywordDto;
+import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +26,13 @@ public class ProfileService {
     private final ProfileSaver profileSaver;
 
     @Transactional(readOnly = true)
-    public ProfileKeywordDto getProfileKeyword(final Long roomId, final Long userId) {
+    public ProfileKeywordsDto getProfileKeywords(final Long roomId, final Long userId) {
         Room room = roomRetriever.findById(roomId);
         Users user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
 
         List<String> keywords = Arrays.asList(profile.getKeywords().split(","));
-        return new ProfileKeywordDto(keywords);
+        return new ProfileKeywordsDto(keywords);
     }
 
     @Transactional(readOnly = true)
