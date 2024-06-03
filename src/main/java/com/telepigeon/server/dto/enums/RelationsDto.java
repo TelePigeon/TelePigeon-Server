@@ -1,4 +1,4 @@
-package com.telepigeon.server.dto.common;
+package com.telepigeon.server.dto.enums;
 
 import java.util.List;
 
