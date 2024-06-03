@@ -59,7 +59,7 @@ public class KakaoService {
 
         return restClient.get()
                 .uri(kakaoUserInfoUrl)
-                .header(AuthConstant.AUTHORIZATION_HEADER, AuthConstant.AUTHORIZATION_HEADER + token)
+                .header(AuthConstant.AUTHORIZATION_HEADER, AuthConstant.BEARER_PREFIX + token)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
                     throw new UnAuthorizedException(UnAuthorizedErrorCode.INVALID_KAKAO_TOKEN);
