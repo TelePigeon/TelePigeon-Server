@@ -12,8 +12,21 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
   data:
     redis:
       host: ${redis_host}
       port: ${redis_port}
+    naver:
+      clientId: ${naver_clientId}
+      clientSecret: ${naver_clientSecret}
+      url: ${naver_url}
+kakao:
+  admin-key: ${kakao_admin_key}
+  user-info-url: https://kapi.kakao.com/v2/user/me
+  unlink-url: https://kapi.kakao.com/v1/user/unlink
+
+jwt:
+  secret-key: ${jwt_secret_key}
+  access-token-expire-period: 86400000 # 1일 (밀리초)
+  refresh-token-expire-period: 1209600000 # 2주 (밀리초)

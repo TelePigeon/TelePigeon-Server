@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FcmService {
     private final FirebaseMessaging firebaseMessaging;
-    public String sendByToken(Message message){
+
+    public String sendByToken(final Message message){
         try{
             String response = firebaseMessaging.send(message);
             log.info("FcmResponse : " + response);
@@ -21,9 +22,10 @@ public class FcmService {
             return "fail";
         }
     }
+
     public Message createMessage(
-            String fcmToken,
-            FcmMessageDto fcmMessageDto
+            final String fcmToken,
+            final FcmMessageDto fcmMessageDto
     ){
         return Message.builder()
                 .setToken(fcmToken)
