@@ -66,7 +66,7 @@ public class Profile {
                 .build();
     }
 
-    public static Profile createTest(
+    public static Profile create(
             User user,
             Room room,
             Relation relation

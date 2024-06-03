@@ -2,7 +2,7 @@ package com.telepigeon.server.profileTest;
 
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
@@ -59,7 +59,7 @@ public class ProfileServiceTest {
         Long userId = 1L;
         Long roomId = 1L;
 
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Room room = Mockito.mock(Room.class);
         Profile profile = Mockito.mock(Profile.class);
         String keyword = "one,two,three";
@@ -84,7 +84,7 @@ public class ProfileServiceTest {
         Long userId = 1L;
         Long roomId = 1L;
 
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Room room = Mockito.mock(Room.class);
         Profile profile = Mockito.mock(Profile.class);
         Gender gender = Gender.MALE;
@@ -114,7 +114,7 @@ public class ProfileServiceTest {
         Long userId = 1L;
         Long roomId = 1L;
 
-        Users user = Mockito.mock(Users.class);
+        User user = Mockito.mock(User.class);
         Room room = Mockito.mock(Room.class);
         Profile profile = Mockito.mock(Profile.class);
         Gender gender = Gender.MALE;

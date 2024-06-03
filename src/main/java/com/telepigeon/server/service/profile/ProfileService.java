@@ -2,7 +2,7 @@ package com.telepigeon.server.service.profile;
 
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
-import com.telepigeon.server.domain.Users;
+import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
@@ -28,7 +28,7 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileKeywordsDto getProfileKeywords(final Long roomId, final Long userId) {
         Room room = roomRetriever.findById(roomId);
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
 
         List<String> keywords = Arrays.asList(profile.getKeywords().split(","));
@@ -38,7 +38,7 @@ public class ProfileService {
     @Transactional(readOnly = true)
     public ProfileInfoDto getProfileExtraInfo(final Long roomId, final Long userId) {
         Room room = roomRetriever.findById(roomId);
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
         String gender = profile.getGender()!=null?profile.getGender().getContent():"-";
         String ageRange = profile.getAgeRange()!=null?profile.getAgeRange().getContent():"-";
@@ -58,7 +58,7 @@ public class ProfileService {
             final ProfileDto profileDto
     ) {
         Room room = roomRetriever.findById(roomId);
-        Users user = userRetriever.findById(userId);
+        User user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
 
         String keywords = "";
