@@ -10,7 +10,7 @@ public class AuthConstant {
             "/api/v1/auth/login/kakao",
             "/api/v1/test/**",
             // generated
-            "actuator/health"
+            "/actuator/health"
     };
 
     private AuthConstant() {

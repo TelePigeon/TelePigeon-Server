@@ -22,19 +22,19 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(kakaoToken));
     }
 
-    @DeleteMapping("auth/logout")
+    @DeleteMapping("/auth/logout")
     public ResponseEntity<Void> logout(final Long userId) { // Todo: @UserId로 바꿔치기 필요
         authService.logout(userId);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("auth/withdrawal")
+    @DeleteMapping("/auth/withdrawal")
     public ResponseEntity<Void> withdrawal(final Long userId) { // Todo: @UserId로 바꿔치기 필요
         authService.withdrawal(userId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("auth/reissue")
+    @PostMapping("/auth/reissue")
     public ResponseEntity<JwtTokensDto> reissue(
             @NotNull @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) final String Authorization
     ) {
