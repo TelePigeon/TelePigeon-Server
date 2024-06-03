@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface TokenRepository extends CrudRepository<Token, Long> {
 
-    Optional<Long> findIdByRefreshToken(String refreshToken);
+    Optional<Token> findIdByRefreshToken(String refreshToken);
 }

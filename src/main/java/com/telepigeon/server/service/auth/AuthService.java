@@ -1,5 +1,6 @@
 package com.telepigeon.server.service.auth;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.JwtTokensDto;
@@ -50,9 +51,10 @@ public class AuthService {
 
     @Transactional
     public JwtTokensDto reissue(final String Authorization) {
-        Long userId = tokenRetreiver.findIdByRefreshToken(Authorization.substring("Bearer ".length()));
-        JwtTokensDto tokens = jwtUtil.generateTokens(userId);
-        tokenSaver.save(Token.create(userId, tokens.refreshToken()));
+        Token token = tokenRetreiver.findIdByRefreshToken(
+                Authorization.substring(AuthConstant.BEARER_PREFIX.length()));
+        JwtTokensDto tokens = jwtUtil.generateTokens(token.getId());
+        tokenSaver.save(Token.create(token.getId(), tokens.refreshToken()));
         return tokens;
     }
 

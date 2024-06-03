@@ -1,8 +1,7 @@
 package com.telepigeon.server.utils;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.dto.auth.JwtTokensDto;
-import com.telepigeon.server.exception.UnAuthorizedException;
-import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -30,7 +29,7 @@ public class JwtUtil implements InitializingBean {
     private Key key;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -43,7 +42,7 @@ public class JwtUtil implements InitializingBean {
 
     private String generateToken(Long id, Integer expirePeriod) {
         Claims claims = Jwts.claims();
-        claims.put("uid", id);
+        claims.put(AuthConstant.USER_ID_CLAIM_NAME, id);
 
         return Jwts.builder()
                 .setHeaderParam(Header.JWT_TYPE, Header.JWT_TYPE)
@@ -55,20 +54,10 @@ public class JwtUtil implements InitializingBean {
     }
 
     public Claims getTokenBody(String token){
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (MalformedJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.INVALID_JWT);
-        } catch (ExpiredJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.EXPIRED_JWT);
-        } catch (UnsupportedJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.UNSUPPORTED_JWT);
-        } catch (IllegalArgumentException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.JWT_IS_EMPTY);
-        }
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
