@@ -1,9 +1,9 @@
 package com.telepigeon.server.controller;
 
-import com.telepigeon.server.dto.common.AgeRangesDto;
-import com.telepigeon.server.dto.common.GenderDto;
-import com.telepigeon.server.dto.common.KeywordsDto;
-import com.telepigeon.server.dto.common.RelationsDto;
+import com.telepigeon.server.dto.enums.AgeRangesDto;
+import com.telepigeon.server.dto.enums.GenderDto;
+import com.telepigeon.server.dto.enums.KeywordsDto;
+import com.telepigeon.server.dto.enums.RelationsDto;
 import com.telepigeon.server.service.commons.CommonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

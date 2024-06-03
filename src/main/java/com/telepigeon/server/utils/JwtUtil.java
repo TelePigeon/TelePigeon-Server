@@ -34,13 +34,13 @@ public class JwtUtil implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtTokensDto generateTokens(Long id) {
+    public JwtTokensDto generateTokens(final Long id) {
         return JwtTokensDto.of(
                 generateToken(id, accessTokenExpirePeriod),
                 generateToken(id, refreshTokenExpirePeriod));
     }
 
-    private String generateToken(Long id, Integer expirePeriod) {
+    private String generateToken(final Long id, final Integer expirePeriod) {
         Claims claims = Jwts.claims();
         claims.put(AuthConstant.USER_ID_CLAIM_NAME, id);
 
@@ -53,7 +53,7 @@ public class JwtUtil implements InitializingBean {
                 .compact();
     }
 
-    public Claims getTokenBody(String token){
+    public Claims getTokenBody(final String token){
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 public class ProfileUpdater {
 
     public void updateProfileInfo(
-            Profile profile,
-            String keywords,
-            String gender,
-            String ageRange,
-            String relation
+            final Profile profile,
+            final String keywords,
+            final String gender,
+            final String ageRange,
+            final String relation
     ) {
         profile.updateProfileInfo(keywords, gender, ageRange, relation);
     }
