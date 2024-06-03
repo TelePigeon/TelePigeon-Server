@@ -1,12 +1,15 @@
 package com.telepigeon.server.service.question;
 
 import com.telepigeon.server.domain.*;
+import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
+import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.fcm.FcmService;
 import com.telepigeon.server.service.hurry.HurryRemover;
 import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.openAi.OpenAiService;
@@ -35,6 +38,7 @@ public class QuestionService {
     private final HurryRetriever hurryRetriever;
     private final HurryRemover hurryRemover;
     private final OpenAiService openAiService;
+    private final FcmService fcmService;
 
     @Scheduled(cron="0 0 12 * * *")
     public void createSchedule(){
@@ -71,7 +75,13 @@ public class QuestionService {
             );
             hurryRemover.remove(hurry);
         }
-        //fcm 나중에 연결 예정
+        fcmService.send(
+                receiver.getUser().getFcmToken(),
+                FcmMessageDto.of(
+                        FcmContent.QUESTION,
+                        profile.getRoom().getId()
+                )
+        );
         return question;
     }
 

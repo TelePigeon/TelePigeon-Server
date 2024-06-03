@@ -4,11 +4,14 @@ import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.User;
+import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.dto.question.response.GetLastQuestionDto;
+import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.fcm.FcmService;
 import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -57,6 +60,9 @@ public class QuestionServiceTest {
     @Mock
     private HurryRetriever hurryRetriever;
 
+    @Mock
+    private FcmService fcmService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -82,6 +88,13 @@ public class QuestionServiceTest {
                 room.getId(),
                 receiver.getUser().getId()
         )).thenReturn(false);
+        Mockito.doNothing().when(fcmService).send(
+                "abcde",
+                FcmMessageDto.of(
+                        FcmContent.QUESTION,
+                        1L
+                )
+        );
         Question question1 = questionService.create(profile);
         Assertions.assertEquals(question.getProfile(), question1.getProfile());
         Assertions.assertEquals("밥은 먹었나요?", question1.getContent());
@@ -121,6 +134,13 @@ public class QuestionServiceTest {
                 room.getId(),
                 receiver.getUser().getId()
         )).thenReturn(false);
+        Mockito.doNothing().when(fcmService).send(
+                "abcde",
+                FcmMessageDto.of(
+                        FcmContent.QUESTION,
+                        1L
+                )
+        );
         Question question1 = questionService.create(profile);
         Assertions.assertEquals(question.getProfile(), question1.getProfile());
         Assertions.assertEquals("밥은 먹었나요?", question1.getContent());
