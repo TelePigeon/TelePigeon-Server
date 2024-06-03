@@ -4,9 +4,12 @@ import com.telepigeon.server.domain.*;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
+import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
+import com.telepigeon.server.dto.type.FcmContent;
+import com.telepigeon.server.service.fcm.FcmService;
 import com.telepigeon.server.service.naverCloud.NaverCloudService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.hurry.HurryRetriever;
@@ -35,6 +38,7 @@ public class AnswerService {
     private final QuestionRetriever questionRetriever;
     private final HurryRetriever hurryRetriever;
     private final NaverCloudService naverCloudService;
+    private final FcmService fcmService;
 
     @Transactional
     public String create(
@@ -56,6 +60,14 @@ public class AnswerService {
                         naverCloudService.getConfidence(
                                 ConfidenceCreateDto.of(answer.getContent())
                         )
+                )
+        );
+        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        fcmService.send(
+                receiver.getUser().getFcmToken(),
+                FcmMessageDto.of(
+                        FcmContent.ANSWER,
+                        roomId
                 )
         );
         return answer.getId().toString();

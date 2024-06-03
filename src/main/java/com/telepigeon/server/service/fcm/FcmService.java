@@ -25,7 +25,7 @@ public class FcmService {
         }
     }
 
-    public Message createMessage(
+    private Message createMessage(
             final String fcmToken,
             final FcmMessageDto fcmMessageDto
     ){
