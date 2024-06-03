@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -52,6 +53,7 @@ public class Profile {
         this.user = user;
         this.room = room;
         this.relation = relation;
+        this.keywords = "-";
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
@@ -73,7 +75,7 @@ public class Profile {
                 .build();
     }
 
-    public static Profile createTest(
+    public static Profile create(
             User user,
             Room room,
             Relation relation
@@ -94,9 +96,21 @@ public class Profile {
         return new Profile(user, room, relation, keywords);
     }
 
-
     public void updateEmotion(Double emotion) {
         this.emotion = emotion;
+        this.updatedAt = LocalDateTime.now();
+    }
+  
+    public void updateProfileInfo(
+            String keywords,
+            String gender,
+            String ageRange,
+            String relation
+    ) {
+        this.keywords = keywords;
+        this.gender = Gender.valueOf(gender);
+        this.ageRange = AgeRange.valueOf(ageRange);
+        this.relation = Relation.valueOf(relation);
         this.updatedAt = LocalDateTime.now();
     }
 }
