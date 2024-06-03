@@ -20,9 +20,9 @@ public class HurryController {
 
     @PostMapping("/rooms/{roomId}/hurries")
     public ResponseEntity<Void> create(
-            @UserId Long userId,
-            @PathVariable Long roomId
-    ){
+            @UserId final Long userId,
+            @PathVariable final Long roomId
+    ) {
         hurryService.create(userId, roomId);
         return ResponseEntity.created(URI.create("/hurry/")).build();
     }

@@ -23,28 +23,28 @@ public class RoomController {
 
     @PostMapping("/rooms")
     public ResponseEntity<Void> createRoom(
-            @UserId Long userId,
-            @Valid @RequestBody RoomCreateDto roomCreateDto
-            ) {
+            @UserId final Long userId,
+            @Valid @RequestBody final RoomCreateDto roomCreateDto
+    ) {
         Room createdRoom = roomService.createRoom(roomCreateDto, userId);
         URI location = URI.create("/rooms/" + createdRoom.getId());
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/rooms")
-    public ResponseEntity<RoomListDto> getAllRooms(@UserId Long userId) {
+    public ResponseEntity<RoomListDto> getAllRooms(@UserId final Long userId) {
         return ResponseEntity.ok(roomService.getAllRooms(userId));
     }
 
     @GetMapping("/rooms/{roomId}/info")
-    public ResponseEntity<RoomInfoDto> getRoomInfo(@PathVariable Long roomId) {
+    public ResponseEntity<RoomInfoDto> getRoomInfo(@PathVariable final Long roomId) {
         return ResponseEntity.ok(roomService.getRoomInfo(roomId));
     }
 
     @PostMapping("/rooms/entrance")
     public ResponseEntity<Void> enterRoom(
-            @UserId Long userId,
-            @Valid @RequestBody RoomEnterDto roomEnterDto
+            @UserId final Long userId,
+            @Valid @RequestBody final RoomEnterDto roomEnterDto
     ) {
         Profile createProfile = roomService.enterRoom(roomEnterDto, userId);
         return ResponseEntity.created(URI.create("/profiles/" + createProfile.getId())).build();
@@ -52,8 +52,8 @@ public class RoomController {
 
     @DeleteMapping("/rooms/{roomId}")
     public ResponseEntity<Room> deleteRoom(
-            @UserId Long userId,
-            @PathVariable Long roomId
+            @UserId final Long userId,
+            @PathVariable final Long roomId
     ) {
         return ResponseEntity.ok(roomService.deleteRoom(roomId, userId));
     }

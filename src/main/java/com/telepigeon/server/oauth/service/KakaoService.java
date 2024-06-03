@@ -2,7 +2,7 @@ package com.telepigeon.server.oauth.service;
 
 import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.User;
-import com.telepigeon.server.dto.auth.KakaoUnlinkDto;
+import com.telepigeon.server.dto.oauth.request.KakaoUnlinkDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.UnAuthorizedException;

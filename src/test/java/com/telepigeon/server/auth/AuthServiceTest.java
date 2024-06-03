@@ -1,7 +1,7 @@
 package com.telepigeon.server.auth;
 
 import com.telepigeon.server.domain.User;
-import com.telepigeon.server.dto.auth.JwtTokensDto;
+import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.exception.UnAuthorizedException;
 import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;

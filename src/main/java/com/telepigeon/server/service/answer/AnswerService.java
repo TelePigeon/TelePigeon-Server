@@ -5,7 +5,7 @@ import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
 import com.telepigeon.server.dto.fcm.FcmMessageDto;
-import com.telepigeon.server.dto.naverCloud.ConfidenceCreateDto;
+import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.dto.type.FcmContent;

@@ -70,7 +70,7 @@ public class RoomService {
     }
 
     @Transactional(readOnly = true)
-    public RoomListDto.RoomDto createRoomDto(User user, Room room) {
+    public RoomListDto.RoomDto createRoomDto(final User user, final Room room) {
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
         Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);

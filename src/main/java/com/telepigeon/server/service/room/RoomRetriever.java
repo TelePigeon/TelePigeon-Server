@@ -14,7 +14,7 @@ public class RoomRetriever {
 
     private final RoomRepository roomRepository;
 
-    public boolean existsByName(String name) {
+    public boolean existsByName(final String name) {
         return roomRepository.existsByName(name);
     }
 

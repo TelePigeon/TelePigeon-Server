@@ -11,7 +11,7 @@ public class ProfileSaver {
 
     private final ProfileRepository profileRepository;
 
-    public Profile save(Profile profile) {
+    public Profile save(final Profile profile) {
         return profileRepository.save(profile);
     }
 }

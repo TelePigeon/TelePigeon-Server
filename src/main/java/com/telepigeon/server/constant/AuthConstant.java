@@ -9,6 +9,10 @@ public class AuthConstant {
     public static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/login/kakao",
             "/api/v1/test/**",
+            "/api/v1/keywords",
+            "/api/v1/genders",
+            "/api/v1/age-ranges",
+            "/api/v1/relations",
             // generated
             "/actuator/health"
     };

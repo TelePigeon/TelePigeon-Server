@@ -1,8 +1,8 @@
 package com.telepigeon.server.service.naverCloud;
 
-import com.telepigeon.server.dto.naverCloud.ConfidenceCreateDto;
+import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
-import com.telepigeon.server.dto.naverCloud.NaverCloudDto;
+import com.telepigeon.server.dto.naverCloud.response.NaverCloudDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.IllegalArgumentException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;

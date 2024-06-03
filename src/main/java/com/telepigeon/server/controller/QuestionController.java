@@ -15,8 +15,8 @@ public class QuestionController {
 
     @GetMapping("/rooms/{roomId}/questions")
     public ResponseEntity<GetLastQuestionDto> getLastQuestion(
-            @UserId Long userId,
-            @PathVariable Long roomId
+            @UserId final Long userId,
+            @PathVariable final Long roomId
     ) {
         return ResponseEntity.ok(questionService.findLastQuestion(userId, roomId));
     }

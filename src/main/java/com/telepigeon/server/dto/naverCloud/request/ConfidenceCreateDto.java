@@ -1,4 +1,4 @@
-package com.telepigeon.server.dto.naverCloud;
+package com.telepigeon.server.dto.naverCloud.request;
 
 public record ConfidenceCreateDto(
         String content
