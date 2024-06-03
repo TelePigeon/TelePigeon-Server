@@ -11,11 +11,13 @@ public enum UnAuthorizedErrorCode implements DefaultErrorCode{
     //external
     INVALID_KAKAO_TOKEN(HttpStatus.UNAUTHORIZED, "error", "카카오 토큰이 유효하지 않습니다."),
     //internal
-    INVALID_JWT(HttpStatus.UNAUTHORIZED, "error", "유효하지 않은 토큰입니다."),
-    EXPIRED_JWT(HttpStatus.UNAUTHORIZED, "error", "만료된 토큰입니다."),
-    UNSUPPORTED_JWT(HttpStatus.UNAUTHORIZED, "error", "지원하지 않는 토큰입니다."),
-    JWT_IS_EMPTY(HttpStatus.UNAUTHORIZED, "error", "토큰이 비어있습니다."),
-    INVALID_TOKEN_TYPE(HttpStatus.UNAUTHORIZED, "error", "유효하지 않은 토큰 타입입니다."),
+    TOKEN_TYPE_ERROR(HttpStatus.UNAUTHORIZED, "error", "토큰 타입이 잘못되거나 제공되지 않았습니다."),
+    TOKEN_MALFORMED_ERROR(HttpStatus.UNAUTHORIZED, "error", "유효하지 않은 토큰입니다."),
+    TOKEN_EXPIRED_ERROR(HttpStatus.UNAUTHORIZED, "error", "만료된 토큰입니다."),
+    TOKEN_UNSUPPORTED_ERROR(HttpStatus.UNAUTHORIZED, "error", "지원하지 않는 토큰입니다."),
+    TOKEN_UNKNOWN_ERROR(HttpStatus.UNAUTHORIZED, "error", "알 수 없는 토큰입니다."),
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "error", "인증되지 않은 사용자입니다.")
+
     ;
 
     @JsonIgnore

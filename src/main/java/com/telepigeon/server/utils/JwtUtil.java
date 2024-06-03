@@ -29,7 +29,7 @@ public class JwtUtil implements InitializingBean {
     private Key key;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -54,20 +54,10 @@ public class JwtUtil implements InitializingBean {
     }
 
     public Claims getTokenBody(String token){
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (MalformedJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.INVALID_JWT);
-        } catch (ExpiredJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.EXPIRED_JWT);
-        } catch (UnsupportedJwtException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.UNSUPPORTED_JWT);
-        } catch (IllegalArgumentException ex) {
-            throw new UnAuthorizedException(UnAuthorizedErrorCode.JWT_IS_EMPTY);
-        }
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
