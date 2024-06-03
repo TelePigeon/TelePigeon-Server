@@ -3,7 +3,6 @@ package com.telepigeon.server.security.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telepigeon.server.dto.common.ResponseDto;
 import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
