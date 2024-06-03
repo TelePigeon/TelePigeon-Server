@@ -1,10 +1,16 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.dto.TestDto;
+import com.telepigeon.server.dto.auth.JwtTokensDto;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.service.auth.TokenSaver;
+import com.telepigeon.server.utils.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +18,11 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class TestController {
+
+    private final JwtUtil jwtUtil;
+    private final TokenSaver tokenSaver;
 
     @GetMapping("/test")
     public String test() {
@@ -37,5 +47,12 @@ public class TestController {
     @GetMapping("/test/exception2")
     public void testException() {
         throw new RuntimeException();
+    }
+
+    @GetMapping("/test/token/{userId}")
+    public ResponseEntity<JwtTokensDto> generateToken(@PathVariable Long userId) {
+        JwtTokensDto tokens = jwtUtil.generateTokens(userId);
+        tokenSaver.save(Token.create(userId, tokens.refreshToken()));
+        return ResponseEntity.ok(tokens);
     }
 }
