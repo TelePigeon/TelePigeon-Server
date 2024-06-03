@@ -1,8 +1,7 @@
 package com.telepigeon.server.utils;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.dto.auth.JwtTokensDto;
-import com.telepigeon.server.exception.UnAuthorizedException;
-import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -43,7 +42,7 @@ public class JwtUtil implements InitializingBean {
 
     private String generateToken(Long id, Integer expirePeriod) {
         Claims claims = Jwts.claims();
-        claims.put("uid", id);
+        claims.put(AuthConstant.USER_ID_CLAIM_NAME, id);
 
         return Jwts.builder()
                 .setHeaderParam(Header.JWT_TYPE, Header.JWT_TYPE)

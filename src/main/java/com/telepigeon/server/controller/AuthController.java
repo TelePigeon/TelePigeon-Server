@@ -1,5 +1,6 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.dto.auth.JwtTokensDto;
 import com.telepigeon.server.service.auth.AuthService;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/auth/login/kakao")
     public ResponseEntity<JwtTokensDto> KakaoLogin(
-            @NotNull @RequestHeader("Authorization") final String kakaoToken
+            @NotNull @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) final String kakaoToken
     ) {
         return ResponseEntity.ok(authService.login(kakaoToken));
     }
@@ -35,7 +36,7 @@ public class AuthController {
 
     @PostMapping("auth/reissue")
     public ResponseEntity<JwtTokensDto> reissue(
-            @NotNull @RequestHeader("Authorization") final String Authorization
+            @NotNull @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) final String Authorization
     ) {
         return ResponseEntity.ok(authService.reissue(Authorization));
     }

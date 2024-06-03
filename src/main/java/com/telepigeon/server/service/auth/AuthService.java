@@ -1,5 +1,6 @@
 package com.telepigeon.server.service.auth;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.JwtTokensDto;

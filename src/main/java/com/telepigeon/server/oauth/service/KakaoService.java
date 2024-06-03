@@ -1,5 +1,6 @@
 package com.telepigeon.server.oauth.service;
 
+import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.KakaoUnlinkDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
@@ -41,7 +42,7 @@ public class KakaoService {
         KakaoUnlinkDto unlinkRequest = KakaoUnlinkDto.of(Long.getLong(user.getSerialId()));
         restClient.post()
                 .uri(kakaoUnlinkUrl)
-                .header("Authorization", "KakaoAK " + kakaoAdminKey)
+                .header(AuthConstant.AUTHORIZATION_HEADER, "KakaoAK " + kakaoAdminKey)
                 .body(unlinkRequest)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
@@ -58,7 +59,7 @@ public class KakaoService {
 
         return restClient.get()
                 .uri(kakaoUserInfoUrl)
-                .header("Authorization", "Bearer " + token)
+                .header(AuthConstant.AUTHORIZATION_HEADER, AuthConstant.AUTHORIZATION_HEADER + token)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
                     throw new UnAuthorizedException(UnAuthorizedErrorCode.INVALID_KAKAO_TOKEN);
