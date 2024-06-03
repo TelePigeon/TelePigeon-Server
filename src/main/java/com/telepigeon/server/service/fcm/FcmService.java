@@ -5,16 +5,13 @@ import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 
-@Slf4j
-@Service
+@Component
 @RequiredArgsConstructor
 public class FcmService {
     private final FirebaseMessaging firebaseMessaging;
-
 
     public void send(
             final String fcmToken,
