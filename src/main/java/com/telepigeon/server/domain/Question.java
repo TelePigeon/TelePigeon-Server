@@ -18,6 +18,8 @@ public class Question {
 
     private String content;
 
+    private String keyword;
+
     private LocalDateTime createdAt;
 
     @ManyToOne(targetEntity=Profile.class, fetch=FetchType.LAZY)
@@ -25,19 +27,23 @@ public class Question {
     private Profile profile;
 
     public static Question create(
+            String keyword,
             String content,
             Profile profile
     ){
         return new Question(
+                keyword,
                 content,
                 profile
         );
     }
 
     private Question(
+            String keyword,
             String content,
             Profile profile
     ) {
+        this.keyword = keyword;
         this.content = content;
         this.profile = profile;
         this.createdAt = LocalDateTime.now();

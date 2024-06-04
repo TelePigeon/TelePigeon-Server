@@ -1,18 +1,22 @@
 package com.telepigeon.server.service.room;
 
 import com.telepigeon.server.domain.*;
+import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.dto.room.request.RoomCreateDto;
 import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
+import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
+import com.telepigeon.server.service.fcm.FcmService;
 import com.telepigeon.server.service.profile.ProfileRemover;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
 import com.telepigeon.server.service.question.QuestionRemover;
 import com.telepigeon.server.service.question.QuestionRetriever;
+import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
 import com.telepigeon.server.service.worry.WorryRetriever;
@@ -40,6 +44,8 @@ public class RoomService {
     private final QuestionRemover questionRemover;
     private final WorryRemover worryRemover;
     private final AnswerRemover answerRemover;
+    private final QuestionSaver questionSaver;
+    private final FcmService fcmService;
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
@@ -50,8 +56,7 @@ public class RoomService {
         Room room = Room.create(roomCreateDto, code);
         Room savedRoom = roomSaver.save(room);
 
-        Profile profile = Profile.create(user, savedRoom);
-        Profile savedProfile = profileSaver.save(profile);
+        profileSaver.save(Profile.create(user, savedRoom));
 
         return savedRoom;
     }
@@ -114,8 +119,11 @@ public class RoomService {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findByCode(roomEnterDto.code());
 
-        Profile profile = Profile.create(user, room);
-        return profileSaver.save(profile);
+        Profile profile = profileSaver.save(Profile.create(user, room));
+        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        sendQuestionFirst(receiver, profile);
+        sendQuestionFirst(profile, receiver);
+        return profile;
     }
 
     @Transactional
@@ -152,5 +160,17 @@ public class RoomService {
 
 
         return code;
+    }
+    private void sendQuestionFirst(Profile profile, Profile receiver){
+        String content = "오늘 기분은 어때?(키워드를 설정해 질문을 보낼 수 있어요)";
+        questionSaver.create(Question.create(null, content, profile));
+        fcmService.send(
+                receiver.getUser().getFcmToken(),
+                FcmMessageDto.of(
+                        FcmContent.QUESTION,
+                        profile.getRoom().getId()
+                )
+        );
+
     }
 }

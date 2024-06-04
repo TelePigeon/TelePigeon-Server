@@ -24,6 +24,8 @@ public class Answer {
 
     private boolean isViewed;
 
+    private Double emotion;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -38,12 +40,14 @@ public class Answer {
 
     public static Answer create(
             AnswerCreateDto answerCreateDto,
+            Double emotion,
             Question question,
             Profile profile
     ){
         return new Answer(
                 answerCreateDto.content(),
                 answerCreateDto.image(),
+                emotion,
                 question,
                 profile);
     }
@@ -51,11 +55,13 @@ public class Answer {
     private Answer(
             String content,
             String image,
+            Double emotion,
             Question question,
             Profile profile
     ) {
         this.content = content;
         this.image = image;
+        this.emotion = emotion;
         this.question = question;
         this.profile = profile;
         this.isViewed = false;

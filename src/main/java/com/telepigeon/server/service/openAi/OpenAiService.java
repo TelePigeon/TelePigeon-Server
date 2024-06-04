@@ -14,7 +14,6 @@ import org.springframework.web.client.RestClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 @Component
 public class OpenAiService {
@@ -27,9 +26,8 @@ public class OpenAiService {
 
     public String createQuestion(
             final String relation,
-            final List<String> keywords
+            final String keyword
     ) {
-        String keyword = keywords.get(new Random().nextInt(keywords.size()));
         QuestionCreateDto questionCreateDto = QuestionCreateDto.of(model, createPrompt(relation, keyword));
         RestClient restClient = RestClient.create();
         OpenAiResponseDto response = restClient.post()

@@ -2,6 +2,7 @@ package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
+import com.telepigeon.server.dto.answer.response.MonthlyKeywordsDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.exception.IllegalArgumentException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class AnswerController {
                                 roomId,
                                 questionId,
                                 answerCreateDto
-                        )
+                        ).getId()
                 )
         ).build();
     }
@@ -66,6 +68,17 @@ public class AnswerController {
     ) {
         return ResponseEntity.ok(
                 answerService.getRoomState(userId, roomId)
+        );
+    }
+
+    @GetMapping("/rooms/{roomId}/reports")
+    ResponseEntity<MonthlyKeywordsDto> getMonthlyKeywords(
+            @UserId final Long userId,
+            @PathVariable final Long roomId,
+            @RequestParam final YearMonth date
+            ) {
+        return ResponseEntity.ok(
+                answerService.getMonthlyKeywords(userId, roomId, date)
         );
     }
 }

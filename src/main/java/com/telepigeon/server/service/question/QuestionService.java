@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -55,16 +57,25 @@ public class QuestionService {
         Question prevQuestion = questionRetriever.findFirstByProfile(profile);  //최근 질문 가져오기
         if (
                 prevQuestion != null &&
-                        !answerRetriever.existsByQuestion(prevQuestion)
-        ) { //최근 질문이 있지만 답장이 없는 경우
+                        (!answerRetriever.existsByQuestion(prevQuestion) ||
+                                prevQuestion.getCreatedAt().toLocalDate().isEqual(LocalDate.now())
+                        )
+        ) { //최근 질문이 있지만 답장이 없는 경우 혹은 오늘 질문을 보냈을 경우
             throw new BusinessException(BusinessErrorCode.QUESTION_ALREADY_EXISTS);
         }
+        if (Objects.equals(profile.getKeywords(), "-")){
+            throw new NotFoundException(NotFoundErrorCode.KEYWORD_NOT_FOUND);
+        }
+        String keyword = getRandomKeyword(profile);
         String content = openAiService.createQuestion(
                 receiver.getRelation().getContent(),
-                Arrays.stream(profile.getKeywords().split(",")).toList()
+                keyword
         );
-        Question question = Question.create(content, profile);
-        questionSaver.create(question);
+        Question question = questionSaver.create(Question.create(
+                keyword,
+                content,
+                profile
+        ));
         if (hurryRetriever.existsByRoomIdAndSenderId(
                 profile.getRoom().getId(),
                 receiver.getUser().getId()
@@ -110,4 +121,18 @@ public class QuestionService {
         return days > 3;
     }
 
+    private String getRandomKeyword(final Profile profile){
+        List<String> keywords = Arrays.stream(profile.getKeywords().split(",")).toList();
+        List<String> alreadyKeywords = questionRetriever.findKeywordsByProfile(
+                profile.getId(),
+                keywords.size()
+        );
+        int i = 0;
+        for ( ; i < keywords.size(); i++) {
+            if (!alreadyKeywords.contains(keywords.get(i)) || i == keywords.size() - 1) {
+                break;
+            }
+        }
+        return keywords.get(i);
+    }
 }

@@ -1,7 +1,9 @@
 package com.telepigeon.server.service.answer;
 
 import com.telepigeon.server.domain.*;
+import com.telepigeon.server.dto.answer.RankAnswerDto;
 import com.telepigeon.server.dto.answer.request.AnswerCreateDto;
+import com.telepigeon.server.dto.answer.response.MonthlyKeywordsDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerDto;
 import com.telepigeon.server.dto.answer.response.QuestionAnswerListDto;
 import com.telepigeon.server.dto.fcm.FcmMessageDto;
@@ -22,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Collections;
+import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -41,7 +45,7 @@ public class AnswerService {
     private final FcmService fcmService;
 
     @Transactional
-    public String create(
+    public Answer create(
             final Long userId,
             final Long roomId,
             final Long questionId,
@@ -51,15 +55,17 @@ public class AnswerService {
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
         Question question = questionRetriever.findById(questionId);
+        ConfidenceDto confidence = naverCloudService.getConfidence(
+                ConfidenceCreateDto.of(answerCreateDto.content())
+        );
+        Double emotion = (confidence.positive() - confidence.negative()) * 0.01;
         Answer answer = answerSaver.create(
-                Answer.create(answerCreateDto, question, profile)
+                Answer.create(answerCreateDto, emotion, question, profile)
         );
         profile.updateEmotion(
                 CalculateEmotion(
                         profile.getEmotion(),
-                        naverCloudService.getConfidence(
-                                ConfidenceCreateDto.of(answer.getContent())
-                        )
+                        emotion
                 )
         );
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
@@ -70,7 +76,7 @@ public class AnswerService {
                         roomId
                 )
         );
-        return answer.getId().toString();
+        return answer;
     }
 
     @Transactional
@@ -163,11 +169,39 @@ public class AnswerService {
         Long days = DAYS.between(date, now);
         return Pair.of(6, days);
     }
-    private double CalculateEmotion(
-            final Double emotion,
-            final ConfidenceDto confidenceDto
+
+    @Transactional(readOnly=true)
+    public MonthlyKeywordsDto getMonthlyKeywords(
+            final Long userId,
+            final Long roomId,
+            final YearMonth date
     ) {
-        double confidence = (confidenceDto.positive() - confidenceDto.negative()) * 0.001;
-        return emotion * 0.9 + confidence;
+        User user = userRetriever.findById(userId);
+        Room room = roomRetriever.findById(roomId);
+        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        List<RankAnswerDto> rankAnswerDtoList = answerRetriever.findAvgEmotion(
+                profile,
+                date
+        );
+        List<String> positiveKeywords = new java.util.ArrayList<>(List.of("-", "-", "-"));
+        List<String> negativeKeywords = new java.util.ArrayList<>(List.of("-", "-", "-"));
+        for (int i = 0 ; i < rankAnswerDtoList.size() ; i++){
+            if (i == 3)
+                break;
+            if (rankAnswerDtoList.get(i).emotion() >= 0.5){
+                positiveKeywords.set(i, rankAnswerDtoList.get(i).keyword());
+            }
+            if (rankAnswerDtoList.get(rankAnswerDtoList.size() - i - 1).emotion() < 0.5){
+                negativeKeywords.set(i, rankAnswerDtoList.get(i).keyword());
+            }
+        }
+        return MonthlyKeywordsDto.of(positiveKeywords, negativeKeywords);
+    }
+
+    private double CalculateEmotion(
+            final Double totEmotion,
+            final Double emotion
+    ) {
+        return totEmotion * 0.9 + emotion * 0.1;
     }
 }

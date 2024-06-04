@@ -36,4 +36,11 @@ public class QuestionRetriever {
     public List<Question> findAllByProfile(final Profile profile) {
         return questionRepository.findAllByProfile(profile);
     }
+
+    public List<String> findKeywordsByProfile(
+            final Long profileId,
+            final int count
+    ){
+        return questionRepository.findKeywordsByProfileOrderByCreatedAtDesc(profileId, count);
+    }
 }
