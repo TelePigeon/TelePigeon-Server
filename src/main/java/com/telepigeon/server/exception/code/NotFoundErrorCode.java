@@ -19,6 +19,7 @@ public enum NotFoundErrorCode implements DefaultErrorCode{
     WORRY_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 걱정입니다"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 리프레시 토큰입니다."),
     FIREBASE_JSON_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "존재하지 않는 FIREBASE JSON입니다."),
+    KEYWORD_NOT_FOUND(HttpStatus.NOT_FOUND, "error", "키워드가 존재하지 않습니다."),
     ;
 
     @JsonIgnore

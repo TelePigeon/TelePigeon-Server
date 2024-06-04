@@ -29,8 +29,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-
 
 public class QuestionServiceTest {
     @InjectMocks
@@ -74,16 +72,16 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Relation relation = Relation.FRIEND;
-        Profile profile = Profile.create(user, room, relation, "work");
-        Profile receiver = Profile.create(user, room, relation, "work");
-        Question question = Question.create("hi", profile);
+        Profile profile = Profile.create(user, room, relation, "건강");
+        Profile receiver = Profile.create(user, room, relation, "건강");
+        Question question = Question.create("건강", "hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(null);
-        Mockito.when(questionSaver.create(question)).thenReturn(question);
-        Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(receiver);
         Mockito.when(openAiService.createQuestion(
                 relation.getContent(),
-                Arrays.stream("work".split(",")).toList())
+                "건강")
         ).thenReturn("밥은 먹었나요?");
+        Mockito.when(questionSaver.create(question)).thenReturn(question);
+        Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(receiver);
         Mockito.when(hurryRetriever.existsByRoomIdAndSenderId(
                 room.getId(),
                 receiver.getUser().getId()
@@ -106,7 +104,7 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
-        Question question = Question.create("hi", profile);
+        Question question = Question.create("건강", "hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
         Mockito.when(answerRetriever.existsByQuestion(question)).thenReturn(false);
         Mockito.when(questionSaver.create(question)).thenReturn(question);
@@ -119,16 +117,16 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Relation relation = Relation.FRIEND;
-        Profile profile = Profile.create(user, room, relation, "work");
-        Profile receiver = Profile.create(user, room, relation, "work");
-        Question question = Question.create("hi", profile);
+        Profile profile = Profile.create(user, room, relation, "건강");
+        Profile receiver = Profile.create(user, room, relation, "건강");
+        Question question = Question.create("건강", "hi", profile);
         Mockito.when(questionRetriever.findFirstByProfile(profile)).thenReturn(question);
         Mockito.when(answerRetriever.existsByQuestion(question)).thenReturn(true);
         Mockito.when(questionSaver.create(question)).thenReturn(question);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(receiver);
         Mockito.when(openAiService.createQuestion(
                 relation.getContent(),
-                Arrays.stream("work".split(",")).toList())
+                "건강")
         ).thenReturn("밥은 먹었나요?");
         Mockito.when(hurryRetriever.existsByRoomIdAndSenderId(
                 room.getId(),
@@ -170,7 +168,7 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
-        Question question = Question.create("hi", profile);
+        Question question = Question.create("건강", "hi", profile);
         Mockito.when(userRetriever.findById(userId)).thenReturn(user);
         Mockito.when(roomRetriever.findById(roomId)).thenReturn(room);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(profile);
@@ -188,7 +186,7 @@ public class QuestionServiceTest {
         Room room = Mockito.mock(Room.class);
         User user = Mockito.mock(User.class);
         Profile profile = Profile.create(user, room);
-        Question question = Question.create("hi", profile);
+        Question question = Question.create("건강", "hi", profile);
         Mockito.when(userRetriever.findById(userId)).thenReturn(user);
         Mockito.when(roomRetriever.findById(roomId)).thenReturn(room);
         Mockito.when(profileRetriever.findByUserNotAndRoom(user, room)).thenReturn(profile);

@@ -11,7 +11,7 @@ public class AnswerDomainTest {
     @DisplayName("Answer 객체 생성")
     void createAnswerTest(){
         AnswerCreateDto answerCreateDto = new AnswerCreateDto("content", "image");
-        Answer answer = Answer.create(answerCreateDto, null, null);
+        Answer answer = Answer.create(answerCreateDto, 0.0, null, null);
         Assertions.assertNotNull(answer);
     }
 
@@ -19,7 +19,7 @@ public class AnswerDomainTest {
     @DisplayName("Answer 객체 생성 확인")
     void checkCreateAnswerTest(){
         AnswerCreateDto answerCreateDto = new AnswerCreateDto("content", "image");
-        Answer answer = Answer.create(answerCreateDto, null, null);
+        Answer answer = Answer.create(answerCreateDto, 0.0, null, null);
         Assertions.assertEquals(answer.getContent(), "content");
     }
 }

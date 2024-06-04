@@ -140,8 +140,6 @@ public class RoomServiceTest {
     public void checkRoomList() {
         // Given
         Long userId1 = 1L;
-        Long userId2 = 2L;
-        Long roomId = 1L;
 
         // User 생성
         User user1 = User.create("user1", "user1@na.com", "123456", "kakao");
@@ -160,14 +158,14 @@ public class RoomServiceTest {
         Profile profile2 = Profile.create(user2, createdRoom, Relation.valueOf("MOTHER"));
         when(profileSaver.save(profile2)).thenReturn(profile2);
 
-        Question question1 = Question.create("question1", profile1);
-        Question question2 = Question.create("question2", profile2);
+        Question question1 = Question.create("건강", "question1", profile1);
+        Question question2 = Question.create("건강", "question2", profile2);
 
         AnswerCreateDto answerCreateDto = new AnswerCreateDto("answer1",null);
-        Answer ans1 = Answer.create(answerCreateDto, question1, profile1);
+        Answer ans1 = Answer.create(answerCreateDto, 0.0, question1, profile1);
 
         AnswerCreateDto answerCreateDto2 = new AnswerCreateDto("answer2",null);
-        Answer ans2 = Answer.create(answerCreateDto2, question2, profile2);
+        Answer ans2 = Answer.create(answerCreateDto2, 0.0, question2, profile2);
 
         when(profileRetriever.findByUserId(userId1)).thenReturn(Collections.singletonList(profile1));
         when(userRetriever.findById(userId1)).thenReturn(user1);
