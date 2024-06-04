@@ -37,7 +37,7 @@ public class AnswerController {
                                 roomId,
                                 questionId,
                                 answerCreateDto
-                        )
+                        ).getId()
                 )
         ).build();
     }

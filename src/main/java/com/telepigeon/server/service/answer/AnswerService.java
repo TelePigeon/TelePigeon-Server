@@ -45,7 +45,7 @@ public class AnswerService {
     private final FcmService fcmService;
 
     @Transactional
-    public String create(
+    public Answer create(
             final Long userId,
             final Long roomId,
             final Long questionId,
@@ -76,7 +76,7 @@ public class AnswerService {
                         roomId
                 )
         );
-        return answer.getId().toString();
+        return answer;
     }
 
     @Transactional

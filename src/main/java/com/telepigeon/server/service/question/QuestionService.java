@@ -57,8 +57,10 @@ public class QuestionService {
         Question prevQuestion = questionRetriever.findFirstByProfile(profile);  //최근 질문 가져오기
         if (
                 prevQuestion != null &&
-                        !answerRetriever.existsByQuestion(prevQuestion)
-        ) { //최근 질문이 있지만 답장이 없는 경우
+                        (!answerRetriever.existsByQuestion(prevQuestion) ||
+                                prevQuestion.getCreatedAt().toLocalDate().isEqual(LocalDate.now())
+                        )
+        ) { //최근 질문이 있지만 답장이 없는 경우 혹은 오늘 질문을 보냈을 경우
             throw new BusinessException(BusinessErrorCode.QUESTION_ALREADY_EXISTS);
         }
         if (Objects.equals(profile.getKeywords(), "-")){
@@ -69,12 +71,11 @@ public class QuestionService {
                 receiver.getRelation().getContent(),
                 keyword
         );
-        Question question = Question.create(
+        Question question = questionSaver.create(Question.create(
                 keyword,
                 content,
                 profile
-        );
-        questionSaver.create(question);
+        ));
         if (hurryRetriever.existsByRoomIdAndSenderId(
                 profile.getRoom().getId(),
                 receiver.getUser().getId()
