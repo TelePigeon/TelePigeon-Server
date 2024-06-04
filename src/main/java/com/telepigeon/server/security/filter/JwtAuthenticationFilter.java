@@ -1,6 +1,7 @@
 package com.telepigeon.server.security.filter;
 
 import com.telepigeon.server.constant.AuthConstant;
+import com.telepigeon.server.exception.code.IllegalArgumentErrorCode;
 import com.telepigeon.server.security.info.UserAuthentication;
 import com.telepigeon.server.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -30,7 +31,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         final String token = getJwtFromRequest(request);
-        if (StringUtils.hasText(token)) {
+        if (!StringUtils.hasText(token)) {
+            request.setAttribute("exception", IllegalArgumentErrorCode.ILLEGAL_ARGUMENT_HEADER);
+        } else {
             Claims claims = jwtUtil.getTokenBody(token);
             Long userId = claims.get(AuthConstant.USER_ID_CLAIM_NAME, Long.class);
             UserAuthentication authentication = UserAuthentication.createUserAuthentication(userId);
