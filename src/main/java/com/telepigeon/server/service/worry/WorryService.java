@@ -6,6 +6,8 @@ import com.telepigeon.server.domain.User;
 import com.telepigeon.server.domain.Worry;
 import com.telepigeon.server.dto.worry.request.WorryCreateDto;
 import com.telepigeon.server.dto.worry.response.WorriesDto;
+import com.telepigeon.server.exception.ForbiddenException;
+import com.telepigeon.server.exception.code.ForbiddenErrorCode;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
@@ -47,10 +49,18 @@ public class WorryService {
         Worry worry = Worry.create(
                 request.name(),
                 request.content(),
-                String.join("\\|", request.times()),
+                String.join("|", request.times()),
                 profile
         );
         worrySaver.save(worry);
     }
 
+    @Transactional
+    public void deleteWorry(Long userId, Long worryId) {
+        User user = userRetriever.findById(userId);
+        Worry worry = worryRetriever.findById(worryId);
+        if (!worry.getProfile().getUser().getId().equals(user.getId()))
+            throw new ForbiddenException(ForbiddenErrorCode.FORBIDDEN);
+        worryRemover.remove(worry);
+    }
 }
