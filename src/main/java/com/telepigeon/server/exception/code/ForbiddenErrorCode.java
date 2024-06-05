@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum ForbiddenErrorCode implements DefaultErrorCode{
 
     FORBIDDEN(HttpStatus.FORBIDDEN, "error", "접근 권한이 없습니다."),
+    ENTER_FORBIDDEN(HttpStatus.FORBIDDEN, "error", "이미 매칭이 완료된 방입니다."),
     ;
 
     @JsonIgnore

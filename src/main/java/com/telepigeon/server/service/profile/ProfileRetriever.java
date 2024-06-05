@@ -30,6 +30,10 @@ public class ProfileRetriever {
     public boolean existsByUserNotAndRoom(final User user, final Room room) {
         return profileRepository.existsByUserNotAndRoom(user, room);
     }
+
+    public boolean existsByUserAndRoom(final User user, final Room room) {
+        return profileRepository.existsByUserAndRoom(user, room);
+    }
   
     public List<Profile> findByUserId(final long userId) {
         return profileRepository.findAllByUserId(userId);

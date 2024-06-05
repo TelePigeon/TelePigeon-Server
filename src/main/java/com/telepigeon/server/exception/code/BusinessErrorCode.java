@@ -16,6 +16,7 @@ public enum BusinessErrorCode implements DefaultErrorCode{
     FCM_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "external", "FCM 서버 오류"),
     NAVER_CLOUD_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "external", "네이버 클라우드 서버 오류"),
     OPEN_AI_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "external", "OpenAI 서버 오류"),
+    REENTER_ERROR(HttpStatus.OK, "conflict", "이미 입장하신 방입니다."),
     ;
     @JsonIgnore
     private final HttpStatus httpStatus;
