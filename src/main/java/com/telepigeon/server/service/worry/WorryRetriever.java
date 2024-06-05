@@ -6,7 +6,6 @@ import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.repository.WorryRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
