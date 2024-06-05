@@ -8,9 +8,7 @@ import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.exception.BusinessException;
-import com.telepigeon.server.exception.ForbiddenException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
-import com.telepigeon.server.exception.code.ForbiddenErrorCode;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
@@ -128,7 +126,7 @@ public class RoomService {
         }
 
         if ((profileRetriever.findAll()).size()==2) {
-            throw new ForbiddenException(ForbiddenErrorCode.ENTER_FORBIDDEN);
+            throw new BusinessException(BusinessErrorCode.ROOM_FULL_ERROR);
         }
 
         Profile profile = profileSaver.save(Profile.create(user, room));
