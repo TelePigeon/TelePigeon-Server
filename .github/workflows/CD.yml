@@ -20,7 +20,7 @@ jobs:
       - name: create firebase.json
         env:
           FIREBASE_SECRET: ${{ secrets.FIREBASE_JSON }}
-        run: echo $FIREBASE_JSON > src/main/resources/firebase.json
+        run: echo $FIREBASE_SECRET > src/main/resources/firebase.json
 
       - name: Verify firebase.json creation
         run: |
