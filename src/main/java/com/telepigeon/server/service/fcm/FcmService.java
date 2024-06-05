@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class FcmService {
-    private final FirebaseMessaging firebaseMessaging;
 
     public void send(
             final String fcmToken,
@@ -19,7 +18,7 @@ public class FcmService {
     ){
         Message message = createMessage(fcmToken, fcmMessageDto);
         try{
-            firebaseMessaging.send(message);
+            FirebaseMessaging.getInstance().send(message);
         } catch (FirebaseMessagingException e){
             throw new BusinessException(BusinessErrorCode.FCM_SERVER_ERROR);
         }
