@@ -40,6 +40,7 @@ public class ProfileService {
         Room room = roomRetriever.findById(roomId);
         User user = userRetriever.findById(userId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
+
         String gender = profile.getGender()!=null?profile.getGender().getContent():"-";
         String ageRange = profile.getAgeRange()!=null?profile.getAgeRange().getContent():"-";
         String relation = profile.getRelation()!=null?profile.getRelation().getContent():"-";
@@ -64,7 +65,7 @@ public class ProfileService {
         String keywords = "";
         if(profileDto.keywords()!=null) {
             keywords = String.join(",", profileDto.keywords());
-        };
+        }
 
         profileUpdater.updateProfileInfo(
                 profile,
