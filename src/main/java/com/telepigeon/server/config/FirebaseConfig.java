@@ -17,18 +17,16 @@ import java.io.IOException;
 public class FirebaseConfig {
     @PostConstruct
     public void init() {
-        if (!FirebaseApp.getApps().isEmpty()) {
-            log.info("FirebaseApp already initialized");
-            return;
-        }
         try {
             FileInputStream aboutFirebaseFile = new FileInputStream("src/main/resources/firebase.json");
             FirebaseOptions options = FirebaseOptions
                     .builder()
                     .setCredentials(GoogleCredentials.fromStream(aboutFirebaseFile))
                     .build();
-            log.info("FirebaseApp initialize");
-            FirebaseApp.initializeApp(options);
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+                log.info("FirebaseApp initialize");
+            }
         } catch (IOException e) {
             log.error("FirebaseApp initialize failed : {}", e.getMessage());
             throw new NotFoundException(NotFoundErrorCode.FIREBASE_JSON_NOT_FOUND);
