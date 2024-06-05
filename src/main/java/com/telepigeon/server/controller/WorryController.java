@@ -1,13 +1,13 @@
 package com.telepigeon.server.controller;
 
 import com.telepigeon.server.annotation.UserId;
+import com.telepigeon.server.dto.worry.request.WorryCreateDto;
 import com.telepigeon.server.service.worry.WorryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +22,15 @@ public class WorryController {
             @PathVariable final Long roomId
     ) {
         return ResponseEntity.ok(worryService.getWorries(userId, roomId));
+    }
+
+    @PostMapping("/rooms/{roomId}/worries")
+    public ResponseEntity<?> createWorry(
+            @UserId final Long userId,
+            @PathVariable final Long roomId,
+            @RequestBody final WorryCreateDto request
+    ) {
+        worryService.createWorry(userId, roomId, request);
+        return ResponseEntity.created(URI.create("/rooms/"+ roomId + "/worries")).build();
     }
 }

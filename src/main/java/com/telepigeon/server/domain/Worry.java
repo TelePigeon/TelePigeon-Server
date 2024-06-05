@@ -29,4 +29,27 @@ public class Worry {
     @ManyToOne(targetEntity=Profile.class, fetch=FetchType.LAZY)
     @JoinColumn(name="profile_id")
     private Profile profile;
+
+    private Worry(
+        final String name,
+        final String content,
+        final String times,
+        final Profile profile
+    ) {
+        this.name = name;
+        this.content = content;
+        this.times = times;
+        this.profile = profile;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = null;
+    }
+
+    public static Worry create(
+        final String name,
+        final String content,
+        final String times,
+        final Profile profile
+    ) {
+       return new Worry(name, content, times, profile);
+    }
 }

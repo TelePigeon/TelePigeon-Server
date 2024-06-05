@@ -1,4 +1,4 @@
-package com.telepigeon.server.dto.worry;
+package com.telepigeon.server.dto.worry.response;
 
 import com.telepigeon.server.domain.Worry;
 

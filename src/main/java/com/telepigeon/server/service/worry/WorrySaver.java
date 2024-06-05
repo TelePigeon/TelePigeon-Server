@@ -11,7 +11,7 @@ public class WorrySaver {
 
     private final WorryRepository worryRepository;
 
-    public Worry create(final Worry worry){
+    public Worry save(final Worry worry){
         return worryRepository.save(worry);
     }
 }

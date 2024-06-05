@@ -4,12 +4,14 @@ import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Room;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.domain.Worry;
-import com.telepigeon.server.dto.worry.WorriesDto;
+import com.telepigeon.server.dto.worry.request.WorryCreateDto;
+import com.telepigeon.server.dto.worry.response.WorriesDto;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class WorryService {
     private final RoomRetriever roomRetriever;
     private final UserRetriever userRetriever;
 
+    @Transactional(readOnly = true)
     public WorriesDto getWorries(final Long userId, final Long roomId) {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
@@ -31,4 +34,23 @@ public class WorryService {
         List<Worry> worries = worryRetriever.findAllByProfile(profile);
         return WorriesDto.of(worries);
     }
+
+    @Transactional
+    public void createWorry(
+            final Long userId,
+            final Long roomId,
+            final WorryCreateDto request
+    ) {
+        User user = userRetriever.findById(userId);
+        Room room = roomRetriever.findById(roomId);
+        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        Worry worry = Worry.create(
+                request.name(),
+                request.content(),
+                String.join("\\|", request.times()),
+                profile
+        );
+        worrySaver.save(worry);
+    }
+
 }
