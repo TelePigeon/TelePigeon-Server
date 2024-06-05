@@ -17,6 +17,7 @@ public enum BusinessErrorCode implements DefaultErrorCode{
     NAVER_CLOUD_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "external", "네이버 클라우드 서버 오류"),
     OPEN_AI_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "external", "OpenAI 서버 오류"),
     REENTER_ERROR(HttpStatus.OK, "conflict", "이미 입장하신 방입니다."),
+    ROOM_FULL_ERROR(HttpStatus.OK, "conflict", "이미 매칭이 완료된 방입니다."),
     ;
     @JsonIgnore
     private final HttpStatus httpStatus;
