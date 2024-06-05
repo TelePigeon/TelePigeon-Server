@@ -16,10 +16,10 @@ import java.io.IOException;
 @Configuration
 public class FirebaseConfig {
     @PostConstruct
-    public void firebaseApp() {
+    public void init() {
         if (!FirebaseApp.getApps().isEmpty()) {
             log.info("FirebaseApp already initialized");
-            FirebaseApp.getInstance();
+            return;
         }
         try {
             FileInputStream aboutFirebaseFile = new FileInputStream("src/main/resources/firebase.json");
