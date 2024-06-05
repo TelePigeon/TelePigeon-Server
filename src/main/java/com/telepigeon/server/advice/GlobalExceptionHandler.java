@@ -3,11 +3,13 @@ package com.telepigeon.server.advice;
 import com.telepigeon.server.exception.NotFoundException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.code.IllegalArgumentErrorCode;
 import com.telepigeon.server.exception.code.InternalServerErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -50,5 +52,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(InternalServerErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
                 .body(InternalServerErrorCode.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<IllegalArgumentErrorCode> handleException(MethodArgumentNotValidException e) {
+        log.error("handleException() in GlobalExceptionHandler throw MethodArgumentNotValidException : {}", e.getMessage());
+        return ResponseEntity
+                .status(IllegalArgumentErrorCode.INVALID_ARGUMENTS.getHttpStatus())
+                .body(IllegalArgumentErrorCode.INVALID_ARGUMENTS);
     }
 }
