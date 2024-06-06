@@ -66,9 +66,10 @@ public class QuestionService {
         if (Objects.equals(profile.getKeywords(), "-")){
             throw new NotFoundException(NotFoundErrorCode.KEYWORD_NOT_FOUND);
         }
+        String relation = receiver.getRelation() == null ? "지인" : receiver.getRelation().getContent();
         String keyword = getRandomKeyword(profile);
         String content = openAiService.createQuestion(
-                receiver.getRelation().getContent(),
+                relation,
                 keyword
         );
         Question question = questionSaver.create(Question.create(
