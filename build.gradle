@@ -54,7 +54,7 @@ dependencies {
 	// FCM
 	implementation 'com.google.firebase:firebase-admin:9.2.0'
 
-	// Health check
+	// CI/CD health check
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
