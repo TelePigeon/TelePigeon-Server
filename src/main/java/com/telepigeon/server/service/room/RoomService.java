@@ -80,12 +80,13 @@ public class RoomService {
     public RoomListDto.RoomDto createRoomDto(final User user, final Room room) {
         int sentence = 3, emotion = 0;
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
+        String myRelation = myProfile.getRelation() != null ? myProfile.getRelation().getContent() : "-";
         if (!profileRetriever.existsByUserNotAndRoom(user, room)){
             return RoomListDto.RoomDto.of(
                     room.getId(),
                     room.getName(),
                     "-",
-                    myProfile.getRelation().getContent(),
+                    myRelation,
                     "-",
                     emotion,
                     sentence
@@ -94,7 +95,7 @@ public class RoomService {
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
         Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
         Answer opponentAnswer = answerRetriever.findFirstByProfile(opponentProfile);
-
+        String opponentRelation = opponentProfile.getRelation() != null ? opponentProfile.getRelation().getContent() : "-";
         boolean myState = myAnswer.getContent() != null;
         boolean opponentState = opponentAnswer.getContent() != null;
 
@@ -113,8 +114,8 @@ public class RoomService {
                 room.getId(),
                 room.getName(),
                 opponentProfile.getUser().getName(),
-                myProfile.getRelation().getContent(),
-                opponentProfile.getRelation().getContent(),
+                myRelation,
+                opponentRelation,
                 emotion,
                 sentence
         );
