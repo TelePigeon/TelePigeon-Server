@@ -188,7 +188,7 @@ public class RoomService {
             return 3;
         else if (emotion < 0)
             return 2;
-        else if (emotion <= 0.5)
+        else if (emotion < 0.5)
             return 1;
         else
             return 0;
