@@ -87,7 +87,7 @@ public class RoomService {
         boolean opponentState = opponentAnswer.getContent() != null;
 
         // 감정 측정 시 업데이트
-        int emotion = 0;
+        int emotion = getEmotion(opponentProfile.getEmotion());
 
         int sentence;
         if (myState && opponentState) {
@@ -182,5 +182,15 @@ public class RoomService {
                 )
         );
 
+    }
+    private int getEmotion(Double emotion){
+        if (emotion < -0.5)
+            return 3;
+        else if (emotion < 0)
+            return 2;
+        else if (emotion < 0.5)
+            return 1;
+        else
+            return 0;
     }
 }
