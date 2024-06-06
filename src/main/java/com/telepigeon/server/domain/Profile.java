@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -56,6 +55,7 @@ public class Profile {
         this.keywords = "-";
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.emotion = 0.0;
     }
 
     private Profile(User user, Room room, Relation relation, String keywords) {
