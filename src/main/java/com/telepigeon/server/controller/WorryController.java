@@ -4,6 +4,7 @@ import com.telepigeon.server.annotation.UserId;
 import com.telepigeon.server.dto.worry.request.WorryCreateDto;
 import com.telepigeon.server.dto.worry.response.WorriesDto;
 import com.telepigeon.server.service.worry.WorryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class WorryController {
     public ResponseEntity<Void> createWorry(
             @UserId final Long userId,
             @PathVariable final Long roomId,
-            @RequestBody final WorryCreateDto request
+            @RequestBody @Valid final WorryCreateDto request
     ) {
         worryService.createWorry(userId, roomId, request);
         return ResponseEntity.created(URI.create("/rooms/"+ roomId + "/worries")).build();
