@@ -78,7 +78,19 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public RoomListDto.RoomDto createRoomDto(final User user, final Room room) {
+        int sentence = 3, emotion = 0;
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
+        if (!profileRetriever.existsByUserNotAndRoom(user, room)){
+            return RoomListDto.RoomDto.of(
+                    room.getId(),
+                    room.getName(),
+                    "-",
+                    myProfile.getRelation().getContent(),
+                    "-",
+                    emotion,
+                    sentence
+            );
+        }
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
         Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
         Answer opponentAnswer = answerRetriever.findFirstByProfile(opponentProfile);
@@ -87,9 +99,8 @@ public class RoomService {
         boolean opponentState = opponentAnswer.getContent() != null;
 
         // 감정 측정 시 업데이트
-        int emotion = getEmotion(opponentProfile.getEmotion());
+        emotion = getEmotion(opponentProfile.getEmotion());
 
-        int sentence;
         if (myState && opponentState) {
             sentence = 0;
         } else if (myState) {
