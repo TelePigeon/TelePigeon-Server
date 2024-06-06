@@ -22,8 +22,6 @@ public class Profile {
 
     private Double emotion;
 
-    private Boolean isSenior;
-
     private String keywords;
 
     @Enumerated(EnumType.STRING)
