@@ -122,7 +122,7 @@ public class QuestionService {
     }
 
     private String getRandomKeyword(final Profile profile){
-        if (profile.getKeywords() == "-"){
+        if (Objects.equals(profile.getKeywords(), "-")){
             return "기분";
         }
         List<String> keywords = Arrays.stream(profile.getKeywords().split(",")).toList();
