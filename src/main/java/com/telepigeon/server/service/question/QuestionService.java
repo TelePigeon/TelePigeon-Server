@@ -122,6 +122,9 @@ public class QuestionService {
     }
 
     private String getRandomKeyword(final Profile profile){
+        if (profile.getKeywords() == "-"){
+            return "기분";
+        }
         List<String> keywords = Arrays.stream(profile.getKeywords().split(",")).toList();
         List<String> alreadyKeywords = questionRetriever.findKeywordsByProfile(
                 profile.getId(),
