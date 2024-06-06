@@ -7,6 +7,8 @@ import com.telepigeon.server.dto.room.request.RoomEnterDto;
 import com.telepigeon.server.dto.room.response.RoomInfoDto;
 import com.telepigeon.server.dto.room.response.RoomListDto;
 import com.telepigeon.server.dto.type.FcmContent;
+import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
@@ -118,6 +120,14 @@ public class RoomService {
     public Profile enterRoom(final RoomEnterDto roomEnterDto, final Long userId) {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findByCode(roomEnterDto.code());
+
+        if (profileRetriever.existsByUserAndRoom(user, room)) {
+            throw new BusinessException(BusinessErrorCode.REENTER_ERROR);
+        }
+
+        if ((profileRetriever.findAll()).size()==2) {
+            throw new BusinessException(BusinessErrorCode.ROOM_FULL_ERROR);
+        }
 
         Profile profile = profileSaver.save(Profile.create(user, room));
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
