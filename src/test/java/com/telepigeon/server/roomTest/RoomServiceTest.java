@@ -103,9 +103,9 @@
 //        RoomCreateDto roomCreateDto = new RoomCreateDto("test");
 //        Long userId = 1L;
 //
-//        Room room = Room.create(roomCreateDto, "code");
+//        Room room = Room.save(roomCreateDto, "code");
 //        User user = Mockito.mock(User.class);
-//        Profile profile = Profile.create(user, room);
+//        Profile profile = Profile.save(user, room);
 //
 //        when(userRetriever.findById(userId)).thenReturn(user);
 //        when(roomRepository.existsByCode(any(String.class))).thenReturn(false);
@@ -128,7 +128,7 @@
 //    @DisplayName("DB에 저장된 Room을 꺼내와서 확인하기")
 //    public void checkRoomToDB() {
 //        RoomRetriever roomRetriever = new RoomRetriever(roomRepository);
-//        Room room = Room.create(new RoomCreateDto("name"), "code");
+//        Room room = Room.save(new RoomCreateDto("name"), "code");
 //        Mockito.doAnswer(invocation -> true).when(roomRepository).existsByName(room.getName());
 //        RoomCreateDto roomCreateDto = RoomCreateDto.of(room);
 //        boolean isCheck = roomRetriever.existsByName(roomCreateDto.name());
@@ -142,30 +142,30 @@
 //        Long userId1 = 1L;
 //
 //        // User 생성
-//        User user1 = User.create("user1", "user1@na.com", "123456", "kakao");
-//        User user2 = User.create("user2", "user2@na.com", "125634", "kakao");
+//        User user1 = User.save("user1", "user1@na.com", "123456", "kakao");
+//        User user2 = User.save("user2", "user2@na.com", "125634", "kakao");
 //
 //        // Room 생성
 //        RoomCreateDto roomCreateDto = new RoomCreateDto("test");
-//        Room createdRoom = Room.create(roomCreateDto, "code");
+//        Room createdRoom = Room.save(roomCreateDto, "code");
 //        when(roomSaver.save(any(Room.class))).thenReturn(createdRoom);
 //
 //        // User1 Profile 생성
-//        Profile profile1 = Profile.create(user1, createdRoom, Relation.valueOf("CHILD"));
+//        Profile profile1 = Profile.save(user1, createdRoom, Relation.valueOf("CHILD"));
 //        when(profileSaver.save(profile1)).thenReturn(profile1);
 //
 //        // User2 Profile 생성
-//        Profile profile2 = Profile.create(user2, createdRoom, Relation.valueOf("MOTHER"));
+//        Profile profile2 = Profile.save(user2, createdRoom, Relation.valueOf("MOTHER"));
 //        when(profileSaver.save(profile2)).thenReturn(profile2);
 //
-//        Question question1 = Question.create("건강", "question1", profile1);
-//        Question question2 = Question.create("건강", "question2", profile2);
+//        Question question1 = Question.save("건강", "question1", profile1);
+//        Question question2 = Question.save("건강", "question2", profile2);
 //
 //        AnswerCreateDto answerCreateDto = new AnswerCreateDto("answer1",null);
-//        Answer ans1 = Answer.create(answerCreateDto, 0.0, question1, profile1);
+//        Answer ans1 = Answer.save(answerCreateDto, 0.0, question1, profile1);
 //
 //        AnswerCreateDto answerCreateDto2 = new AnswerCreateDto("answer2",null);
-//        Answer ans2 = Answer.create(answerCreateDto2, 0.0, question2, profile2);
+//        Answer ans2 = Answer.save(answerCreateDto2, 0.0, question2, profile2);
 //
 //        when(profileRetriever.findByUserId(userId1)).thenReturn(Collections.singletonList(profile1));
 //        when(userRetriever.findById(userId1)).thenReturn(user1);
@@ -230,7 +230,7 @@
 //        RoomEnterDto roomEnterDto = new RoomEnterDto(code);
 //        when(roomRetriever.findByCode(code)).thenReturn(room);
 //
-//        Profile savedProfile = Profile.create(user, room);
+//        Profile savedProfile = Profile.save(user, room);
 //        Mockito.when(profileSaver.save(savedProfile)).thenReturn(savedProfile);
 //
 //        // When
