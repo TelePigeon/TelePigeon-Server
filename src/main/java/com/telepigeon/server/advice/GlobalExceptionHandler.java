@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     // 요청은 정상이나 비즈니스 중 실패가 있는 경우
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<BusinessErrorCode> handleBusinessException(BusinessException e) {
-        log.error("GlobalExceptionHandler catch BusinessException : {}", e.getMessage());
+        log.error("GlobalExceptionHandler catch BusinessException : {}", e.getErrorCode().getMessage());
         return ResponseEntity
                 .status(e.getErrorCode().getHttpStatus())
                 .body(e.getErrorCode());
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {NotFoundException.class})
     public ResponseEntity<NotFoundErrorCode> handleNotFoundException(NotFoundException e){
-        log.error("GlobalExceptionHandler catch NotFoundException : {}", e.getMessage());
+        log.error("GlobalExceptionHandler catch NotFoundException : {}", e.getErrorCode().getMessage());
         return ResponseEntity
                 .status(e.getErrorCode().getHttpStatus())
                 .body(e.getErrorCode());
