@@ -66,9 +66,9 @@ public class AuthService {
 
         if (!isRegistered){
             User newUser = User.create(
-                    socialUserInfo.serialId(),
-                    socialUserInfo.email(),
                     socialUserInfo.name(),
+                    socialUserInfo.email(),
+                    socialUserInfo.serialId(),
                     "kakao"
             );
             userSaver.save(newUser);
