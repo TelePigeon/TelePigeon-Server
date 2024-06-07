@@ -15,6 +15,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
   
     List<Question> findAllByProfile(Profile profile);
 
-    @Query(value="select distinct q.keyword from question q where q.profile_id = :profileId order by q.created_at desc limit :count", nativeQuery=true)
+    @Query(value="select q.keyword from question q where q.profile_id = :profileId group by q.keyword order by max(q.created_at) desc limit :count", nativeQuery=true)
     List<String> findKeywordsByProfileOrderByCreatedAtDesc(Long profileId, int count);
 }

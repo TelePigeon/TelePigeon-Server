@@ -10,6 +10,7 @@ import com.telepigeon.server.exception.code.IllegalArgumentErrorCode;
 import com.telepigeon.server.service.answer.AnswerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +47,11 @@ public class AnswerController {
     public ResponseEntity<QuestionAnswerListDto> getAllQuestionAndAnswerByDate(
             @UserId final Long userId,
             @PathVariable final Long roomId,
-            @RequestParam(required=false) final LocalDate date,
+            @RequestParam(required=false) @DateTimeFormat(pattern="yyyy-MM-dd") final LocalDate date,
             @RequestParam final boolean respondent
     ) {
         if (!respondent && date == null)
-            throw new IllegalArgumentException(IllegalArgumentErrorCode.ILLEGAL_ARGUMENT_DATE);
+            throw new IllegalArgumentException(IllegalArgumentErrorCode.INVALID_ARGUMENTS);
         return ResponseEntity.ok(
                 answerService.getAllQuestionAndAnswerByDate(
                         userId,
@@ -75,7 +76,7 @@ public class AnswerController {
     ResponseEntity<MonthlyKeywordsDto> getMonthlyKeywords(
             @UserId final Long userId,
             @PathVariable final Long roomId,
-            @RequestParam final YearMonth date
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM") final YearMonth date
             ) {
         return ResponseEntity.ok(
                 answerService.getMonthlyKeywords(userId, roomId, date)

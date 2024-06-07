@@ -17,7 +17,6 @@ import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,13 +40,6 @@ public class QuestionService {
     private final HurryRemover hurryRemover;
     private final OpenAiService openAiService;
     private final FcmService fcmService;
-
-    @Scheduled(cron="0 0 12 * * *")
-    public void createSchedule(){
-        profileRetriever.findAll().forEach(
-                this::create
-        );
-    }
 
     @Transactional
     public Question create(final Profile profile){
@@ -97,6 +89,7 @@ public class QuestionService {
         return question;
     }
 
+    @Transactional(readOnly=true)
     public GetLastQuestionDto findLastQuestion(
             final Long userId,
             final Long roomId
