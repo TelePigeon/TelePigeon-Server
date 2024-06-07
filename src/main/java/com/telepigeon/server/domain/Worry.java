@@ -1,5 +1,6 @@
 package com.telepigeon.server.domain;
 
+import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -51,5 +52,13 @@ public class Worry {
         final Profile profile
     ) {
        return new Worry(name, content, times, profile);
+    }
+
+    public FcmMessageDto toFcmMessageDto() {
+        return FcmMessageDto.builder()
+                .title(this.name)
+                .body(this.content)
+                .type("worry")
+                .build();
     }
 }

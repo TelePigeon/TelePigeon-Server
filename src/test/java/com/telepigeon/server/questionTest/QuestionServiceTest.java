@@ -11,7 +11,7 @@
 //import com.telepigeon.server.exception.BusinessException;
 //import com.telepigeon.server.exception.NotFoundException;
 //import com.telepigeon.server.service.answer.AnswerRetriever;
-//import com.telepigeon.server.service.fcm.FcmService;
+//import com.telepigeon.server.service.external.FcmService;
 //import com.telepigeon.server.service.hurry.HurryRetriever;
 //import com.telepigeon.server.service.openAi.OpenAiService;
 //import com.telepigeon.server.service.profile.ProfileRetriever;

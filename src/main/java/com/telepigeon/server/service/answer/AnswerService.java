@@ -12,7 +12,7 @@ import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.service.external.S3Service;
-import com.telepigeon.server.service.fcm.FcmService;
+import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.external.NaverCloudService;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.hurry.HurryRetriever;
