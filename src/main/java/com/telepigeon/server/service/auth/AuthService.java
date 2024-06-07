@@ -30,7 +30,8 @@ public class AuthService {
     @Transactional
     public JwtTokensDto login(final String token, final String fcmToken){
         SocialUserInfoDto socialUserInfo = kakaoService.getUserInfo(token);
-        User user = loadOrCreateKakaoUser(socialUserInfo, fcmToken);
+        User user = loadOrCreateKakaoUser(socialUserInfo);
+        user.updateFcmToken(fcmToken);
         JwtTokensDto tokens = jwtUtil.generateTokens(user.getId());
         tokenSaver.save(Token.create(user.getId(), tokens.refreshToken()));
         return tokens;
@@ -58,7 +59,7 @@ public class AuthService {
         return tokens;
     }
 
-    private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo, final String fcmToken) {
+    private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo) {
         boolean isRegistered = userRetreiver.existBySerialIdAndProvider(
                 socialUserInfo.serialId(),
                 "kakao"
@@ -68,7 +69,6 @@ public class AuthService {
             User newUser = User.create(
                     socialUserInfo.name(),
                     socialUserInfo.email(),
-                    fcmToken,
                     socialUserInfo.serialId(),
                     "kakao"
             );
