@@ -11,6 +11,7 @@ import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
 import com.telepigeon.server.oauth.dto.KakaoUserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -42,6 +43,7 @@ public class KakaoService {
         KakaoUnlinkDto unlinkRequest = KakaoUnlinkDto.of(Long.getLong(user.getSerialId()));
         restClient.post()
                 .uri(kakaoUnlinkUrl)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .header(AuthConstant.AUTHORIZATION_HEADER, "KakaoAK " + kakaoAdminKey)
                 .body(unlinkRequest)
                 .retrieve()
