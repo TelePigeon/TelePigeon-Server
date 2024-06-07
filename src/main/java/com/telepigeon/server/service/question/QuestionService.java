@@ -43,8 +43,6 @@ public class QuestionService {
 
     @Transactional
     public Question create(final Profile profile){
-        if (!profileRetriever.existsByUserNotAndRoom(profile.getUser(), profile.getRoom()))
-            return null;
         Profile receiver = profileRetriever.findByUserNotAndRoom(
                 profile.getUser(), profile.getRoom()
         );
