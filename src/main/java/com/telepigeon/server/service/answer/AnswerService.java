@@ -11,6 +11,7 @@ import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.dto.type.FcmContent;
+import com.telepigeon.server.service.external.S3Service;
 import com.telepigeon.server.service.fcm.FcmService;
 import com.telepigeon.server.service.external.NaverCloudService;
 import com.telepigeon.server.service.user.UserRetriever;
@@ -23,6 +24,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Collections;
@@ -43,6 +45,9 @@ public class AnswerService {
     private final HurryRetriever hurryRetriever;
     private final NaverCloudService naverCloudService;
     private final FcmService fcmService;
+    private final S3Service s3Service;
+
+    private static String ANSWER_S3_UPLOAD_FOLDER = "/answer";
 
     @Transactional
     public Answer create(
@@ -50,7 +55,7 @@ public class AnswerService {
             final Long roomId,
             final Long questionId,
             final AnswerCreateDto answerCreateDto
-    ){
+    ) throws IOException {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
@@ -60,8 +65,11 @@ public class AnswerService {
         );
         Double emotion = (confidence.positive() - confidence.negative()) * 0.01;
         Answer answer = answerSaver.create(
-                Answer.create(answerCreateDto, emotion, question, profile)
+                Answer.create(answerCreateDto.content(),
+                        s3Service.uploadImage(ANSWER_S3_UPLOAD_FOLDER, answerCreateDto.image()),
+                        emotion, question, profile)
         );
+
         profile.updateEmotion(
                 CalculateEmotion(
                         profile.getEmotion(),

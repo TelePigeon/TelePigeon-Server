@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -28,8 +29,8 @@ public class AnswerController {
             @UserId final Long userId,
             @PathVariable final Long roomId,
             @PathVariable final Long questionId,
-            @RequestBody @Valid final AnswerCreateDto answerCreateDto
-    ) {
+            @ModelAttribute @Valid final AnswerCreateDto answerCreateDto
+    ) throws IOException {
         return ResponseEntity.created(
                 URI.create(
                         "/answers/" + answerService.create(
