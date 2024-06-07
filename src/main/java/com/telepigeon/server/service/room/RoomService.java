@@ -93,13 +93,11 @@ public class RoomService {
             );
         }
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
-        Answer myAnswer = answerRetriever.findFirstByProfile(myProfile);
-        Answer opponentAnswer = answerRetriever.findFirstByProfile(opponentProfile);
         String opponentRelation = opponentProfile.getRelation() != null ? opponentProfile.getRelation().getContent() : "-";
-        boolean myState = myAnswer.getContent() != null;
-        boolean opponentState = opponentAnswer.getContent() != null;
+        boolean myState = answerRetriever.existsByProfile(myProfile);
+        boolean opponentState = answerRetriever.existsByProfile(opponentProfile);
 
-        // 감정 측정 시 업데이트
+                // 감정 측정 시 업데이트
         emotion = getEmotion(opponentProfile.getEmotion());
 
         if (myState && opponentState) {

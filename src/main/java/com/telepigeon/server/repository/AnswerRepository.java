@@ -25,6 +25,8 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Boolean existsByQuestion(Question question);
 
+    Boolean existsByProfile(Profile profile);
+
     @Query(value="select new com.telepigeon.server.dto.answer.RankAnswerDto(a.question.keyword, avg(a.emotion)) " +
             "from Answer a where a.profile = :profile and a.question.keyword is not null and a.createdAt between :startTime and :endTime " +
             "group by a.question.keyword order by avg(a.emotion) desc")
