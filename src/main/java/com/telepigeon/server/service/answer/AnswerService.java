@@ -47,7 +47,7 @@ public class AnswerService {
     private final FcmService fcmService;
     private final S3Service s3Service;
 
-    private static String ANSWER_S3_UPLOAD_FOLDER = "/answer";
+    private static String ANSWER_S3_UPLOAD_FOLDER = "/answer/";
 
     @Transactional
     public Answer create(
