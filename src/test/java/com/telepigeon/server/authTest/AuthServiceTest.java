@@ -1,4 +1,4 @@
-package com.telepigeon.server.auth;
+package com.telepigeon.server.authTest;
 
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.response.JwtTokensDto;
