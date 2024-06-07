@@ -8,7 +8,7 @@ import com.telepigeon.server.dto.fcm.FcmMessageDto;
 import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
-import com.telepigeon.server.service.fcm.FcmService;
+import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;

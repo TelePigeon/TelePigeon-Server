@@ -12,7 +12,7 @@ import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.repository.RoomRepository;
 import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
-import com.telepigeon.server.service.fcm.FcmService;
+import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.profile.ProfileRemover;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;

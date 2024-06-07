@@ -25,4 +25,9 @@ public class WorryRetriever {
                 ()-> new NotFoundException(NotFoundErrorCode.WORRY_NOT_FOUND)
         );
     }
+
+    public List<Worry> findAllByTime(String time) {
+        return worryRepository.findAllByTime(time);
+    }
+
 }

@@ -27,6 +27,11 @@ public class ProfileRetriever {
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
     }
 
+    public Profile findByOpponentProfile(final Profile profile) {
+        return profileRepository.findByUserNotAndRoom(profile.getUser(), profile.getRoom())
+                .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
+    }
+
     public boolean existsByUserNotAndRoom(final User user, final Room room) {
         return profileRepository.existsByUserNotAndRoom(user, room);
     }
