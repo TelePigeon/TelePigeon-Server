@@ -42,7 +42,7 @@ public class KakaoService {
         restClient.post()
                 .uri(uriBuilder -> uriBuilder.path(kakaoUnlinkUrl)
                         .queryParam("target_id_type", "user_id")
-                        .queryParam("target_id", Long.getLong(user.getSerialId()))
+                        .queryParam("target_id", user.getSerialId())
                         .build()
                 )
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
