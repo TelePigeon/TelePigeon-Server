@@ -1,14 +1,13 @@
-package com.telepigeon.server.oauth.service;
+package com.telepigeon.server.service.external;
 
 import com.telepigeon.server.constant.AuthConstant;
 import com.telepigeon.server.domain.User;
-import com.telepigeon.server.dto.oauth.request.KakaoUnlinkDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.UnAuthorizedException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.UnAuthorizedErrorCode;
-import com.telepigeon.server.oauth.dto.KakaoUserDto;
+import com.telepigeon.server.dto.oauth.request.KakaoUserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -40,12 +39,14 @@ public class KakaoService {
     public void unlink(final User user) {
         RestClient restClient = RestClient.create();
 
-        KakaoUnlinkDto unlinkRequest = KakaoUnlinkDto.of(Long.getLong(user.getSerialId()));
         restClient.post()
-                .uri(kakaoUnlinkUrl)
+                .uri(uriBuilder -> uriBuilder.path(kakaoUnlinkUrl)
+                        .queryParam("target_id_type", "user_id")
+                        .queryParam("target_id", Long.getLong(user.getSerialId()))
+                        .build()
+                )
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .header(AuthConstant.AUTHORIZATION_HEADER, "KakaoAK " + kakaoAdminKey)
-                .body(unlinkRequest)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
                     throw new BusinessException(BusinessErrorCode.INVALID_KAKAO_ADMIN_KEY);

@@ -5,7 +5,7 @@ import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
-import com.telepigeon.server.oauth.service.KakaoService;
+import com.telepigeon.server.service.external.KakaoService;
 import com.telepigeon.server.service.user.UserRemover;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
