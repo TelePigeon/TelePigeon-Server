@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -35,11 +37,12 @@ public class ProfileController {
     }
 
     @PutMapping("/rooms/{roomId}")
-    public ResponseEntity<Profile> updateProfileInfo(
+    public ResponseEntity<Void> updateProfileInfo(
             @PathVariable final Long roomId,
             @UserId final Long userId,
             @Valid @RequestBody final ProfileDto profileDto
     ) {
-        return ResponseEntity.ok(profileService.updateProfileInfo(roomId, userId, profileDto));
+        profileService.updateProfileInfo(roomId, userId, profileDto);
+        return ResponseEntity.ok().build();
     }
 }

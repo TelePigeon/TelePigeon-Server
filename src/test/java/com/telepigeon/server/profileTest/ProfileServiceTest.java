@@ -130,10 +130,9 @@ public class ProfileServiceTest {
 
         // When
         ProfileDto profileDto = new ProfileDto(keywordList, gender.getContent(), ageRange.getContent(), relation.getContent());
-        Profile updatedProfile = profileService.updateProfileInfo(roomId, userId, profileDto);
+        profileService.updateProfileInfo(roomId, userId, profileDto);
 
         // Then (method의 호출 검증을 통해 확인)
-        verify(profileUpdater).updateProfileInfo(profile, keyword, gender.getContent(), ageRange.getContent(), relation.getContent());
-        verify(profileSaver).save(profile);
+        verify(profileUpdater).updateProfileInfo(profile, keyword, gender, ageRange, relation);
     }
 }
