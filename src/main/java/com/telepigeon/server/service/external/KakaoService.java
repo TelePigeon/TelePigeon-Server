@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 
 @Service
@@ -39,14 +41,15 @@ public class KakaoService {
     public void unlink(final User user) {
         RestClient restClient = RestClient.create();
 
+        MultiValueMap<String, String> unlinkBody = new LinkedMultiValueMap<>();
+        unlinkBody.add("target_id_type", "user_id");
+        unlinkBody.add("target_id", user.getSerialId());
+
         restClient.post()
-                .uri(uriBuilder -> uriBuilder.path(kakaoUnlinkUrl)
-                        .queryParam("target_id_type", "user_id")
-                        .queryParam("target_id", user.getSerialId())
-                        .build()
-                )
+                .uri(kakaoUnlinkUrl)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .header(AuthConstant.AUTHORIZATION_HEADER, "KakaoAK " + kakaoAdminKey)
+                .body(unlinkBody)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, (request, response) -> {
                     throw new BusinessException(BusinessErrorCode.INVALID_KAKAO_ADMIN_KEY);
