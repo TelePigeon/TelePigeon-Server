@@ -21,7 +21,7 @@ public class ScheduleService {
             try {
                 questionService.create(profile);
             } catch (Exception e) {
-                log.error("Failed to create question for profile: {}", profile.getUser().getName(), e);
+                log.error("Failed to create question for profile {}", profile.getId());
             }
         }
     }
