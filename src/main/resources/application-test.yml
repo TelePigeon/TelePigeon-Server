@@ -35,3 +35,9 @@ openai:
   api:
     key: ${openai_api_key}
     url: ${openai_api_url}
+
+aws-property:
+  s3-bucket-name: ${bucket_name}
+  access-key: ${access_key}
+  secret-key: ${secret_key}
+  aws-region: ap-northeast-2

@@ -39,14 +39,15 @@ public class Answer {
     private Profile profile;
 
     public static Answer create(
-            AnswerCreateDto answerCreateDto,
+            String content,
+            String image,
             Double emotion,
             Question question,
             Profile profile
     ){
         return new Answer(
-                answerCreateDto.content(),
-                answerCreateDto.image(),
+                content,
+                image,
                 emotion,
                 question,
                 profile);

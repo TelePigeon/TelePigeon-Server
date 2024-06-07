@@ -1,4 +1,4 @@
-package com.telepigeon.server.question;
+package com.telepigeon.server.questionTest;
 
 import com.telepigeon.server.domain.Question;
 import org.junit.jupiter.api.Assertions;

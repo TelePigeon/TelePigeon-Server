@@ -1,4 +1,4 @@
-package com.telepigeon.server.service.naverCloud;
+package com.telepigeon.server.service.external;
 
 import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
