@@ -188,10 +188,10 @@ public class AnswerService {
         for (int i = 0 ; i < rankAnswerDtoList.size() ; i++){
             if (i == 3)
                 break;
-            if (rankAnswerDtoList.get(i).emotion() >= 0.5){
+            if (rankAnswerDtoList.get(i).emotion() >= 0){
                 positiveKeywords.set(i, rankAnswerDtoList.get(i).keyword());
             }
-            if (rankAnswerDtoList.get(rankAnswerDtoList.size() - i - 1).emotion() < 0.5){
+            if (rankAnswerDtoList.get(rankAnswerDtoList.size() - i - 1).emotion() < 0){
                 negativeKeywords.set(i, rankAnswerDtoList.get(i).keyword());
             }
         }
