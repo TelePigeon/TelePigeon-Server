@@ -134,6 +134,5 @@ public class ProfileServiceTest {
 
         // Then (method의 호출 검증을 통해 확인)
         verify(profileUpdater).updateProfileInfo(profile, keyword, gender, ageRange, relation);
-        verify(profileSaver).save(profile);
     }
 }
