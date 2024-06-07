@@ -18,9 +18,10 @@ public class AuthController {
 
     @PostMapping("/auth/login/kakao")
     public ResponseEntity<JwtTokensDto> KakaoLogin(
-            @NotNull @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) final String kakaoToken
+            @NotNull @RequestHeader(AuthConstant.AUTHORIZATION_HEADER) final String kakaoToken,
+            @RequestHeader(name=AuthConstant.FCM_TOKEN_HEADER, required = false) final String fcmToken
     ) {
-        return ResponseEntity.ok(authService.login(kakaoToken));
+        return ResponseEntity.ok(authService.login(kakaoToken, fcmToken));
     }
 
     @DeleteMapping("/auth/logout")
