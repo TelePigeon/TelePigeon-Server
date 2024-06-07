@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -47,7 +48,7 @@ public class AnswerService {
     private final FcmService fcmService;
     private final S3Service s3Service;
 
-    private static String ANSWER_S3_UPLOAD_FOLDER = "/answer/";
+    private static String ANSWER_S3_UPLOAD_FOLDER = "answer/";
 
     @Transactional
     public Answer create(
@@ -64,10 +65,14 @@ public class AnswerService {
                 ConfidenceCreateDto.of(answerCreateDto.content())
         );
         Double emotion = (confidence.positive() - confidence.negative()) * 0.01;
+
         Answer answer = answerSaver.create(
-                Answer.create(answerCreateDto.content(),
-                        s3Service.uploadImage(ANSWER_S3_UPLOAD_FOLDER, answerCreateDto.image()),
-                        emotion, question, profile)
+                Answer.create(
+                        answerCreateDto.content(),
+                        uploadImage(answerCreateDto.image()),
+                        emotion,
+                        question,
+                        profile)
         );
 
         profile.updateEmotion(
@@ -211,5 +216,11 @@ public class AnswerService {
             final Double emotion
     ) {
         return totEmotion * 0.9 + emotion * 0.1;
+    }
+
+    private String uploadImage(MultipartFile image) throws IOException {
+        if (image != null)
+            return s3Service.uploadImage(ANSWER_S3_UPLOAD_FOLDER, image);
+        return null;
     }
 }
