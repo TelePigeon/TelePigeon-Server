@@ -1,4 +1,4 @@
-package com.telepigeon.server.oauth.dto;
+package com.telepigeon.server.dto.oauth.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

@@ -33,13 +33,13 @@ public class User {
     private User(
                  String name,
                  String email,
-//                 String fcmToken,
+                 String fcmToken,
                  String serialId,
                  String provider
     ) {
         this.name = name;
         this.email = email;
-//        this.fcmToken = fcmToken;
+        this.fcmToken = fcmToken;
         this.serialId = serialId;
         this.provider = provider;
         this.createdAt = LocalDateTime.now();
@@ -49,10 +49,10 @@ public class User {
     public static User create(
             String name,
             String email,
-            // TODO: String fcmToken,
+            String fcmToken,
             String serialId,
             String provider) {
-        return new User(name, email, serialId, provider);
+        return new User(name, email, fcmToken, serialId, provider);
     }
 
 }

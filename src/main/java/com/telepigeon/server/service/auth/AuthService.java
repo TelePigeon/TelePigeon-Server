@@ -5,7 +5,7 @@ import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.dto.auth.SocialUserInfoDto;
-import com.telepigeon.server.oauth.service.KakaoService;
+import com.telepigeon.server.service.external.KakaoService;
 import com.telepigeon.server.service.user.UserRemover;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.user.UserSaver;
@@ -28,9 +28,9 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public JwtTokensDto login(final String token){
+    public JwtTokensDto login(final String token, final String fcmToken){
         SocialUserInfoDto socialUserInfo = kakaoService.getUserInfo(token);
-        User user = loadOrCreateKakaoUser(socialUserInfo);
+        User user = loadOrCreateKakaoUser(socialUserInfo, fcmToken);
         JwtTokensDto tokens = jwtUtil.generateTokens(user.getId());
         tokenSaver.save(Token.create(user.getId(), tokens.refreshToken()));
         return tokens;
@@ -58,7 +58,7 @@ public class AuthService {
         return tokens;
     }
 
-    private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo) {
+    private User loadOrCreateKakaoUser(final SocialUserInfoDto socialUserInfo, final String fcmToken) {
         boolean isRegistered = userRetreiver.existBySerialIdAndProvider(
                 socialUserInfo.serialId(),
                 "kakao"
@@ -68,6 +68,7 @@ public class AuthService {
             User newUser = User.create(
                     socialUserInfo.name(),
                     socialUserInfo.email(),
+                    fcmToken,
                     socialUserInfo.serialId(),
                     "kakao"
             );
