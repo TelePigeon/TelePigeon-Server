@@ -1,4 +1,4 @@
-package com.telepigeon.server.service.fcm;
+package com.telepigeon.server.service.external;
 
 import com.google.firebase.messaging.*;
 import com.telepigeon.server.dto.fcm.FcmMessageDto;
