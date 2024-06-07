@@ -68,7 +68,7 @@ public class AuthServiceTest {
         void setUp() throws Exception {
             token = "validAccessToken";
             socialUserInfo = SocialUserInfoDto.of("123456", "테스트", "test@gmail.com");
-            user = User.create("123456", "테스트", "fcmToken", "kakao", "test@gamil.com");
+            user = User.create("123456", "테스트", "kakao", "test@gamil.com");
 
             idField = User.class.getDeclaredField("id"); // private인 id를 설정하지 못해 리플렉션 사용
             idField.setAccessible(true);
