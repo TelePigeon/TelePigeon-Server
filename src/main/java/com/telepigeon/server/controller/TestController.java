@@ -6,13 +6,11 @@ import com.telepigeon.server.dto.auth.response.JwtTokensDto;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.service.auth.TokenSaver;
+import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -23,6 +21,7 @@ public class TestController {
 
     private final JwtUtil jwtUtil;
     private final TokenSaver tokenSaver;
+    private final OpenAiService openAiService;
 
     @GetMapping("/test")
     public String test() {
@@ -54,5 +53,13 @@ public class TestController {
         JwtTokensDto tokens = jwtUtil.generateTokens(userId);
         tokenSaver.save(Token.create(userId, tokens.refreshToken()));
         return ResponseEntity.ok(tokens);
+    }
+
+    @GetMapping("test/open-ai")
+    public ResponseEntity<String> testOpenAi(
+            @RequestParam String relation,
+            @RequestParam String keyword
+    ) {
+        return ResponseEntity.ok(openAiService.createQuestion(relation, keyword));
     }
 }
