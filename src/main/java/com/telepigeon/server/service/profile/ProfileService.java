@@ -6,6 +6,9 @@ import com.telepigeon.server.domain.User;
 import com.telepigeon.server.dto.profile.request.ProfileDto;
 import com.telepigeon.server.dto.profile.response.ProfileInfoDto;
 import com.telepigeon.server.dto.profile.response.ProfileKeywordsDto;
+import com.telepigeon.server.dto.type.AgeRange;
+import com.telepigeon.server.dto.type.Gender;
+import com.telepigeon.server.dto.type.Relation;
 import com.telepigeon.server.service.room.RoomRetriever;
 import com.telepigeon.server.service.user.UserRetriever;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +56,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public Profile updateProfileInfo(
+    public void updateProfileInfo(
             final Long roomId,
             final Long userId,
             final ProfileDto profileDto
@@ -70,11 +73,9 @@ public class ProfileService {
         profileUpdater.updateProfileInfo(
                 profile,
                 keywords,
-                profileDto.gender(),
-                profileDto.ageRange(),
-                profileDto.relation()
+                Gender.fromContent(profileDto.gender()),
+                AgeRange.fromContent(profileDto.ageRange()),
+                Relation.fromContent(profileDto.relation())
         );
-
-        return profileSaver.save(profile);
     }
 }

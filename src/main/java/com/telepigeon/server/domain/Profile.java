@@ -101,14 +101,14 @@ public class Profile {
   
     public void updateProfileInfo(
             String keywords,
-            String gender,
-            String ageRange,
-            String relation
+            Gender gender,
+            AgeRange ageRange,
+            Relation relation
     ) {
         this.keywords = keywords;
-        this.gender = Gender.valueOf(gender);
-        this.ageRange = AgeRange.valueOf(ageRange);
-        this.relation = Relation.valueOf(relation);
+        this.gender = gender;
+        this.ageRange = ageRange;
+        this.relation = relation;
         this.updatedAt = LocalDateTime.now();
     }
 }
