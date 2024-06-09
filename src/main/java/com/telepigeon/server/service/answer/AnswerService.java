@@ -82,6 +82,15 @@ public class AnswerService {
                 )
         );
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        if (profile.getEmotion() < -0.5){
+            fcmService.send(
+                    receiver.getUser().getFcmToken(),
+                    FcmMessageDto.of(
+                            FcmContent.EMOTION,
+                            roomId
+                    )
+            );
+        }
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
