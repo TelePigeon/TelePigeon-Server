@@ -215,6 +215,8 @@ public class AnswerService {
             final Double totEmotion,
             final Double emotion
     ) {
+        if (totEmotion == 0.0)
+            return emotion;
         return totEmotion * 0.9 + emotion * 0.1;
     }
 
