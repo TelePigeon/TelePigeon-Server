@@ -135,26 +135,44 @@ public class RoomService {
 
         Profile profile = profileSaver.save(Profile.create(user, room));
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        fcmService.send(
+                receiver.getUser().getFcmToken(),
+                FcmMessageDto.of(
+                        FcmContent.ROOM_ENTER,
+                        room.getId()
+                )
+        );
         sendQuestionFirst(receiver, profile);
         sendQuestionFirst(profile, receiver);
         return profile;
     }
 
     @Transactional
-    public Room deleteRoom(final Long roomId, final Long userId) {
+    public void deleteRoom(final Long roomId, final Long userId) {
         Room room = roomRetriever.findById(roomId);
         User user = userRetriever.findById(userId);
 
-        Profile profile = profileRetriever.findByUserAndRoom(user, room);
-        List<Worry> worryList = worryRetriever.findAllByProfile(profile);
+        if (profileRetriever.existsByUserNotAndRoom(user, room)){
+            Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
+            if (!opponentProfile.isDeleted()){
+                Profile profile = profileRetriever.findByUserAndRoom(user, room);
+                List<Worry> worryList = worryRetriever.findAllByProfile(profile);
 
-        profile.updateIsDeleted();
-        worryList.forEach(worryRemover::remove);
-
-        if (profileRetriever.countByRoomAndIsDeleted(room, true) == 2)
+                profile.updateIsDeleted();
+                worryList.forEach(worryRemover::remove);
+                fcmService.send(
+                        opponentProfile.getUser().getFcmToken(),
+                        FcmMessageDto.of(
+                                FcmContent.ROOM_LEAVE,
+                                room.getId()
+                        )
+                );
+            } else {
+                roomRemover.remove(room);
+            }
+        } else {
             roomRemover.remove(room);
-
-        return room;
+        }
     }
 
     private String createCode() {
