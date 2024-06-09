@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +24,9 @@ public class Room {
     private String code;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy="room", fetch=FetchType.LAZY)
+    private List<Profile> profiles;
 
     @Builder
     private Room(String name, String code, LocalDateTime createdAt) {
