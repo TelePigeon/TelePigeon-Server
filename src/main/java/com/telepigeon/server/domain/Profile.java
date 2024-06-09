@@ -48,12 +48,6 @@ public class Profile {
     @JoinColumn(name="room_id")
     private Room room;
 
-    @OneToMany(mappedBy="profile", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    private List<Question> questions;
-
-    @OneToMany(mappedBy="profile", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    private List<Answer> answers;
-
     @Builder
     private Profile(User user, Room room, Relation relation) {
         this.user = user;
