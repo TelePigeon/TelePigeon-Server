@@ -36,6 +36,8 @@ public class HurryService {
         if (hurryRetriever.existsByRoomIdAndSenderId(roomId, user.getId()))
             throw new BusinessException(BusinessErrorCode.HURRY_ALREADY_EXISTS);
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        if (receiver.isDeleted())
+            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         hurrySaver.save(Hurry.create(roomId, userId));
         fcmService.send(
                 receiver.getUser().getFcmToken(),

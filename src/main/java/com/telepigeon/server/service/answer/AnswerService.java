@@ -11,6 +11,8 @@ import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.dto.type.FcmContent;
+import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.service.external.S3Service;
 import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.external.NaverCloudService;
@@ -82,6 +84,8 @@ public class AnswerService {
                 )
         );
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        if (receiver.isDeleted())
+            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(

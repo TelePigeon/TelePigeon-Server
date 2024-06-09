@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,6 +34,8 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Relation relation;
 
+    private boolean isDeleted;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -45,6 +48,12 @@ public class Profile {
     @JoinColumn(name="room_id")
     private Room room;
 
+    @OneToMany(mappedBy="profile", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Question> questions;
+
+    @OneToMany(mappedBy="profile", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Answer> answers;
+
     @Builder
     private Profile(User user, Room room, Relation relation) {
         this.user = user;
@@ -54,6 +63,7 @@ public class Profile {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.emotion = 0.0;
+        this.isDeleted = false;
     }
 
     private Profile(User user, Room room, Relation relation, String keywords) {
@@ -109,6 +119,11 @@ public class Profile {
         this.gender = gender;
         this.ageRange = ageRange;
         this.relation = relation;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void updateIsDeleted(){
+        this.isDeleted = true;
         this.updatedAt = LocalDateTime.now();
     }
 }

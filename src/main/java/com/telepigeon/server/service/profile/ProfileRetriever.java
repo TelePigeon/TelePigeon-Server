@@ -48,4 +48,8 @@ public class ProfileRetriever {
         return profileRepository.findAll();
     }
 
+    public int countByRoomAndIsDeleted(final Room room, final boolean isDeleted) {
+        return profileRepository.countByRoomAndIsDeleted(room, isDeleted);
+    }
+
 }

@@ -10,14 +10,10 @@ import com.telepigeon.server.dto.type.FcmContent;
 import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.repository.RoomRepository;
-import com.telepigeon.server.service.answer.AnswerRemover;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.external.FcmService;
-import com.telepigeon.server.service.profile.ProfileRemover;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
-import com.telepigeon.server.service.question.QuestionRemover;
-import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
@@ -40,13 +36,10 @@ public class RoomService {
     private final ProfileRetriever profileRetriever;
     private final AnswerRetriever answerRetriever;
     private final RoomRetriever roomRetriever;
-    private final QuestionRetriever questionRetriever;
     private final WorryRetriever worryRetriever;
-    private final ProfileRemover profileRemover;
-    private final QuestionRemover questionRemover;
     private final WorryRemover worryRemover;
-    private final AnswerRemover answerRemover;
     private final QuestionSaver questionSaver;
+    private final RoomRemover roomRemover;
     private final FcmService fcmService;
 
     @Transactional
@@ -81,7 +74,7 @@ public class RoomService {
         int sentence = 3, emotion = 0;
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
         String myRelation = myProfile.getRelation() != null ? myProfile.getRelation().getContent() : "-";
-        if (!profileRetriever.existsByUserNotAndRoom(user, room)){
+        if (!profileRetriever.existsByUserNotAndRoom(user, room)) {
             return RoomListDto.RoomDto.of(
                     room.getId(),
                     room.getName(),
@@ -97,10 +90,11 @@ public class RoomService {
         boolean myState = answerRetriever.existsByProfile(myProfile);
         boolean opponentState = answerRetriever.existsByProfile(opponentProfile);
 
-                // 감정 측정 시 업데이트
+        // 감정 측정 시 업데이트
         emotion = getEmotion(opponentProfile.getEmotion());
-
-        if (myState && opponentState) {
+        if (opponentProfile.isDeleted()){
+            sentence = 4;
+        } else if (myState && opponentState) {
             sentence = 0;
         } else if (myState) {
             sentence = 1;
@@ -152,14 +146,13 @@ public class RoomService {
         User user = userRetriever.findById(userId);
 
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
-        List<Answer> answerList = answerRetriever.findAllByProfile(profile);
-        List<Question> questionList = questionRetriever.findAllByProfile(profile);
         List<Worry> worryList = worryRetriever.findAllByProfile(profile);
 
-        profileRemover.remove(profile);
-        answerList.forEach(answerRemover::remove);
-        questionList.forEach(questionRemover::remove);
+        profile.updateIsDeleted();
         worryList.forEach(worryRemover::remove);
+
+        if (profileRetriever.countByRoomAndIsDeleted(room, true) == 2)
+            roomRemover.remove(room);
 
         return room;
     }
