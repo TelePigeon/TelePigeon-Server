@@ -43,6 +43,7 @@ public class FcmService {
                                                 .setTitle(fcmMessageDto.title())
                                                 .setBody(fcmMessageDto.body())
                                                 .setClickAction(fcmMessageDto.clickAction())
+                                                .setSound("default")
                                                 .build()
                                 )
                                 .build()
