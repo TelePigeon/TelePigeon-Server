@@ -62,12 +62,14 @@ public class AnswerService {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        if (receiver.isDeleted())
+            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         Question question = questionRetriever.findById(questionId);
         ConfidenceDto confidence = naverCloudService.getConfidence(
                 ConfidenceCreateDto.of(answerCreateDto.content())
         );
         Double emotion = (confidence.positive() - confidence.negative()) * 0.01;
-
         Answer answer = answerSaver.create(
                 Answer.create(
                         answerCreateDto.content(),
@@ -83,9 +85,6 @@ public class AnswerService {
                         emotion
                 )
         );
-        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
-        if (receiver.isDeleted())
-            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
