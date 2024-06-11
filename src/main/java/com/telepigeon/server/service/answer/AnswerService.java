@@ -221,7 +221,7 @@ public class AnswerService {
     ) {
         if (totEmotion == 0.0)
             return emotion;
-        return totEmotion * 0.9 + emotion * 0.1;
+        return totEmotion * 0.5 + emotion * 0.5;
     }
 
     private String uploadImage(MultipartFile image) throws IOException {
