@@ -87,6 +87,15 @@ public class AnswerService {
                         emotion
                 )
         );
+        if (profile.getEmotion() < -0.5){
+            fcmService.send(
+                    receiver.getUser().getFcmToken(),
+                    FcmMessageDto.of(
+                            FcmContent.EMOTION,
+                            roomId
+                    )
+            );
+        }
         if (hurryRetriever.existsByProfileId(receiver.getId()))
             hurryRemover.remove(hurryRetriever.findByProfileId(receiver.getId()));
         fcmService.send(
