@@ -43,12 +43,15 @@ public class FcmService {
                                                 .setTitle(fcmMessageDto.title())
                                                 .setBody(fcmMessageDto.body())
                                                 .setClickAction(fcmMessageDto.clickAction())
+                                                .setSound("default")
                                                 .build()
                                 )
                                 .build()
                 )
                 .putData("type", fcmMessageDto.type())
                 .putData("id", fcmMessageDto.id().toString())
+                .putData("title", fcmMessageDto.title())
+                .putData("body", fcmMessageDto.body())
                 .build();
     }
 }

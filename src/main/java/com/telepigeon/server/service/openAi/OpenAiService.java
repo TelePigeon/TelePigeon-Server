@@ -23,7 +23,7 @@ public class OpenAiService {
     private String apiKey;
     @Value("${openai.api.url}")
     private String url;
-    @Value("${openai.role-content")
+    @Value("${openai.system-content}")
     private String roleContent;
     @Value("${openai.assistant-content}")
     private String assistantContent;

@@ -48,4 +48,7 @@ public class ProfileRetriever {
         return profileRepository.findAll();
     }
 
+    public Integer countByRoom(final Room room) {
+        return profileRepository.countByRoom(room);
+    }
 }

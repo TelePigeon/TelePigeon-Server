@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Time {
+    ZERO("00시"),
     ONE("01시"),
     TWO("02시"),
     THREE("03시"),
@@ -29,6 +30,6 @@ public enum Time {
     TWENTY_ONE("21시"),
     TWENTY_TWO("22시"),
     TWENTY_THREE("23시"),
-    TWENTY_FOUR("24시");
+    ;
     private final String content;
 }

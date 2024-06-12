@@ -14,10 +14,6 @@ public class RoomRetriever {
 
     private final RoomRepository roomRepository;
 
-    public boolean existsByName(final String name) {
-        return roomRepository.existsByName(name);
-    }
-
     public Room findById(final long id) {
         return roomRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.ROOM_NOT_FOUND));
