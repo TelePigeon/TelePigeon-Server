@@ -88,7 +88,7 @@ public class AnswerService {
                 )
         );
         if (hurryRetriever.existsByProfileId(receiver.getId()))
-            hurryRemover.remove(hurryRetriever.findByRoomIdAndSenderId(receiver.getId()));
+            hurryRemover.remove(hurryRetriever.findByProfileId(receiver.getId()));
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(

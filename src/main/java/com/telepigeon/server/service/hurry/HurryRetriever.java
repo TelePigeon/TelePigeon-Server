@@ -18,7 +18,7 @@ public class HurryRetriever {
         return hurryRepository.existsById(profileId.toString());
     }
 
-    public Hurry findByRoomIdAndSenderId(
+    public Hurry findByProfileId(
             final Long profileId
     ){
         return hurryRepository.findById(profileId.toString())
