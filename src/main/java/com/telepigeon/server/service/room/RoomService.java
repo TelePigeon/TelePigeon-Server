@@ -71,7 +71,7 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public RoomListDto.RoomDto createRoomDto(final User user, final Room room) {
-        int sentence = 3, emotion = 0;
+        int sentence = 3, emotion = 1;
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
         String myRelation = myProfile.getRelation() != null ? myProfile.getRelation().getContent() : "-";
         if (!profileRetriever.existsByUserNotAndRoom(user, room)) {
