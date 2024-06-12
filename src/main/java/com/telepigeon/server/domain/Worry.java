@@ -59,6 +59,8 @@ public class Worry {
                 .title(this.name)
                 .body(this.content)
                 .type("worry")
+                .id(this.getProfile().getRoom().getId())
+                .clickAction("ROOM_CLICK")
                 .build();
     }
 }
