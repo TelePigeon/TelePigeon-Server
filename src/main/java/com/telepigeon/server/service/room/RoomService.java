@@ -130,7 +130,7 @@ public class RoomService {
             throw new BusinessException(BusinessErrorCode.REENTER_ERROR);
         }
 
-        if ((profileRetriever.findAll()).size()==2) {
+        if (profileRetriever.countByRoom(room) == 2) {
             throw new BusinessException(BusinessErrorCode.ROOM_FULL_ERROR);
         }
 

@@ -16,4 +16,6 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     boolean existsByUserAndRoom(User user, Room room);
     List<Profile> findAllByUserId(Long userId);
+
+    Integer countByRoom(Room room);
 }
