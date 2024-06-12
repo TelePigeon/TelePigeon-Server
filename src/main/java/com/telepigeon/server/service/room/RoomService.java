@@ -94,6 +94,7 @@ public class RoomService {
         emotion = getEmotion(opponentProfile.getEmotion());
         if (opponentProfile.isDeleted()){
             sentence = 4;
+            emotion = 1;
         } else if (myState && opponentState) {
             sentence = 0;
         } else if (myState) {
