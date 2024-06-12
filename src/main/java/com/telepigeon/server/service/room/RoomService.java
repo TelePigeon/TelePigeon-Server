@@ -18,13 +18,16 @@ import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
 import com.telepigeon.server.service.worry.WorryRetriever;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomService {
@@ -63,9 +66,9 @@ public class RoomService {
         List<Room> roomList = profileList.stream().map(Profile::getRoom).toList();
 
         List<RoomListDto.RoomDto> roomDtos = roomList.stream()
-                .map(room -> createRoomDto(user, room))
+                .map(room -> createRoomDto(user, room)
+                ).filter(Objects::nonNull)
                 .toList();
-
         return RoomListDto.of(roomDtos);
     }
 
@@ -73,6 +76,8 @@ public class RoomService {
     public RoomListDto.RoomDto createRoomDto(final User user, final Room room) {
         int sentence = 3, emotion = 1;
         Profile myProfile = profileRetriever.findByUserAndRoom(user, room);
+        if (myProfile.isDeleted())
+            return null;
         String myRelation = myProfile.getRelation() != null ? myProfile.getRelation().getContent() : "-";
         if (!profileRetriever.existsByUserNotAndRoom(user, room)) {
             return RoomListDto.RoomDto.of(
