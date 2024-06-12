@@ -50,6 +50,8 @@ public class FcmService {
                 )
                 .putData("type", fcmMessageDto.type())
                 .putData("id", fcmMessageDto.id().toString())
+                .putData("title", fcmMessageDto.title())
+                .putData("body", fcmMessageDto.body())
                 .build();
     }
 }
