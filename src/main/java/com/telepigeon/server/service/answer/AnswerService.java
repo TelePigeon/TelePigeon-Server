@@ -217,7 +217,7 @@ public class AnswerService {
                 positiveKeywords.set(i, rankAnswerDtoList.get(i).keyword());
             }
             if (rankAnswerDtoList.get(rankAnswerDtoList.size() - i - 1).emotion() < 0){
-                negativeKeywords.set(i, rankAnswerDtoList.get(i).keyword());
+                negativeKeywords.set(i, rankAnswerDtoList.get(rankAnswerDtoList.size() - i - 1).keyword());
             }
         }
         return MonthlyKeywordsDto.of(positiveKeywords, negativeKeywords);
