@@ -10,14 +10,14 @@ public class HurryDomainTest {
     @Test
     @DisplayName("hurry 생성")
     public void createHurryTest(){
-        Hurry hurry = Hurry.create(1L, 2L);
+        Hurry hurry = Hurry.create("1");
         Assertions.assertNotNull(hurry);
     }
 
     @Test
     @DisplayName("hurry 생성 확인")
     public void checkCreateHurryTest(){
-        Hurry hurry = Hurry.create(1L, 2L);
-        Assertions.assertEquals(hurry.getRoomAndSender(), "1:2");
+        Hurry hurry = Hurry.create("1");
+        Assertions.assertEquals(hurry.getProfileId(), "1");
     }
 }

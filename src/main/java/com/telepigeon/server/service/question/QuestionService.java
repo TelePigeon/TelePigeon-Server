@@ -10,8 +10,6 @@ import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.code.NotFoundErrorCode;
 import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.external.FcmService;
-import com.telepigeon.server.service.hurry.HurryRemover;
-import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
@@ -36,8 +34,6 @@ public class QuestionService {
     private final AnswerRetriever answerRetriever;
     private final ProfileRetriever profileRetriever;
     private final UserRetriever userRetriever;
-    private final HurryRetriever hurryRetriever;
-    private final HurryRemover hurryRemover;
     private final OpenAiService openAiService;
     private final FcmService fcmService;
 
@@ -71,16 +67,6 @@ public class QuestionService {
                 content,
                 profile
         ));
-        if (hurryRetriever.existsByRoomIdAndSenderId(
-                profile.getRoom().getId(),
-                receiver.getUser().getId()
-        )) {
-            Hurry hurry = hurryRetriever.findByRoomIdAndSenderId(
-                    profile.getRoom().getId(),
-                    receiver.getUser().getId()
-            );
-            hurryRemover.remove(hurry);
-        }
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(

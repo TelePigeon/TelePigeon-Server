@@ -16,6 +16,7 @@ import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.service.external.S3Service;
 import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.external.NaverCloudService;
+import com.telepigeon.server.service.hurry.HurryRemover;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.hurry.HurryRetriever;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -49,6 +50,7 @@ public class AnswerService {
     private final NaverCloudService naverCloudService;
     private final FcmService fcmService;
     private final S3Service s3Service;
+    private final HurryRemover hurryRemover;
 
     private static String ANSWER_S3_UPLOAD_FOLDER = "answer/";
 
@@ -85,6 +87,8 @@ public class AnswerService {
                         emotion
                 )
         );
+        if (hurryRetriever.existsByProfileId(receiver.getId()))
+            hurryRemover.remove(hurryRetriever.findByRoomIdAndSenderId(receiver.getId()));
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
@@ -153,13 +157,9 @@ public class AnswerService {
                 !questionRetriever.existsByProfile(myProfile)
             ) //나, 상대방 질문 모두 안 만들어졌을 경우
             return Pair.of(7, 0L);
-        if (hurryRetriever.existsByRoomIdAndSenderId(room.getId(), user.getId())) //내가 보낸 재촉하기가 있는 경우
+        if (hurryRetriever.existsByProfileId(myProfile.getId())) //내가 보낸 재촉하기가 있는 경우
             return Pair.of(1, 0L);
-        if (hurryRetriever.existsByRoomIdAndSenderId(
-                room.getId(),
-                oppoProfile.getUser().getId()
-            )
-        )   //상대방이 보낸 재촉하기가 있는 경우
+        if (hurryRetriever.existsByProfileId(oppoProfile.getId()))   //상대방이 보낸 재촉하기가 있는 경우
             return Pair.of(2, 0L);
         if (questionRetriever.existsByProfile(oppoProfile)) { //상대방의 질문이 있는지 확인
             Question oppoQuestion = questionRetriever.findFirstByProfile(oppoProfile);

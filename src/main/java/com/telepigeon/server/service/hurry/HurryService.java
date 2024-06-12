@@ -33,12 +33,13 @@ public class HurryService {
     ){
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
-        if (hurryRetriever.existsByRoomIdAndSenderId(roomId, user.getId()))
+        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        if (hurryRetriever.existsByProfileId(profile.getId()))
             throw new BusinessException(BusinessErrorCode.HURRY_ALREADY_EXISTS);
         Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
         if (receiver.isDeleted())
             throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
-        hurrySaver.save(Hurry.create(roomId, userId));
+        hurrySaver.save(Hurry.create(profile.getId().toString()));
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(

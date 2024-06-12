@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access=AccessLevel.PROTECTED)
 public class Hurry {
     @Id
-    private String roomAndSender;
+    private String profileId;
     private LocalDateTime createdAt;
 
-    public static Hurry create(Long roomId, Long senderId){
-        return new Hurry(roomId + ":" + senderId);
+    public static Hurry create(String profileId){
+        return new Hurry(profileId);
     }
 
-    private Hurry(String roomAndSender){
-        this.roomAndSender = roomAndSender;
+    private Hurry(String profileId){
+        this.profileId = profileId;
         this.createdAt = LocalDateTime.now();
     }
 }

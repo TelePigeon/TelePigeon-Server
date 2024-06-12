@@ -12,18 +12,16 @@ import org.springframework.stereotype.Component;
 public class HurryRetriever {
     private final HurryRepository hurryRepository;
 
-    public boolean existsByRoomIdAndSenderId(
-            final Long roomId,
-            final Long senderId
+    public boolean existsByProfileId(
+            final Long profileId
     ){
-        return hurryRepository.existsById(roomId + ":" + senderId);
+        return hurryRepository.existsById(profileId.toString());
     }
 
     public Hurry findByRoomIdAndSenderId(
-            final Long roomId,
-            final Long senderId
+            final Long profileId
     ){
-        return hurryRepository.findById(roomId + ":" + senderId)
+        return hurryRepository.findById(profileId.toString())
                 .orElseThrow(
                 () -> new NotFoundException(NotFoundErrorCode.NOT_FOUND_HURRY)
         );
