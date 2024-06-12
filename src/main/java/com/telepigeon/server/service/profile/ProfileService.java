@@ -26,7 +26,6 @@ public class ProfileService {
     private final UserRetriever userRetriever;
     private final ProfileRetriever profileRetriever;
     private final ProfileUpdater profileUpdater;
-    private final ProfileSaver profileSaver;
 
     @Transactional(readOnly = true)
     public ProfileKeywordsDto getProfileKeywords(final Long roomId, final Long userId) {

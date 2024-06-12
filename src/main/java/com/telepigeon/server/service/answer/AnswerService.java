@@ -11,6 +11,8 @@ import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.room.response.RoomStateDto;
 import com.telepigeon.server.dto.type.FcmContent;
+import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.service.external.S3Service;
 import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.external.NaverCloudService;
@@ -60,12 +62,14 @@ public class AnswerService {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
         Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
+        if (receiver.isDeleted())
+            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         Question question = questionRetriever.findById(questionId);
         ConfidenceDto confidence = naverCloudService.getConfidence(
                 ConfidenceCreateDto.of(answerCreateDto.content())
         );
         Double emotion = (confidence.positive() - confidence.negative()) * 0.01;
-
         Answer answer = answerSaver.create(
                 Answer.create(
                         answerCreateDto.content(),
@@ -81,7 +85,6 @@ public class AnswerService {
                         emotion
                 )
         );
-        Profile receiver = profileRetriever.findByUserNotAndRoom(user, room);
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
@@ -217,7 +220,7 @@ public class AnswerService {
     ) {
         if (totEmotion == 0.0)
             return emotion;
-        return totEmotion * 0.9 + emotion * 0.1;
+        return totEmotion * 0.5 + emotion * 0.5;
     }
 
     private String uploadImage(MultipartFile image) throws IOException {

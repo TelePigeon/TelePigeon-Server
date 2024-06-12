@@ -47,5 +47,4 @@ public class ProfileRetriever {
     public List<Profile> findAll() {
         return profileRepository.findAll();
     }
-
 }

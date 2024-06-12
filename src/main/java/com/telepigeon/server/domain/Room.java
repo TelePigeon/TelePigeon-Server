@@ -25,7 +25,7 @@ public class Room {
 
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy="room", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy="room", fetch=FetchType.LAZY)
     private List<Profile> profiles;
 
     @Builder

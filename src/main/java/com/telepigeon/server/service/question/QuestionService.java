@@ -46,6 +46,8 @@ public class QuestionService {
         Profile receiver = profileRetriever.findByUserNotAndRoom(
                 profile.getUser(), profile.getRoom()
         );
+        if (receiver.isDeleted())
+            throw new BusinessException(BusinessErrorCode.PROFILE_DELETED_ERROR);
         Question prevQuestion = questionRetriever.findFirstByProfile(profile);  //최근 질문 가져오기
         if (
                 prevQuestion != null &&
