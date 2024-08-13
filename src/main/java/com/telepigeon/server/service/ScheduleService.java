@@ -43,7 +43,7 @@ public class ScheduleService {
             try {
                 sendWorry(worry);
             } catch (Exception e) {
-                log.error("Failed to send worry for worry {}", worry.getId());
+                log.error("Failed to send worry for worry {}", worry.getId(), e);
             }
         }
     }
