@@ -33,6 +33,8 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Relation relation;
 
+    private boolean easyMode;
+
     private boolean isDeleted;
 
     private LocalDateTime createdAt;
@@ -56,6 +58,7 @@ public class Profile {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.emotion = 0.0;
+        this.easyMode = false;
         this.isDeleted = false;
     }
 
@@ -106,12 +109,14 @@ public class Profile {
             String keywords,
             Gender gender,
             AgeRange ageRange,
-            Relation relation
+            Relation relation,
+            boolean easyMode
     ) {
         this.keywords = keywords;
         this.gender = gender;
         this.ageRange = ageRange;
         this.relation = relation;
+        this.easyMode = easyMode;
         this.updatedAt = LocalDateTime.now();
     }
 
