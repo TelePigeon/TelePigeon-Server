@@ -84,8 +84,9 @@ public class QuestionService {
     ) {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
-        Profile profile = profileRetriever.findByUserNotAndRoom(user, room);
-        Question question = questionRetriever.findFirstByProfile(profile);
+        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        Profile oppoProfile = profileRetriever.findByUserNotAndRoom(user, room);
+        Question question = questionRetriever.findFirstByProfile(oppoProfile);
         if (
                 question == null ||
                         answerRetriever.existsByQuestion(question)
@@ -93,7 +94,7 @@ public class QuestionService {
             throw new NotFoundException(NotFoundErrorCode.QUESTION_NOT_FOUND);
         }
         boolean isPenalty = checkPenalty(question);
-        return GetLastQuestionDto.of(question, isPenalty);
+        return GetLastQuestionDto.of(question, isPenalty, profile.isEasyMode());
     }
 
     private boolean checkPenalty(final Question question) {

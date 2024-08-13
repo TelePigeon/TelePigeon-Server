@@ -117,6 +117,7 @@ public class ProfileServiceTest {
         User user = Mockito.mock(User.class);
         Room room = Mockito.mock(Room.class);
         Profile profile = Mockito.mock(Profile.class);
+        boolean easyMode = true;
         Gender gender = Gender.MALE;
         AgeRange ageRange = AgeRange.TWENTY;
         Relation relation = Relation.CHILD;
@@ -129,10 +130,10 @@ public class ProfileServiceTest {
         when(profileSaver.save(profile)).thenReturn(profile);
 
         // When
-        ProfileDto profileDto = new ProfileDto(keywordList, gender.getContent(), ageRange.getContent(), relation.getContent());
+        ProfileDto profileDto = new ProfileDto(keywordList, gender.getContent(), ageRange.getContent(), relation.getContent(), easyMode);
         profileService.updateProfileInfo(roomId, userId, profileDto);
 
         // Then (method의 호출 검증을 통해 확인)
-        verify(profileUpdater).updateProfileInfo(profile, keyword, gender, ageRange, relation);
+        verify(profileUpdater).updateProfileInfo(profile, keyword, gender, ageRange, relation, easyMode);
     }
 }

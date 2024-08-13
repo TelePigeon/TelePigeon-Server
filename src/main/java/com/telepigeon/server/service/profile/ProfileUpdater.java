@@ -16,8 +16,9 @@ public class ProfileUpdater {
             final String keywords,
             final Gender gender,
             final AgeRange ageRange,
-            final Relation relation
+            final Relation relation,
+            final boolean easyMode
     ) {
-        profile.updateProfileInfo(keywords, gender, ageRange, relation);
+        profile.updateProfileInfo(keywords, gender, ageRange, relation, easyMode);
     }
 }

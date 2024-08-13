@@ -50,7 +50,8 @@ public class ProfileService {
         return new ProfileInfoDto(
                 gender,
                 ageRange,
-                relation
+                relation,
+                profile.isEasyMode()
         );
     }
 
@@ -74,7 +75,8 @@ public class ProfileService {
                 keywords,
                 Gender.fromContent(profileDto.gender()),
                 AgeRange.fromContent(profileDto.ageRange()),
-                Relation.fromContent(profileDto.relation())
+                Relation.fromContent(profileDto.relation()),
+                profileDto.easyMode()
         );
     }
 }
