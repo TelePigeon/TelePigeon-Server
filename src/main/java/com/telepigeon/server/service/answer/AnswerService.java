@@ -52,7 +52,7 @@ public class AnswerService {
     private final S3Service s3Service;
     private final HurryRemover hurryRemover;
 
-    private static String ANSWER_S3_UPLOAD_FOLDER = "answer/";
+    private static final String ANSWER_S3_UPLOAD_FOLDER = "answer/";
 
     @Transactional
     public Answer create(
@@ -203,7 +203,7 @@ public class AnswerService {
     ) {
         User user = userRetriever.findById(userId);
         Room room = roomRetriever.findById(roomId);
-        Profile profile = profileRetriever.findByUserAndRoom(user, room);
+        Profile profile = profileRetriever.findByUserNotAndRoom(user, room);
         List<RankAnswerDto> rankAnswerDtoList = answerRetriever.findAvgEmotion(
                 profile,
                 date
