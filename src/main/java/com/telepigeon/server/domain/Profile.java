@@ -41,7 +41,7 @@ public class Profile {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne(targetEntity= User.class, fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity= User.class, fetch=FetchType.EAGER)
     @JoinColumn(name="user_id")
     private User user;
 

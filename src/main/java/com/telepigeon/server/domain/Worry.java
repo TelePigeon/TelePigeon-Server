@@ -27,7 +27,7 @@ public class Worry {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne(targetEntity=Profile.class, fetch=FetchType.LAZY)
+    @ManyToOne(targetEntity=Profile.class, fetch=FetchType.EAGER)
     @JoinColumn(name="profile_id")
     private Profile profile;
 
@@ -59,8 +59,8 @@ public class Worry {
                 .title(this.name)
                 .body(this.content)
                 .type("worry")
-                .id(this.getProfile().getRoom().getId())
-                .clickAction("ROOM_CLICK")
+                .id(this.id)
+                .clickAction("WorryDetailActivity")
                 .build();
     }
 }

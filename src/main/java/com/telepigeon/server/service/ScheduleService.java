@@ -7,6 +7,7 @@ import com.telepigeon.server.service.question.QuestionService;
 import com.telepigeon.server.service.worry.WorryRetriever;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import com.telepigeon.server.service.profile.ProfileRetriever;
@@ -24,6 +25,7 @@ public class ScheduleService {
     private final WorryRetriever worryRetriever;
     private final FcmService fcmService;
 
+    @Async
     @Scheduled(cron="0 0 12 * * *")
     public void createSchedule() {
         for (Profile profile : profileRetriever.findAll()) {
@@ -35,6 +37,7 @@ public class ScheduleService {
         }
     }
 
+    @Async
     @Scheduled(cron="0 0 * * * *")
     public void sendWorries() {
         String currentHour = LocalTime.now().format(DateTimeFormatter.ofPattern("HH시"));
@@ -43,7 +46,7 @@ public class ScheduleService {
             try {
                 sendWorry(worry);
             } catch (Exception e) {
-                log.error("Failed to send worry for worry {}", worry.getId());
+                log.error("Failed to send worry for worry {}", worry.getId(), e);
             }
         }
     }
