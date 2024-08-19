@@ -31,9 +31,12 @@ public class OpenAiService {
 
     public String createQuestion(
             final String relation,
-            final String keyword
+            final String keyword,
+            final String gender,
+            final String ageRange,
+            final boolean easyMode
     ) {
-        QuestionCreateDto questionCreateDto = QuestionCreateDto.of(model, createPrompt(relation, keyword));
+        QuestionCreateDto questionCreateDto = QuestionCreateDto.of(model, createPrompt(relation, keyword, gender, ageRange, easyMode));
         RestClient restClient = RestClient.create();
         OpenAiResponseDto response = restClient.post()
                 .uri(url)
@@ -53,7 +56,10 @@ public class OpenAiService {
 
     private List<MessageDto> createPrompt(
             final String relation,
-            final String keyword
+            final String keyword,
+            final String gender,
+            final String ageRange,
+            final boolean easyMode
     ) {
         List<MessageDto> messages = new ArrayList<>();
         //프롬프팅은 같이 찾아보면서 해야 할 것 같음. 좀 오락가락하는 경향이 많음
@@ -65,7 +71,8 @@ public class OpenAiService {
                 assistantContent));
         messages.add(MessageDto.of(
                 "user",
-                "역할은 " + relation + "이고, 주제는 " + keyword + "이야. 만들어 줘."));
+                "'역할' 은 '" + relation + "' 이고, '주제' 는 '" + keyword + "' 이야. '연령대' 는 '" + ageRange + "' 이고, '성별' 은 '" + gender +
+                        "'이고, 마지막으로 '쉬운 사용 모드' 는 '" + easyMode + "' 이야. 만들어 줘."));
         return messages;
     }
 }
