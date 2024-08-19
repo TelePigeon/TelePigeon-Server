@@ -58,9 +58,14 @@ public class QuestionService {
         }
         String relation = receiver.getRelation() == null ? "지인" : receiver.getRelation().getContent();
         String keyword = getRandomKeyword(profile);
+        String gender = receiver.getGender() == null ? "-" : receiver.getGender().getContent();
+        String ageRange = receiver.getAgeRange() == null ? "-" : receiver.getAgeRange().getContent();
         String content = openAiService.createQuestion(
                 relation,
-                keyword
+                keyword,
+                gender,
+                ageRange,
+                receiver.isEasyMode()
         );
         Question question = questionSaver.create(Question.create(
                 keyword,
