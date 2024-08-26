@@ -57,16 +57,16 @@ public class QuestionService {
         if (Objects.equals(profile.getKeywords(), "-")){
             throw new NotFoundException(NotFoundErrorCode.KEYWORD_NOT_FOUND);
         }
-        String relation = receiver.getRelation() == null ? "지인" : receiver.getRelation().getContent();
+        String relation = profile.getRelation() == null ? "지인" : profile.getRelation().getContent();
         String keyword = getRandomKeyword(profile);
-        String gender = receiver.getGender() == null ? "-" : receiver.getGender().getContent();
-        String ageRange = receiver.getAgeRange() == null ? "-" : receiver.getAgeRange().getContent();
+        String gender = profile.getGender() == null ? "-" : profile.getGender().getContent();
+        String ageRange = profile.getAgeRange() == null ? "-" : profile.getAgeRange().getContent();
         String content = openAiService.createQuestion(
                 relation,
                 keyword,
                 gender,
                 ageRange,
-                receiver.isEasyMode()
+                profile.isEasyMode()
         );
         Question question = questionSaver.create(Question.create(
                 keyword,
