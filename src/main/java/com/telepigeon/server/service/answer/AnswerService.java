@@ -23,6 +23,7 @@ import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.room.RoomRetriever;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -80,7 +82,7 @@ public class AnswerService {
                         question,
                         profile)
         );
-
+        Double preEmotion = profile.getEmotion();
         profile.updateEmotion(
                 CalculateEmotion(
                         profile.getEmotion(),
@@ -91,6 +93,8 @@ public class AnswerService {
             fcmService.send(
                     receiver.getUser().getFcmToken(),
                     FcmMessageDto.of(
+                            null,
+                            user.getName(),
                             FcmContent.EMOTION,
                             roomId
                     )
@@ -101,10 +105,13 @@ public class AnswerService {
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
+                        user.getName(),
+                        receiver.getUser().getName(),
                         FcmContent.ANSWER,
                         roomId
                 )
         );
+        log.info("답장 생성 완료.\n내용 : {}\n감정 점수 : {}\n이전 평균 감정 점수 : {}\n현재 평균 감정 점수 : {}", answer.getContent(), answer.getEmotion(), preEmotion, profile.getEmotion());
         return answer;
     }
 

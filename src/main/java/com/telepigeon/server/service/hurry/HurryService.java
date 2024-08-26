@@ -43,6 +43,8 @@ public class HurryService {
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
+                        user.getName(),
+                        receiver.getUser().getName(),
                         FcmContent.HURRY,
                         roomId
                 )

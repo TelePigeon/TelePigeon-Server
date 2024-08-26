@@ -19,6 +19,7 @@ public class FcmService {
         Message message = createMessage(fcmToken, fcmMessageDto);
         try{
             FirebaseMessaging.getInstance().send(message);
+            log.info("{} 사용자 -> {} 사용자 푸시 알림 성공.\n알림 유형 : {}\n내용 : {}", fcmMessageDto.senderName(), fcmMessageDto.receiverName(), fcmMessageDto.type(), fcmMessageDto.body());
         } catch (FirebaseMessagingException e){
             log.error("Failed to send message. fcm Token : {}", fcmToken);
         }

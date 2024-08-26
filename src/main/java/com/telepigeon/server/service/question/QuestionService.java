@@ -75,6 +75,8 @@ public class QuestionService {
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
+                        profile.getUser().getName(),
+                        receiver.getUser().getName(),
                         FcmContent.QUESTION,
                         profile.getRoom().getId()
                 )
