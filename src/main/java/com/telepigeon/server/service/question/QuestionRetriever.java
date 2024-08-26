@@ -8,9 +8,6 @@ import com.telepigeon.server.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-
 @Component
 @RequiredArgsConstructor
 public class QuestionRetriever {
@@ -31,16 +28,5 @@ public class QuestionRetriever {
 
     public boolean existsByProfile(final Profile profile){
         return questionRepository.existsByProfile(profile);
-    }
-
-    public List<Question> findAllByProfile(final Profile profile) {
-        return questionRepository.findAllByProfile(profile);
-    }
-
-    public List<String> findKeywordsByProfile(
-            final Long profileId,
-            final int count
-    ){
-        return questionRepository.findKeywordsByProfileOrderByCreatedAtDesc(profileId, count);
     }
 }

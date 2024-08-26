@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -116,15 +117,13 @@ public class QuestionService {
             return "기분";
         }
         List<String> keywords = Arrays.stream(profile.getKeywords().split(",")).toList();
-        List<String> alreadyKeywords = questionRetriever.findKeywordsByProfile(
-                profile.getId(),
-                keywords.size()
-        );
-        int i = 0;
-        for ( ; i < keywords.size(); i++) {
-            if (!alreadyKeywords.contains(keywords.get(i)) || i == keywords.size() - 1) {
-                break;
-            }
+        if (keywords.size() == 1)
+            return keywords.get(0);
+        String alreadyKeyword = questionRetriever.findFirstByProfile(profile).getKeyword();
+        Random random = new Random();
+        int i = random.nextInt(keywords.size());
+        while(alreadyKeyword.equals(keywords.get(i))){
+            i = random.nextInt(keywords.size());
         }
         return keywords.get(i);
     }
