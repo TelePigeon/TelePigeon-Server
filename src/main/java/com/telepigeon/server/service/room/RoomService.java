@@ -144,6 +144,8 @@ public class RoomService {
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
+                        profile.getUser().getName(),
+                        receiver.getUser().getName(),
                         FcmContent.ROOM_ENTER,
                         room.getId()
                 )
@@ -169,6 +171,8 @@ public class RoomService {
                 fcmService.send(
                         opponentProfile.getUser().getFcmToken(),
                         FcmMessageDto.of(
+                                profile.getUser().getName(),
+                                opponentProfile.getUser().getName(),
                                 FcmContent.ROOM_LEAVE,
                                 room.getId()
                         )
@@ -204,6 +208,8 @@ public class RoomService {
         fcmService.send(
                 receiver.getUser().getFcmToken(),
                 FcmMessageDto.of(
+                        profile.getUser().getName(),
+                        receiver.getUser().getName(),
                         FcmContent.QUESTION,
                         profile.getRoom().getId()
                 )

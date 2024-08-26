@@ -56,6 +56,7 @@ public class Worry {
 
     public FcmMessageDto toFcmMessageDto() {
         return FcmMessageDto.builder()
+                .receiverName(this.profile.getUser().getName())
                 .title(this.name)
                 .body(this.content)
                 .type("worry")
