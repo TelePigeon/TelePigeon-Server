@@ -102,7 +102,7 @@ public class QuestionService {
             throw new NotFoundException(NotFoundErrorCode.QUESTION_NOT_FOUND);
         }
         boolean isPenalty = checkPenalty(question);
-        return GetLastQuestionDto.of(question, isPenalty, profile.isEasyMode());
+        return GetLastQuestionDto.of(question, isPenalty, oppoProfile.isEasyMode());
     }
 
     private boolean checkPenalty(final Question question) {
