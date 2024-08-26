@@ -12,11 +12,13 @@ import com.telepigeon.server.service.external.NaverCloudService;
 import com.telepigeon.server.service.openAi.OpenAiService;
 import com.telepigeon.server.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -67,8 +69,12 @@ public class TestController {
             @RequestParam(required = false) String ageRange,
             @RequestParam boolean easyMode
     ) {
-        return ResponseEntity.ok(openAiService.createQuestion(relation, keyword, gender, ageRange, easyMode));
+        String question = openAiService.createQuestion(relation, keyword, gender, ageRange, easyMode);
+        log.info("\n질문 생성 완료.\n입력 정보 : 관계 - {} / 키워드 - {} / 성별 - {} / 연령대 - {} / 쉬운 사용 모드 - {}\n내용 : {}", relation, keyword, gender, ageRange, easyMode, question);
+        return ResponseEntity.ok(question);
     }
+
+
 
     @GetMapping("/test/emotion")
     public ResponseEntity<ConfidenceDto> testEmotion(
