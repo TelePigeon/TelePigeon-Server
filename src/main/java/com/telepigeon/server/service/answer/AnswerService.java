@@ -111,7 +111,7 @@ public class AnswerService {
                         roomId
                 )
         );
-        log.info("답장 생성 완료.\n내용 : {}\n감정 점수 : {}\n이전 평균 감정 점수 : {}\n현재 평균 감정 점수 : {}", answer.getContent(), answer.getEmotion(), preEmotion, profile.getEmotion());
+        log.info("\n답장 생성 완료.\n내용 : {}\n감정 점수 : {}\n이전 평균 감정 점수 : {}\n현재 평균 감정 점수 : {}", answer.getContent(), answer.getEmotion(), preEmotion, profile.getEmotion());
         return answer;
     }
 
