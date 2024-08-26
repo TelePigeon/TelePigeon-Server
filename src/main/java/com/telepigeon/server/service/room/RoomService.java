@@ -14,6 +14,7 @@ import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.external.FcmService;
 import com.telepigeon.server.service.profile.ProfileRetriever;
 import com.telepigeon.server.service.profile.ProfileSaver;
+import com.telepigeon.server.service.question.QuestionRetriever;
 import com.telepigeon.server.service.question.QuestionSaver;
 import com.telepigeon.server.service.user.UserRetriever;
 import com.telepigeon.server.service.worry.WorryRemover;
@@ -44,6 +45,7 @@ public class RoomService {
     private final QuestionSaver questionSaver;
     private final RoomRemover roomRemover;
     private final FcmService fcmService;
+    private final QuestionRetriever questionRetriever;
 
     @Transactional
     public Room createRoom(final RoomCreateDto roomCreateDto, final Long userId){
@@ -92,8 +94,10 @@ public class RoomService {
         }
         Profile opponentProfile = profileRetriever.findByUserNotAndRoom(user, room);
         String opponentRelation = opponentProfile.getRelation() != null ? opponentProfile.getRelation().getContent() : "-";
-        boolean myState = answerRetriever.existsByProfile(myProfile);
-        boolean opponentState = answerRetriever.existsByProfile(opponentProfile);
+        Question oppoQuestion = questionRetriever.findFirstByProfile(opponentProfile);
+        Question myQuestion = questionRetriever.findFirstByProfile(myProfile);
+        boolean myState = oppoQuestion != null && answerRetriever.existsByQuestion(oppoQuestion);
+        boolean opponentState = myQuestion != null && answerRetriever.existsByQuestion(myQuestion);
 
         // 감정 측정 시 업데이트
         emotion = getEmotion(opponentProfile.getEmotion());
