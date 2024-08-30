@@ -1,6 +1,5 @@
 package com.telepigeon.server.controller;
 
-import com.telepigeon.server.domain.Answer;
 import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Token;
@@ -96,10 +95,10 @@ public class TestController {
         Profile profile2 = profileRetriever.findById(93L);
         Question question1 = questionRetriever.findFirstByProfile(profile1);
         Question question2 = questionRetriever.findFirstByProfile(profile2);
-        Answer answer1 = answerRetriever.findByQuestion(question1);
-        Answer answer2 = answerRetriever.findByQuestion(question2);
-        answerRepository.delete(answer1);
-        answerRepository.delete(answer2);
+        if (answerRetriever.existsByQuestion(question1))
+            answerRepository.delete(answerRetriever.findByQuestion(question1));
+        if (answerRetriever.existsByQuestion(question2))
+            answerRepository.delete(answerRetriever.findByQuestion(question2));
         questionRepository.delete(question1);
         questionRepository.delete(question2);
         questionService.create(profile1);
