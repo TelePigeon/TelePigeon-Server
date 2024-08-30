@@ -16,6 +16,10 @@ public class FcmService {
             final String fcmToken,
             final FcmMessageDto fcmMessageDto
     ){
+        if (fcmToken == null) {
+            log.warn("Fcm Token이 존재하지 않습니다.");
+            return;
+        }
         Message message = createMessage(fcmToken, fcmMessageDto);
         try{
             FirebaseMessaging.getInstance().send(message);
