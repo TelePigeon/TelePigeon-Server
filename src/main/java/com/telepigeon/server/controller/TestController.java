@@ -1,5 +1,6 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.domain.Profile;
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.dto.TestDto;
 import com.telepigeon.server.dto.auth.response.JwtTokensDto;
@@ -10,6 +11,8 @@ import com.telepigeon.server.exception.BusinessException;
 import com.telepigeon.server.service.auth.TokenSaver;
 import com.telepigeon.server.service.external.NaverCloudService;
 import com.telepigeon.server.service.openAi.OpenAiService;
+import com.telepigeon.server.service.profile.ProfileRetriever;
+import com.telepigeon.server.service.question.QuestionService;
 import com.telepigeon.server.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class TestController {
     private final TokenSaver tokenSaver;
     private final OpenAiService openAiService;
     private final NaverCloudService naverCloudService;
+    private final QuestionService questionService;
+    private final ProfileRetriever profileRetriever;
 
     @GetMapping("/test")
     public String test() {
@@ -74,7 +79,15 @@ public class TestController {
         return ResponseEntity.ok(question);
     }
 
-
+    @PostMapping("/test/question")
+    public ResponseEntity<Void> testQuestion(
+    ){
+        Profile profile1 = profileRetriever.findById(92L);
+        Profile profile2 = profileRetriever.findById(93L);
+        questionService.create(profile1);
+        questionService.create(profile2);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/test/emotion")
     public ResponseEntity<ConfidenceDto> testEmotion(

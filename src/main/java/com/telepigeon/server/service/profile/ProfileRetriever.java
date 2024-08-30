@@ -51,4 +51,9 @@ public class ProfileRetriever {
     public Integer countByRoom(final Room room) {
         return profileRepository.countByRoom(room);
     }
+
+    public Profile findById(final Long id) {
+        return profileRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(NotFoundErrorCode.PROFILE_NOT_FOUND));
+    }
 }
