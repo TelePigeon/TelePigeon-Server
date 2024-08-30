@@ -1,6 +1,8 @@
 package com.telepigeon.server.controller;
 
+import com.telepigeon.server.domain.Answer;
 import com.telepigeon.server.domain.Profile;
+import com.telepigeon.server.domain.Question;
 import com.telepigeon.server.domain.Token;
 import com.telepigeon.server.dto.TestDto;
 import com.telepigeon.server.dto.auth.response.JwtTokensDto;
@@ -8,7 +10,9 @@ import com.telepigeon.server.dto.naverCloud.ConfidenceDto;
 import com.telepigeon.server.dto.naverCloud.request.ConfidenceCreateDto;
 import com.telepigeon.server.exception.code.BusinessErrorCode;
 import com.telepigeon.server.exception.BusinessException;
+import com.telepigeon.server.repository.AnswerRepository;
 import com.telepigeon.server.repository.QuestionRepository;
+import com.telepigeon.server.service.answer.AnswerRetriever;
 import com.telepigeon.server.service.auth.TokenSaver;
 import com.telepigeon.server.service.external.NaverCloudService;
 import com.telepigeon.server.service.openAi.OpenAiService;
@@ -36,7 +40,9 @@ public class TestController {
     private final QuestionService questionService;
     private final ProfileRetriever profileRetriever;
     private final QuestionRetriever questionRetriever;
+    private final AnswerRetriever answerRetriever;
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     @GetMapping("/test")
     public String test() {
@@ -88,8 +94,14 @@ public class TestController {
     ){
         Profile profile1 = profileRetriever.findById(92L);
         Profile profile2 = profileRetriever.findById(93L);
-        questionRepository.delete(questionRetriever.findFirstByProfile(profile1));
-        questionRepository.delete(questionRetriever.findFirstByProfile(profile2));
+        Question question1 = questionRetriever.findFirstByProfile(profile1);
+        Question question2 = questionRetriever.findFirstByProfile(profile2);
+        Answer answer1 = answerRetriever.findByQuestion(question1);
+        Answer answer2 = answerRetriever.findByQuestion(question2);
+        answerRepository.delete(answer1);
+        answerRepository.delete(answer2);
+        questionRepository.delete(question1);
+        questionRepository.delete(question2);
         questionService.create(profile1);
         questionService.create(profile2);
         return ResponseEntity.ok().build();
